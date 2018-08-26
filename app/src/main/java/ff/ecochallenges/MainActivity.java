@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private SignInButton signinBtn;
     private TextView mStatusTextView;
     private FirebaseAuth mAuth;
-    // [END declare_auth]
+
 
     private TextView mDetailTextView;
 
@@ -136,19 +136,23 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
+//        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                signIn();
+//
+//            }
+//        });
+//        findViewById(R.id.sign_out_button).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                signOut();
+//            }
+//        });
+        if(account!=null){
+            signIn();
+        }
 
-            }
-        });
-        findViewById(R.id.sign_out_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-            }
-        });
 
 
 
@@ -269,9 +273,6 @@ public class MainActivity extends AppCompatActivity {
                             updateUI(null);
                         }
 
-                        // [START_EXCLUDE]
-
-                        // [END_EXCLUDE]
                     }
                 });
     }
