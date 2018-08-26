@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="47dp"
-        android:layout_marginTop="98dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="67dp"
         android:fontFamily="@font/alfa_slab_one"
         android:text="Welcome, "
         android:textColor="@color/fui_bgGoogle"
@@ -31,20 +31,20 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="142dp"
-        android:layout_height="130dp"
+        android:layout_width="174dp"
+        android:layout_height="160dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="73dp"
+        android:layout_marginBottom="211dp"
         android:src="@android:color/white" />
 
     <TextView
         android:id="@+id/thisMonthTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="214dp"
+        android:layout_marginTop="253dp"
         android:fontFamily="@font/abeezee"
         android:text="This Month"
         android:textColor="@color/fui_bgGoogle"
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="161dp"
+        android:layout_marginBottom="170dp"
         android:layout_marginStart="28dp"
         android:text="Last Month"
         android:textColor="@android:color/white"
@@ -81,16 +81,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/welcome"
-        android:layout_marginBottom="123dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="135dp"
+        android:layout_marginStart="70dp"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/nextNumber"
-        android:layout_width="wrap_content"
+        android:layout_width="24dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/LastNumber"
         android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/LastNumber"
+        android:layout_marginEnd="49dp"
         android:textSize="18sp" />
+
+
 
 </RelativeLayout>

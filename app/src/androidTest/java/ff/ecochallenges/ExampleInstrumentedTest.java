@@ -23,4 +23,6 @@ public class ExampleInstrumentedTest {
 
         assertEquals("ff.ecochallenges", appContext.getPackageName());
     }
+
+
 }
