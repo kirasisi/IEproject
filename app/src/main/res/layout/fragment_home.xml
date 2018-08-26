@@ -17,6 +17,16 @@
         android:src="@drawable/homebg" />
 
     <TextView
+        android:id="@+id/uID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/welcome"
+        android:layout_toEndOf="@+id/welcome"
+        android:fontFamily="@font/alfa_slab_one"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <TextView
         android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,13 +40,13 @@
         android:textSize="24sp" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/thisMonthAnime"
         android:layout_width="174dp"
         android:layout_height="160dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="211dp"
-        android:src="@android:color/white" />
+        android:src="@android:color/transparent" />
 
     <TextView
         android:id="@+id/thisMonthTitle"

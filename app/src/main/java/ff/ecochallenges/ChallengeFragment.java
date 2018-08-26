@@ -232,16 +232,6 @@ public class ChallengeFragment extends Fragment {
                 b.putBoolean("date",check);
                 onSaveInstanceState(b);
 
-
-
-
-
-
-
-
-
-
-
             }
 
         });

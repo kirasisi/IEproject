@@ -124,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         //signinBtn = (SignInButton) findViewById(R.id.sign_in_button);
-        mStatusTextView = (TextView)findViewById(R.id.user);
-        findViewById(R.id.sign_out_button).setVisibility(View.GONE);
+
+
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -182,12 +182,12 @@ public class MainActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                updateUI(account);
+
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("TAG", "Google sign in failed", e);
                 // [START_EXCLUDE]
-                updateUI(null);
+
                 // [END_EXCLUDE]
             }
         }
@@ -196,15 +196,14 @@ public class MainActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            updateUI(account);
 
             // Signed in successfully, show authenticated UI.
-            updateUI(account);
+
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.i("TAG", "signInResult:failed code=" + e.getStatusCode());
-            updateUI(null);
+
         }
     }
 
@@ -218,26 +217,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        updateUI(null);
 
                     }
                 });
     }
 
 
-    private void updateUI(@Nullable GoogleSignInAccount account) {
-        if (account != null) {
-            mStatusTextView.setText(account.getDisplayName());
 
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
-        } else {
-            mStatusTextView.setText(R.string.signed_out);
-
-            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.sign_out_button).setVisibility(View.GONE);
-        }
-    }
     private void signOut() {
         // Firebase sign out
         mAuth.signOut();
@@ -247,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        updateUI(null);
+
                     }
                 });
     }
@@ -270,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.frame_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI(null);
+
                         }
 
                     }
