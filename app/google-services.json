@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "950852502394",
+    "firebase_url": "https://ecochallenge-214211.firebaseio.com",
+    "project_id": "ecochallenge-214211",
+    "storage_bucket": "ecochallenge-214211.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950852502394:android:a518587e10a3d32a",
+        "android_client_info": {
+          "package_name": "ff.ecochallenges"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950852502394-u0fpqcq0m4fn27snujovtsgr3o7glbo7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ff.ecochallenges",
+            "certificate_hash": "25e31c120d1e3230ca4f83262c7762d3e4a3577f"
+          }
+        },
+        {
+          "client_id": "950852502394-ea9jn3chkvsqige35orca959u15ed61q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDln0HFAgaS36KbFaIudRpCIhGo-bWDoq4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950852502394-ea9jn3chkvsqige35orca959u15ed61q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
