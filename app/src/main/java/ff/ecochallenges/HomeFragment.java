@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Map;
 
 public class HomeFragment extends Fragment {
@@ -45,32 +47,43 @@ public class HomeFragment extends Fragment {
         if (account!=null){
             uName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
             uid.setText(uName);
-        }
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
+            mDatabase.equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()){
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(point);
+                            } else {
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("points").setValue(point);
+                                Calendar sCalendar = Calendar.getInstance();
+                                String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
+                                int date = sCalendar.get(Calendar.DATE);
+                                if (day.equals("Saturday")||day.equals("Sunday")){
+                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue("1");
+                                }
+                                else{
+                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("1");
+                                }
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+                            }
 
-        mDatabase.equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()){
-                            mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(point);
-                        } else {
-                            mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                            mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                            mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("points").setValue(point);
 
                         }
 
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
                     });
+        }
+
+
+
 
 
 

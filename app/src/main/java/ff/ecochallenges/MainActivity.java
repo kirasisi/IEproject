@@ -2,9 +2,11 @@ package ff.ecochallenges;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -44,7 +46,12 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,9 +60,10 @@ public class MainActivity extends AppCompatActivity {
     private Fragment challengeFragment;
     GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 0;
-    private SignInButton signinBtn;
+    private Button testBtn;
     private TextView mStatusTextView;
     private FirebaseAuth mAuth;
+    private DatabaseReference db;
 
 
     private TextView mDetailTextView;
@@ -101,9 +109,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void challengef(){
-//        FragmentManager manager = getSupportFragmentManager();
         challengeFragment = new ChallengeFragment();
-//        manager.beginTransaction().replace(R.id.frame_layout, cf).commit();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("signInDateCheck",checkSignIn(formatter.format(date)));
+        challengeFragment.setArguments(bundle);
         loadFragment(challengeFragment);
 
     }
@@ -112,22 +123,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        //newFragment = new HomeFragment();
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        newFragment = new HomeFragment();
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
-        fragmentManager = getSupportFragmentManager();
-
-        //signinBtn = (SignInButton) findViewById(R.id.sign_in_button);
-
-
-
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -136,22 +131,30 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                signIn();
-//
-//            }
-//        });
-//        findViewById(R.id.sign_out_button).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                signOut();
-//            }
-//        });
-        if(account!=null){
-            signIn();
-        }
+        signIn();
+
+        //newFragment = new HomeFragment();
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
+
+
+
+
+            newFragment = new HomeFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
+            fragmentManager = getSupportFragmentManager();
+
+
+
+
+
+
+
+
 
 
 
@@ -163,6 +166,17 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.frame_layout, fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void onStart() {
+        super.onStart();
+
+        // [START on_start_sign_in]
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        // [END on_start_sign_in]
     }
 
     private void signIn() {
@@ -208,9 +222,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // [END signOut]
-
-    // [START revokeAccess]
     private void revokeAccess() {
         mGoogleSignInClient.revokeAccess()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -261,7 +272,25 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+
+
+
+
     }
+
+
+    public boolean checkSignIn(String siginDate){
+        Long lastSignin = FirebaseAuth.getInstance().getCurrentUser().getMetadata().getLastSignInTimestamp();
+        LocalDate date = Instant.ofEpochMilli(lastSignin * 1000).atZone(ZoneId.systemDefault()).toLocalDate();
+        String ls = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        if(ls.equals(siginDate)){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 
 
 

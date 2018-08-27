@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.Auth;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +35,7 @@ import org.w3c.dom.Text;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
@@ -41,6 +44,7 @@ public class ChallengeFragment extends Fragment {
 
     private StorageReference mStorageRef;
     private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase2;
     private TextView cName;
     private ImageView cPic;
     private String urlImage;
@@ -52,10 +56,13 @@ public class ChallengeFragment extends Fragment {
     private DatabaseReference todaysChallenge;
     private DatabaseReference nextDayChallenge;
     private TextView nextChallenge;
-    private int today;
+    private int t;
     private int date=0;
     private boolean check=false;
     private Bundle bundle;
+    private String challengeID;
+    boolean completed = false;
+    private TextView nextCtitle;
     public static ChallengeFragment newInstance() {
         ChallengeFragment fragment = new ChallengeFragment();
         return fragment;
@@ -66,8 +73,6 @@ public class ChallengeFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-
 
 
 
@@ -102,44 +107,15 @@ public class ChallengeFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
-        if (savedInstanceState != null) {
-            date = savedInstanceState.getInt("date");
-            check = savedInstanceState.getBoolean("check");
-            Calendar c = Calendar.getInstance();
-            if(date==c.get(Calendar.DATE)&&check==true){
-                completeBtn.setVisibility(View.GONE);
-                completeSign.setVisibility(View.VISIBLE);
-                completeText.setVisibility(View.VISIBLE);
-                nextChallenge.setVisibility(View.VISIBLE);
-            }
-        }
+        Bundle bundle = new Bundle();
+        boolean lastSignIn = bundle.getBoolean("signInDateCheck");
 
-        Calendar sCalendar = Calendar.getInstance();
-        String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
-        date = sCalendar.get(Calendar.DATE);
-        int wk = sCalendar.get(Calendar.WEEK_OF_MONTH);
-        //check week day or weekend
-        if (day.equals("Saturday")||day.equals("Sunday")){
-            mDatabase = FirebaseDatabase.getInstance().getReference("WeekendChallenges");
-            todaysChallenge = mDatabase.child("c0" + String.valueOf(wk-1));
-            today = 0;
+        if(lastSignIn==true){
+            changeChallenge();
         }
-        else{
-            //connect to firebase
-            mDatabase = FirebaseDatabase.getInstance().getReference("WeekdayChallenges");
-            if(date<=5){
-                todaysChallenge = mDatabase.child("c0" + String.valueOf(date));
-            }
-            if(5<date&&date<=9){
-                todaysChallenge = mDatabase.child("c0" + String.valueOf(date-2));
-            }
-            if(10<=date&&date<=28){
-                todaysChallenge = mDatabase.child("c" + String.valueOf(date-2));
-            }
-            if(29<=date&&date<=31){
-                todaysChallenge = mDatabase.child("c" + String.valueOf(date-5));
-            }
-            today = date+1;
+        else {
+            keepChallenge();
+
         }
 
         //crete view
@@ -155,7 +131,329 @@ public class ChallengeFragment extends Fragment {
         nextChallenge = getActivity().findViewById(R.id.nextChallenge);
         nextChallenge.setVisibility(View.GONE);
 
+
+
+
+//        if (!checkCompletion()) {
+//
+//            completeBtn.setVisibility(View.GONE);
+//            completeSign.setVisibility(View.VISIBLE);
+//            completeText.setVisibility(View.VISIBLE);
+//            completeText.setText("Well Done");
+//            nextChallenge.setVisibility(View.VISIBLE);
+//            displayNextChallenge();
+//
+//        }
+
         //get from firebase
+
+
+
+
+
+
+        completeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveChallengeResult();
+                completeBtn.setVisibility(getView().GONE);
+                completeSign.setVisibility(getView().VISIBLE);
+                completeText.setText("Well Done");
+
+                displayNextChallenge();
+
+                check = true;
+                Bundle b = new Bundle();
+                b.putInt("date",date);
+                b.putBoolean("date",check);
+                onSaveInstanceState(b);
+
+            }
+
+        });
+
+
+
+
+    }
+
+    public void saveChallengeResult(){
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("ChallengeHistory");
+        mDatabase2 = FirebaseDatabase.getInstance().getReference().child("Users");
+
+//        mDatabase.equalTo(challengeID)
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        if(dataSnapshot.exists()){
+//                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//                            Date date = new Date();
+//                            mDatabase.child(challengeID).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("completionDate")
+//                                                                                                                          .setValue(formatter.format(date));
+//
+//
+//                        } else {
+//                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//                            Date date = new Date();
+//                            String historyId = mDatabase.push().child(challengeID).getKey();
+//                            mDatabase.child(historyId).child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                                                                                    .child("completionDate").setValue(formatter.format(date));
+//
+//
+//                        }
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//                    }
+//                });
+
+
+
+        mDatabase2.equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            Calendar sCalendar = Calendar.getInstance();
+                            String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
+                            date = sCalendar.get(Calendar.DATE);
+                            if (day.equals("Saturday")||day.equals("Sunday")){
+                                mDatabase2.child("currentWeekendChallenge").setValue(getStamp()+1);
+                            }
+                            else{
+                                mDatabase2.child("currentWeekdayChallenge").setValue(getStamp()+1);
+                            }
+
+
+
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+
+    }
+
+    public boolean checkCompletion(){
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("ChallengeHistory");
+
+        mDatabase.equalTo(getStamp())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        Date date = new Date();
+                        if(dataSnapshot.exists()){
+                            if (dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()
+                                    && dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("completionDate")
+                                                                            .equals(formatter.format(date))){
+
+
+                                    completed =true;
+
+
+                            }
+
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+
+
+
+
+
+        return completed;
+    }
+
+    public void displayNextChallenge(){
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("WeekdayChallenges");
+        if(getStamp()==0){
+
+            nextChallenge.setVisibility(View.VISIBLE);
+            nextChallenge.setText("Enjoy your Weekend with the big challenge!");
+
+        }
+        else{
+            Calendar cd = Calendar.getInstance();
+
+            nextDayChallenge = mDatabase.child(String.valueOf(getStamp()+1));
+
+
+
+
+            nextDayChallenge.addValueEventListener(new ValueEventListener() {
+                public String TAG;
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    String name = dataSnapshot.child("cName").getValue(String.class);
+
+                    nextChallenge.setText(name);
+                    nextChallenge.setVisibility(View.VISIBLE);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.w(TAG, "onCancelled", databaseError.toException());
+                }
+            });
+
+
+        }
+    }
+
+
+    public void changeChallenge(){
+        Calendar sCalendar = Calendar.getInstance();
+        String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
+        date = sCalendar.get(Calendar.DATE);
+        //int wk = sCalendar.get(Calendar.WEEK_OF_MONTH);
+
+        DatabaseReference userBase = FirebaseDatabase.getInstance().getReference("Users");
+        //check week day or weekend
+        if (day.equals("Saturday")||day.equals("Sunday")){
+            mDatabase = FirebaseDatabase.getInstance().getReference("WeekendChallenges");
+            userBase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").getValue(String.class);
+                    int current = Integer.parseInt(last);
+                    if(current<=4){
+                        todaysChallenge = mDatabase.child(String.valueOf(current+1));
+                        updateChallengeUI();
+                        setStamp(current);
+                    }
+                    else{
+                        todaysChallenge = mDatabase.child("1");
+                        updateChallengeUI();
+                        setStamp(1);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            //challengeID = "c0" + String.valueOf(wk-1);
+        }
+        else{
+            //connect to firebase
+            mDatabase = FirebaseDatabase.getInstance().getReference("WeekdayChallenges");
+
+            userBase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").getValue(String.class);
+                    int current = Integer.parseInt(last);
+                    if(current<=26){
+                        todaysChallenge = mDatabase.child(String.valueOf(current+1));
+                        updateChallengeUI();
+                        setStamp(current);
+                    }
+                    else{
+                        todaysChallenge = mDatabase.child("1");
+                        updateChallengeUI();
+                        setStamp(1);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+
+    }
+
+    public void keepChallenge() {
+        Calendar sCalendar = Calendar.getInstance();
+        String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
+        date = sCalendar.get(Calendar.DATE);
+        //int wk = sCalendar.get(Calendar.WEEK_OF_MONTH);
+
+        mDatabase2 = FirebaseDatabase.getInstance().getReference("Users");
+        //check week day or weekend
+        if (day.equals("Saturday") || day.equals("Sunday")) {
+            //mDatabase = FirebaseDatabase.getInstance().getReference("WeekendChallenges");
+            mDatabase2.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").getValue(String.class);
+                    int current = Integer.parseInt(last);
+
+                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current));
+                        updateChallengeUI();
+                        setStamp(current);
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            //challengeID = "c0" + String.valueOf(wk-1);
+        } else {
+            //connect to firebase
+           // mDatabase = FirebaseDatabase.getInstance().getReference("WeekdayChallenges");
+            mDatabase2.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").getValue(String.class);
+
+                    updateToday(last);
+                    updateChallengeUI();
+
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+    }
+
+    public void updateToday(String current){
+        int t = Integer.parseInt(current);
+        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekdayChallenges").child(current);
+        setStamp(t);
+
+
+    }
+
+
+    public  void updateChallengeUI(){
         todaysChallenge.addValueEventListener(new ValueEventListener() {
             public String TAG;
 
@@ -172,7 +470,7 @@ public class ChallengeFragment extends Fragment {
                 String description = dataSnapshot.child("description").getValue(String.class);
                 instructContent.setText(description);
                 Long points = dataSnapshot.child("points").getValue(Long.class);
-                point.setText(String.valueOf(points));
+                point.setText(String.valueOf(points)+"points");
 
 
 
@@ -183,63 +481,23 @@ public class ChallengeFragment extends Fragment {
                 Log.w(TAG, "onCancelled", databaseError.toException());
             }
         });
+    }
 
-        completeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                completeBtn.setVisibility(getView().GONE);
-                completeSign.setVisibility(getView().VISIBLE);
-                completeText.setText("Well Done");
-                if(today==0){
-                    nextChallenge.setVisibility(View.VISIBLE);
-                    nextChallenge.setText("Enjoy your Weekend with the big challenge!");
+    public void setStamp(int today){
+        t = today;
+    }
 
-                }
-                else{
-                    Calendar cd = Calendar.getInstance();
-                    int wk = cd.get(Calendar.WEEK_OF_MONTH);
-                    if (wk-1<=2){
-                        nextDayChallenge = mDatabase.child("c0" + String.valueOf(today));
-                    }
-                    if (wk-1>2){
-                        nextDayChallenge = mDatabase.child("c" + String.valueOf(today));
-                    }
+    public int getStamp(){
+         return t;
+    }
 
-
-                    nextDayChallenge.addValueEventListener(new ValueEventListener() {
-                        public String TAG;
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            String name = dataSnapshot.child("cName").getValue(String.class);
-                            nextChallenge.setText(name);
-                            nextChallenge.setVisibility(View.VISIBLE);
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Log.w(TAG, "onCancelled", databaseError.toException());
-                        }
-                    });
-
-
-                }
-
-                check = true;
-                Bundle b = new Bundle();
-                b.putInt("date",date);
-                b.putBoolean("date",check);
-                onSaveInstanceState(b);
-
-            }
-
-        });
-
+    public void updatepoint(int point,String user){
 
 
 
     }
+
+
 
 
 
