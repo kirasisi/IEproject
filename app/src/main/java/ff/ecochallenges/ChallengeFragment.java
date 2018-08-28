@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,6 +46,7 @@ public class ChallengeFragment extends Fragment {
     private StorageReference mStorageRef;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
+    private DatabaseReference mDatabase3;
     private TextView cName;
     private ImageView cPic;
     private String urlImage;
@@ -505,21 +507,46 @@ public class ChallengeFragment extends Fragment {
     }
 
     public void updateTips(String type){
-        FirebaseDatabase.getInstance().getReference().child("ODWasteAvgs").orderByChild("type").equalTo(type)
-                .addValueEventListener(new ValueEventListener() {
+        mDatabase3 = FirebaseDatabase.getInstance().getReference("ODWasteAvgs");
+        mDatabase3.orderByChild("type").equalTo(type)
+                .addChildEventListener(new ChildEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         if(dataSnapshot.exists()){
-                            String avg = dataSnapshot.child("avgDailyPerCapita").getValue(String.class);
-                            String unit = dataSnapshot.child("unit").getValue(String.class);
-                            String tp = dataSnapshot.child("type").getValue(String.class);
-                            tip.setText("Average generation/consumption per capital of "+tp+ " in Australia is"+avg+""+unit);
+
+                            for(DataSnapshot snapshot : dataSnapshot.getChildren())
+                            {
+                                Object avg = dataSnapshot.child("avgDailyPerCapita").getValue();
+                                Object type = dataSnapshot.child("type").getValue();
+                                Object unit = dataSnapshot.child("unit").getValue();
+                                tip.setText("Average generation/consumption per capital of "+type+ " in Australia is "+String.valueOf(avg)+" "+unit);
+
+
+                            }
+
+
+
 
 
                         }
                         else{
                             tip.setText("tip");
                         }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
                     }
 
                     @Override
