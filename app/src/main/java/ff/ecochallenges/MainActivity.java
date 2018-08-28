@@ -273,18 +273,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    @RequiresApi(api = Build.VERSION_CODES.O)
-//    public boolean checkSignIn(String siginDate){
-//        Long lastSignin = FirebaseAuth.getInstance().getCurrentUser().getMetadata().getLastSignInTimestamp();
-//        LocalDate date = Instant.ofEpochMilli(lastSignin * 1000).atZone(ZoneId.systemDefault()).toLocalDate();
-//        String ls = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-//        if(ls.equals(siginDate)){
-//            return true;
-//        }
-//        else {
-//            return false;
-//        }
-//    }
+
     public void getSignIn(){
 
        db = FirebaseDatabase.getInstance().getReference().child("Users");

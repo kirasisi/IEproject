@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
             uid.setText(uName);
             mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
-            mDatabase.equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+            mDatabase.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail())
                     .addListenerForSingleValueEvent(new ValueEventListener() {
 
                         @Override
@@ -59,8 +59,9 @@ public class HomeFragment extends Fragment {
                             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                             Date DATE = new Date();
                             if(dataSnapshot.exists()){
-                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(point);
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("points").setValue(point);
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
+
                             } else {
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
@@ -70,10 +71,14 @@ public class HomeFragment extends Fragment {
                                 int date = sCalendar.get(Calendar.DATE);
                                 if (day.equals("Saturday")||day.equals("Sunday")){
                                     mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue("1");
+                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("0");
                                 }
                                 else{
                                     mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("1");
+                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue("0");
                                 }
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isCompleted").setValue("false");
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
 
 
                             }
