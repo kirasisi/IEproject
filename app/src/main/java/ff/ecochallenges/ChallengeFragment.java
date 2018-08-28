@@ -360,7 +360,7 @@ public class ChallengeFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").getValue(String.class);
                     int current = Integer.parseInt(last);
-                    if(current<=4){
+                    if(current<4){
                         todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current+1));
                         updateChallengeUI();
                         setStamp(current+1);
@@ -590,7 +590,7 @@ public class ChallengeFragment extends Fragment {
                             }
 
                             int current = Integer.parseInt(last.toString());
-                            if(current<=4){
+                            if(current<4){
                                 todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current+1));
 
                                 setStamp(current+1);

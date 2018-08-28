@@ -1,5 +1,6 @@
 package ff.ecochallenges;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -109,7 +111,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void challengef(){
-        getSignIn();
+        try{
+            getSignIn();
+        }
+        catch (Exception e){
+            Context context = getApplicationContext();
+            CharSequence text = "Please Sign in with Google";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+
 
     }
 
