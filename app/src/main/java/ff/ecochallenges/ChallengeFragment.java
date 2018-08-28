@@ -167,6 +167,7 @@ public class ChallengeFragment extends Fragment {
                 instructContent.setVisibility(View.GONE);
                 cName.setVisibility(View.GONE);
                 updateCompeletion();
+                updatePoint();
 
 
             }
@@ -184,6 +185,7 @@ public class ChallengeFragment extends Fragment {
 
     public void updatePoint(){
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
         mDatabase.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -194,7 +196,7 @@ public class ChallengeFragment extends Fragment {
 
                 }
                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("points")
-                                                     .setValue(Integer.parseInt(point.toString())+String.valueOf(point.getText()));
+                                                     .setValue(Integer.parseInt(points.toString())+ Integer.parseInt(point.getText().toString()));
 
 
             }
@@ -398,18 +400,21 @@ public class ChallengeFragment extends Fragment {
             mDatabase2.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").getValue(String.class);
-                    int current = Integer.parseInt(last);
-                    if(current<4){
-                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current+1));
-                        updateChallengeUI();
-                        setStamp(current+1);
+                    if(dataSnapshot.exists()){
+                        String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").getValue(String.class);
+                        int current = Integer.parseInt(last);
+                        if(current<4){
+                            todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current+1));
+                            updateChallengeUI();
+                            setStamp(current+1);
+                        }
+                        else{
+                            todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child("1");
+                            updateChallengeUI();
+                            setStamp(1);
+                        }
                     }
-                    else{
-                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child("1");
-                        updateChallengeUI();
-                        setStamp(1);
-                    }
+
 
                 }
 
@@ -538,7 +543,7 @@ public class ChallengeFragment extends Fragment {
                 instructContent.setText(description);
 
                 Long points = dataSnapshot.child("points").getValue(Long.class);
-                point.setText(String.valueOf(points)+"points");
+                point.setText(String.valueOf(points));
                 String type1 = dataSnapshot.child("type").getValue(String.class);
                 updateTips(type1);
 
