@@ -18,14 +18,38 @@
 
     <TextView
         android:id="@+id/challengeCount"
-        android:layout_width="159dp"
+        android:layout_width="339dp"
         android:layout_height="70dp"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/LastNumber"
+        android:layout_marginStart="-30dp"
         android:layout_marginTop="160dp"
         android:fontFamily="@font/roboto_slab"
+        android:textAlignment="center"
         android:textColor="@android:color/white"
+        android:textSize="20sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/pointYouHave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="42dp"
+        android:layout_marginTop="23dp"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/nutInHome"
+        android:layout_width="40dp"
+        android:layout_height="43dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="14dp"
+        android:layout_toEndOf="@+id/thisMonthAnime"
+        android:src="@drawable/acorn_296591_640" />
 
     <TextView
         android:id="@+id/uID"

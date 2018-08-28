@@ -67,7 +67,6 @@
         android:layout_width="36dp"
         android:layout_height="39dp"
         android:layout_alignBottom="@+id/points"
-        android:layout_alignStart="@+id/c_complete"
         android:layout_marginLeft="140dp"
         android:src="@drawable/acorn_296591_640" />
 

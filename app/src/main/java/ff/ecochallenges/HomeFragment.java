@@ -2,7 +2,9 @@ package ff.ecochallenges;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,7 +48,8 @@ public class HomeFragment extends Fragment {
         String uName = "";
         View vHome = inflater.inflate(R.layout.fragment_home, container, false);
         uid = (TextView)vHome.findViewById(R.id.uID);
-        TextView challengeCount = (TextView)vHome.findViewById(R.id.challengeCount);
+        final TextView challengeCount = (TextView)vHome.findViewById(R.id.challengeCount);
+        final TextView nutsPoint = (TextView)vHome.findViewById(R.id.pointYouHave);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getActivity());
         if (account!=null){
             uName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
@@ -80,10 +84,10 @@ public class HomeFragment extends Fragment {
                                 }
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isCompleted").setValue("false");
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("challengeFinished").setValue("0");
 
 
                             }
-
 
                         }
 
@@ -91,6 +95,52 @@ public class HomeFragment extends Fragment {
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     });
+
+            try{
+                mDatabase.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail()).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren())
+                        {
+                            Object challenge = dataSnapshot.child("challengeFinished").getValue();
+                            Object nuts = dataSnapshot.child("points").getValue();
+                            challengeCount.setText("You have done "+challenge.toString()+" challenge so far!");
+                            nutsPoint.setText(nuts.toString());
+
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+            catch (NullPointerException e){
+                Log.i("Notice","New user");
+            }
+
+
+
+
+
+
+
         }
 
 

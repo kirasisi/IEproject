@@ -190,13 +190,18 @@ public class ChallengeFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Object points = null;
+                Object challengeNum = null;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren())
                 {
                     points = dataSnapshot.child("points").getValue();
+                    challengeNum = dataSnapshot.child("challengeFinished").getValue();
 
                 }
                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("points")
                                                      .setValue(Integer.parseInt(points.toString())+ Integer.parseInt(point.getText().toString()));
+                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("challengeFinished")
+                        .setValue(Integer.parseInt(challengeNum.toString())+ 1);
+
 
 
             }
