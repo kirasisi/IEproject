@@ -51,44 +51,6 @@
         android:src="@android:color/transparent" />
 
     <TextView
-        android:id="@+id/thisMonthTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="253dp"
-        android:fontFamily="@font/abeezee"
-        android:text="This Month"
-        android:textColor="@color/fui_bgGoogle"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/lastMonthTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="170dp"
-        android:layout_marginStart="28dp"
-        android:text="Last Month"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/nextMonthTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/lastMonthTitle"
-        android:layout_marginEnd="16dp"
-        android:text="Next Month"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/LastNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
