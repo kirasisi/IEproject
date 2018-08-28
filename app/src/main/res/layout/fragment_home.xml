@@ -17,6 +17,17 @@
         android:src="@drawable/homebg" />
 
     <TextView
+        android:id="@+id/challengeCount"
+        android:layout_width="159dp"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/LastNumber"
+        android:layout_marginTop="160dp"
+        android:fontFamily="@font/roboto_slab"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/uID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment {
         String uName = "";
         View vHome = inflater.inflate(R.layout.fragment_home, container, false);
         uid = (TextView)vHome.findViewById(R.id.uID);
+        TextView challengeCount = (TextView)vHome.findViewById(R.id.challengeCount);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getActivity());
         if (account!=null){
             uName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
