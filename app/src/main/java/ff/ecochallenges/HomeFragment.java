@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
                             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                             Date DATE = new Date();
                             if(dataSnapshot.exists()){
-                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("points").setValue(point);
+
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
 
                             } else {
