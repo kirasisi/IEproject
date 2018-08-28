@@ -22,9 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/welcome"
         android:layout_toEndOf="@+id/welcome"
-        android:fontFamily="@font/alfa_slab_one"
+        android:fontFamily="@font/roboto_slab"
         android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/welcome"
@@ -34,10 +35,11 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="36dp"
         android:layout_marginTop="67dp"
-        android:fontFamily="@font/alfa_slab_one"
+        android:fontFamily="@font/roboto_slab"
         android:text="Welcome, "
         android:textColor="@color/fui_bgGoogle"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/thisMonthAnime"

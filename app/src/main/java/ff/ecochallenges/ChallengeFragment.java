@@ -150,7 +150,7 @@ public class ChallengeFragment extends Fragment {
             public void onClick(View v) {
                 saveChallengeResult();
                 completeBtn.setVisibility(getView().GONE);
-                completeSign.setVisibility(getView().VISIBLE);
+                //completeSign.setVisibility(getView().VISIBLE);
                 completeText.setText("Well Done");
 
                 displayNextChallenge();
@@ -160,6 +160,9 @@ public class ChallengeFragment extends Fragment {
                 b.putInt("date",date);
                 b.putBoolean("date",check);
                 onSaveInstanceState(b);
+                tip.setVisibility(View.VISIBLE);
+                instructContent.setVisibility(View.GONE);
+                cName.setVisibility(View.GONE);
 
             }
 
@@ -219,10 +222,10 @@ public class ChallengeFragment extends Fragment {
                             String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
                             date = sCalendar.get(Calendar.DATE);
                             if (day.equals("Saturday")||day.equals("Sunday")){
-                                mDatabase2.child("currentWeekendChallenge").setValue(getStamp()+1);
+                                mDatabase2.child("currentWeekendChallenge").setValue(getStamp());
                             }
                             else{
-                                mDatabase2.child("currentWeekdayChallenge").setValue(getStamp()+1);
+                                mDatabase2.child("currentWeekdayChallenge").setValue(getStamp());
                             }
 
 
@@ -245,7 +248,7 @@ public class ChallengeFragment extends Fragment {
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ChallengeHistory");
 
-        mDatabase.equalTo(getStamp())
+        mDatabase.equalTo(getStamp()-1)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
 
                     @Override
@@ -312,7 +315,7 @@ public class ChallengeFragment extends Fragment {
 
                     String name = dataSnapshot.child("cName").getValue(String.class);
 
-                    nextChallenge.setText(name);
+                    nextChallenge.setText("Next Challenge: "+name);
                     nextChallenge.setVisibility(View.VISIBLE);
 
                 }
@@ -346,7 +349,7 @@ public class ChallengeFragment extends Fragment {
                     if(current<=4){
                         todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current+1));
                         updateChallengeUI();
-                        setStamp(current);
+                        setStamp(current+1);
                     }
                     else{
                         todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child("1");
@@ -373,12 +376,12 @@ public class ChallengeFragment extends Fragment {
                     String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").getValue(String.class);
                     int current = Integer.parseInt(last);
                     if(current<=26){
-                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current+1));
+                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekdayChallenges").child(String.valueOf(current+1));
                         updateChallengeUI();
-                        setStamp(current);
+                        setStamp(current+1);
                     }
                     else{
-                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child("1");
+                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekdayChallenges").child("1");
                         updateChallengeUI();
                         setStamp(1);
                     }
@@ -413,7 +416,7 @@ public class ChallengeFragment extends Fragment {
 
                         todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current));
                         updateChallengeUI();
-                        setStamp(current);
+                        setStamp(current+1);
 
 
                 }
@@ -431,8 +434,9 @@ public class ChallengeFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").getValue(String.class);
-
-                    updateToday(last);
+                    int current = Integer.parseInt(last);
+                    todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current));
+                    updateToday(last+1);
                     updateChallengeUI();
 
 
@@ -473,6 +477,7 @@ public class ChallengeFragment extends Fragment {
                 cName.setText(name);
                 String description = dataSnapshot.child("description").getValue(String.class);
                 instructContent.setText(description);
+
                 Long points = dataSnapshot.child("points").getValue(Long.class);
                 point.setText(String.valueOf(points)+"points");
                 String type1 = dataSnapshot.child("type").getValue(String.class);
@@ -508,8 +513,8 @@ public class ChallengeFragment extends Fragment {
                             String avg = dataSnapshot.child("avgDailyPerCapita").getValue(String.class);
                             String unit = dataSnapshot.child("unit").getValue(String.class);
                             String tp = dataSnapshot.child("type").getValue(String.class);
-                            tip.setText("Do you know average generation/consumption per capital of "+tp+ " in Australia is"+avg+""+unit);
-                            tip.setVisibility(View.VISIBLE);
+                            tip.setText("Average generation/consumption per capital of "+tp+ " in Australia is"+avg+""+unit);
+
 
                         }
                         else{
