@@ -62,7 +62,8 @@ public class ChallengeFragment extends Fragment {
     private Bundle bundle;
     private String challengeID;
     boolean completed = false;
-    private TextView nextCtitle;
+    private TextView tip;
+
     public static ChallengeFragment newInstance() {
         ChallengeFragment fragment = new ChallengeFragment();
         return fragment;
@@ -130,22 +131,14 @@ public class ChallengeFragment extends Fragment {
         instructContent = getActivity().findViewById(R.id.insContent);
         nextChallenge = getActivity().findViewById(R.id.nextChallenge);
         nextChallenge.setVisibility(View.GONE);
+        tip = getActivity().findViewById(R.id.tips);
 
 
 
 
-//        if (!checkCompletion()) {
-//
-//            completeBtn.setVisibility(View.GONE);
-//            completeSign.setVisibility(View.VISIBLE);
-//            completeText.setVisibility(View.VISIBLE);
-//            completeText.setText("Well Done");
-//            nextChallenge.setVisibility(View.VISIBLE);
-//            displayNextChallenge();
-//
-//        }
 
-        //get from firebase
+
+        checkCompletion();
 
 
 
@@ -171,6 +164,8 @@ public class ChallengeFragment extends Fragment {
             }
 
         });
+
+
 
 
 
@@ -245,7 +240,7 @@ public class ChallengeFragment extends Fragment {
 
     }
 
-    public boolean checkCompletion(){
+    public void checkCompletion(){
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ChallengeHistory");
@@ -263,7 +258,16 @@ public class ChallengeFragment extends Fragment {
                                                                             .equals(formatter.format(date))){
 
 
-                                    completed =true;
+                                    //completed =true;
+                                completeBtn.setVisibility(View.GONE);
+                                completeSign.setVisibility(View.VISIBLE);
+                                completeText.setVisibility(View.VISIBLE);
+                                completeText.setText("Well Done");
+                                nextChallenge.setVisibility(View.VISIBLE);
+                                displayNextChallenge();
+
+
+
 
 
                             }
@@ -282,7 +286,7 @@ public class ChallengeFragment extends Fragment {
 
 
 
-        return completed;
+
     }
 
     public void displayNextChallenge(){
@@ -330,22 +334,22 @@ public class ChallengeFragment extends Fragment {
         date = sCalendar.get(Calendar.DATE);
         //int wk = sCalendar.get(Calendar.WEEK_OF_MONTH);
 
-        DatabaseReference userBase = FirebaseDatabase.getInstance().getReference("Users");
+
         //check week day or weekend
         if (day.equals("Saturday")||day.equals("Sunday")){
-            mDatabase = FirebaseDatabase.getInstance().getReference("WeekendChallenges");
-            userBase.addValueEventListener(new ValueEventListener() {
+            mDatabase2 = FirebaseDatabase.getInstance().getReference("Users");
+            mDatabase2.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").getValue(String.class);
                     int current = Integer.parseInt(last);
                     if(current<=4){
-                        todaysChallenge = mDatabase.child(String.valueOf(current+1));
+                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current+1));
                         updateChallengeUI();
                         setStamp(current);
                     }
                     else{
-                        todaysChallenge = mDatabase.child("1");
+                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child("1");
                         updateChallengeUI();
                         setStamp(1);
                     }
@@ -361,20 +365,20 @@ public class ChallengeFragment extends Fragment {
         }
         else{
             //connect to firebase
-            mDatabase = FirebaseDatabase.getInstance().getReference("WeekdayChallenges");
+            mDatabase2 = FirebaseDatabase.getInstance().getReference("Users");
 
-            userBase.addValueEventListener(new ValueEventListener() {
+            mDatabase2.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").getValue(String.class);
                     int current = Integer.parseInt(last);
                     if(current<=26){
-                        todaysChallenge = mDatabase.child(String.valueOf(current+1));
+                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current+1));
                         updateChallengeUI();
                         setStamp(current);
                     }
                     else{
-                        todaysChallenge = mDatabase.child("1");
+                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child("1");
                         updateChallengeUI();
                         setStamp(1);
                     }
@@ -471,7 +475,9 @@ public class ChallengeFragment extends Fragment {
                 instructContent.setText(description);
                 Long points = dataSnapshot.child("points").getValue(Long.class);
                 point.setText(String.valueOf(points)+"points");
-
+                String type1 = dataSnapshot.child("type").getValue(String.class);
+                tip.setVisibility(View.GONE);
+                updateTips(type1);
 
 
             }
@@ -481,6 +487,8 @@ public class ChallengeFragment extends Fragment {
                 Log.w(TAG, "onCancelled", databaseError.toException());
             }
         });
+
+
     }
 
     public void setStamp(int today){
@@ -489,6 +497,31 @@ public class ChallengeFragment extends Fragment {
 
     public int getStamp(){
          return t;
+    }
+
+    public void updateTips(String type){
+        FirebaseDatabase.getInstance().getReference().child("ODWasteAvgs").orderByChild("type").equalTo(type)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            String avg = dataSnapshot.child("avgDailyPerCapita").getValue(String.class);
+                            String unit = dataSnapshot.child("unit").getValue(String.class);
+                            String tp = dataSnapshot.child("type").getValue(String.class);
+                            tip.setText("Do you know average generation/consumption per capital of "+tp+ " in Australia is"+avg+""+unit);
+                            tip.setVisibility(View.VISIBLE);
+
+                        }
+                        else{
+                            tip.setText("tip");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public void updatepoint(int point,String user){
