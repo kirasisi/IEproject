@@ -110,7 +110,7 @@ public class ChallengeFragment extends Fragment {
         Bundle bundle = new Bundle();
         boolean lastSignIn = bundle.getBoolean("signInDateCheck");
 
-        if(lastSignIn==true){
+        if(lastSignIn==false){
             changeChallenge();
         }
         else {

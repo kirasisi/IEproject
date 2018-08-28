@@ -109,13 +109,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void challengef(){
-        challengeFragment = new ChallengeFragment();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = new Date();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("signInDateCheck",checkSignIn(formatter.format(date)));
-        challengeFragment.setArguments(bundle);
-        loadFragment(challengeFragment);
+        getSignIn();
 
     }
 
@@ -279,16 +273,78 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public boolean checkSignIn(String siginDate){
+//        Long lastSignin = FirebaseAuth.getInstance().getCurrentUser().getMetadata().getLastSignInTimestamp();
+//        LocalDate date = Instant.ofEpochMilli(lastSignin * 1000).atZone(ZoneId.systemDefault()).toLocalDate();
+//        String ls = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+//        if(ls.equals(siginDate)){
+//            return true;
+//        }
+//        else {
+//            return false;
+//        }
+//    }
+    public void getSignIn(){
+
+       db = FirebaseDatabase.getInstance().getReference().child("Users");
+
+       db.equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        Date date = new Date();
+
+                        if(dataSnapshot.exists()){
+
+                            boolean same = checkSignIn(dataSnapshot.child("lastLoginDate").getValue(String.class));
+                            challengeFragment = new ChallengeFragment();
+
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean("signInDateCheck",same);
+                            challengeFragment.setArguments(bundle);
+                            loadFragment(challengeFragment);
+
+
+                        }
+                        else{
+                            challengeFragment = new ChallengeFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean("signInDateCheck",false);
+                            challengeFragment.setArguments(bundle);
+                            loadFragment(challengeFragment);
+                        }
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+
+
+    }
+
     public boolean checkSignIn(String siginDate){
-        Long lastSignin = FirebaseAuth.getInstance().getCurrentUser().getMetadata().getLastSignInTimestamp();
-        LocalDate date = Instant.ofEpochMilli(lastSignin * 1000).atZone(ZoneId.systemDefault()).toLocalDate();
-        String ls = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        if(ls.equals(siginDate)){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date DATE = new Date();
+        String nowDate = formatter.format(DATE);
+        if(siginDate==nowDate){
             return true;
         }
         else {
             return false;
         }
+
+
+    }
+
+    public boolean getCheckResult(boolean isSameDay){
+        return isSameDay;
     }
 
 

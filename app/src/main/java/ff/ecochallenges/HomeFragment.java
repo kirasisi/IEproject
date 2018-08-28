@@ -19,7 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -54,8 +56,11 @@ public class HomeFragment extends Fragment {
 
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                            Date DATE = new Date();
                             if(dataSnapshot.exists()){
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(point);
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
                             } else {
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
