@@ -309,7 +309,7 @@ public class ChallengeFragment extends Fragment {
                             }
 
                         }
-                        Log.i("COMPLETE",isCompleted.toString());
+//                        Log.i("COMPLETE",isCompleted.toString());
                         if(isCompleted.equals("true")){
                             completeBtn.setVisibility(View.GONE);
                             completeText.setVisibility(View.VISIBLE);
@@ -780,48 +780,55 @@ public class ChallengeFragment extends Fragment {
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         for(DataSnapshot snapshot : dataSnapshot.getChildren())
                         {
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                            Date DATE = new Date();
-                            Object last = dataSnapshot.child("lastLoginDate").getValue();
+                            try{
+                                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                                Date DATE = new Date();
+                                Object last = dataSnapshot.child("lastLoginDate").getValue();
 
-                            if(last.toString().equals(formatter.format(DATE))){
-                                fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
-                                keepChallenge();
-                            }
-                            else {
-
-                                fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isCompleted").setValue("false");
-                                fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
-                                Calendar sCalendar = Calendar.getInstance();
-                                String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
-                                date = sCalendar.get(Calendar.DATE);
-
-                                //check week day or weekend
-                                if (day.equals("Saturday")||day.equals("Sunday")){
-                                    Object currentChallenge = dataSnapshot.child("currentWeekendChallenge").getValue();
-                                    int current = Integer.parseInt(currentChallenge.toString());
-                                    if(current<4){
-                                        fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue(String.valueOf(current+1));
-                                    }
-                                    else{
-                                        fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue("1");
-                                    }
-
+                                if(last.toString().equals(formatter.format(DATE))){
+                                    fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
+                                    keepChallenge();
                                 }
                                 else {
-                                    Object currentChallenge = dataSnapshot.child("currentWeekdayChallenge").getValue();
-                                    int current = Integer.parseInt(currentChallenge.toString());
-                                    if(current<26){
-                                        fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue(String.valueOf(current+1));
+
+                                    fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isCompleted").setValue("false");
+                                    fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
+                                    Calendar sCalendar = Calendar.getInstance();
+                                    String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
+                                    date = sCalendar.get(Calendar.DATE);
+
+                                    //check week day or weekend
+                                    if (day.equals("Saturday")||day.equals("Sunday")){
+                                        Object currentChallenge = dataSnapshot.child("currentWeekendChallenge").getValue();
+                                        int current = Integer.parseInt(currentChallenge.toString());
+                                        if(current<4){
+                                            fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue(String.valueOf(current+1));
+                                        }
+                                        else{
+                                            fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue("1");
+                                        }
+
                                     }
                                     else {
-                                        fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("1");
+                                        Object currentChallenge = dataSnapshot.child("currentWeekdayChallenge").getValue();
+                                        int current = Integer.parseInt(currentChallenge.toString());
+                                        if(current<26){
+                                            fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue(String.valueOf(current+1));
+                                        }
+                                        else {
+                                            fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("1");
+                                        }
                                     }
+
+                                    changeChallenge();
+
                                 }
 
-                                changeChallenge();
+                            }
+                            catch (Exception e){
 
                             }
+
 
 
 

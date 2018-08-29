@@ -138,8 +138,17 @@ public class MainActivity extends AppCompatActivity {
         // Build a GoogleSignInClient with the options specified by gso.
         mAuth = FirebaseAuth.getInstance();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+
         signIn();
+        newFragment = new HomeFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
+
+        fragmentManager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
 
         //newFragment = new HomeFragment();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -152,11 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            newFragment = new HomeFragment();
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
-            fragmentManager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
+
 
 
 
@@ -192,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
     }

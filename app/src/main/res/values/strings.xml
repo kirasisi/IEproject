@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EcoChallenges</string>
+    <string name="app_name">EcoChallenge</string>
     <string name="title_home">Home</string>
     <string name="title_challenge">Challenge</string>
     <string name="title_garden">Garden</string>

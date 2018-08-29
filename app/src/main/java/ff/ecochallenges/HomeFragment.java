@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
                             Date DATE = new Date();
                             if(dataSnapshot.exists()){
 
-
+                               Log.i("TAG","already exist");
 
                             } else {
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
