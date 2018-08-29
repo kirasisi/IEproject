@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -150,10 +151,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
             newFragment = new HomeFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
             fragmentManager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
+
 
 
 
@@ -291,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
 
        db = FirebaseDatabase.getInstance().getReference().child("Users");
 
-       db.equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+       db.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
 
                     @Override

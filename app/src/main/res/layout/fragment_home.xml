@@ -25,7 +25,6 @@
         android:layout_marginStart="-30dp"
         android:layout_marginTop="160dp"
         android:fontFamily="@font/roboto_slab"
-        android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -46,9 +45,10 @@
         android:id="@+id/nutInHome"
         android:layout_width="40dp"
         android:layout_height="43dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="14dp"
-        android:layout_toEndOf="@+id/thisMonthAnime"
+
+        android:layout_alignBottom="@+id/pointYouHave"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="91dp"
         android:src="@drawable/acorn_296591_640" />
 
     <TextView

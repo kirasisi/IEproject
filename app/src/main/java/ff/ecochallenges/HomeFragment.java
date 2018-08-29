@@ -32,6 +32,8 @@ public class HomeFragment extends Fragment {
     private TextView uid;
     private DatabaseReference mDatabase;
     private int point=0;
+    private  TextView challengeCount;
+    private TextView nutsPoint;
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -45,11 +47,26 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        String uName = "";
+
         View vHome = inflater.inflate(R.layout.fragment_home, container, false);
         uid = (TextView)vHome.findViewById(R.id.uID);
-        final TextView challengeCount = (TextView)vHome.findViewById(R.id.challengeCount);
-        final TextView nutsPoint = (TextView)vHome.findViewById(R.id.pointYouHave);
+        challengeCount = (TextView)vHome.findViewById(R.id.challengeCount);
+        nutsPoint = (TextView)vHome.findViewById(R.id.pointYouHave);
+
+
+
+
+
+
+
+
+        return vHome;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        String uName = "";
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getActivity());
         if (account!=null){
             uName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
@@ -65,7 +82,7 @@ public class HomeFragment extends Fragment {
                             Date DATE = new Date();
                             if(dataSnapshot.exists()){
 
-                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
+
 
                             } else {
                                 mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -104,8 +121,15 @@ public class HomeFragment extends Fragment {
                         {
                             Object challenge = dataSnapshot.child("challengeFinished").getValue();
                             Object nuts = dataSnapshot.child("points").getValue();
-                            challengeCount.setText("You have done "+challenge.toString()+" challenge so far!");
-                            nutsPoint.setText(nuts.toString());
+                            try{
+                                challengeCount.setText("You have done "+challenge.toString()+" challenge so far!");
+                                nutsPoint.setText(nuts.toString());
+
+                            }
+                            catch (Exception e){
+                                Log.i("Exception","Null");
+                            }
+
 
                         }
                     }
@@ -142,18 +166,5 @@ public class HomeFragment extends Fragment {
 
 
         }
-
-
-
-
-
-
-
-        return vHome;
-    }
-    public void onAcitivityCreated(Bundle savedInstanceState){
-        super.onActivityCreated(savedInstanceState);
-
-
     }
 }
