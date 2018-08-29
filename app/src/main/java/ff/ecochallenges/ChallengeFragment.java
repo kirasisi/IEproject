@@ -66,6 +66,7 @@ public class ChallengeFragment extends Fragment {
     boolean completed = false;
     private TextView tip;
 
+
     public static ChallengeFragment newInstance() {
         ChallengeFragment fragment = new ChallengeFragment();
         return fragment;
@@ -111,11 +112,6 @@ public class ChallengeFragment extends Fragment {
 
 
         getSignIn();
-
-
-
-
-
 
         checkCompletion();
 
@@ -538,7 +534,7 @@ public class ChallengeFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String last = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").getValue(String.class);
-                    Log.i("lats",last);
+//                    Log.i("lats",last);
                     int current = Integer.parseInt(last);
                     todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekdayChallenges").child(String.valueOf(current));
                     //updateToday(last+1);
