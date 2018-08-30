@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "950852502394-tav6v8jtg72ules9pb4af7plm1cvp4t3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ff.ecochallenges",
+            "certificate_hash": "74ebb44b25047fc0ac7cfaef998471ae5f2a9db1"
+          }
+        },
+        {
           "client_id": "950852502394-ea9jn3chkvsqige35orca959u15ed61q.apps.googleusercontent.com",
           "client_type": 3
         }

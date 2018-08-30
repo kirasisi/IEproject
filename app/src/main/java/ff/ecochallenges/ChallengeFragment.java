@@ -126,8 +126,9 @@ public class ChallengeFragment extends Fragment {
                 saveChallengeResult();
                 completeBtn.setVisibility(getView().GONE);
                 //completeSign.setVisibility(getView().VISIBLE);
-                completeText.setText("Well Done");
-
+                completeText.setText("Well Done!");
+                updateCompeletion();
+                //checkCompletion(); //Tarek
                 displayNextChallenge();
 
                 check = true;
@@ -135,7 +136,7 @@ public class ChallengeFragment extends Fragment {
                 tip.setVisibility(View.VISIBLE);
                 instructContent.setVisibility(View.GONE);
                 cName.setVisibility(View.GONE);
-                updateCompeletion();
+                //updateCompeletion();
                 updatePoint();
 
 
@@ -227,13 +228,15 @@ public class ChallengeFragment extends Fragment {
     }
 
     public void updateCompeletion(){
+        completeSign.setVisibility(View.VISIBLE);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isCompleted").setValue("true");
-
+                        completed = true;
+                        checkCompletion();//Tarek
 
                     }
 
@@ -310,7 +313,8 @@ public class ChallengeFragment extends Fragment {
                             completeBtn.setVisibility(View.GONE);
                             completeText.setVisibility(View.VISIBLE);
                             completeText.setText("Well Done");
-                            nextChallenge.setVisibility(View.VISIBLE);
+                            //nextChallenge.setVisibility(View.VISIBLE);
+                            completeSign.setVisibility(View.VISIBLE);
                             tip.setVisibility(View.VISIBLE);
                             instructContent.setVisibility(View.GONE);
                             cName.setVisibility(View.GONE);
@@ -389,6 +393,7 @@ public class ChallengeFragment extends Fragment {
 
 
         }
+        nextChallenge.setVisibility(View.VISIBLE);
     }
 
 
@@ -396,6 +401,8 @@ public class ChallengeFragment extends Fragment {
         Calendar sCalendar = Calendar.getInstance();
         String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
         date = sCalendar.get(Calendar.DATE);
+        //Tarek
+
 
         //check week day or weekend
         if (day.equals("Saturday")||day.equals("Sunday")){
@@ -585,7 +592,18 @@ public class ChallengeFragment extends Fragment {
                 String type1 = dataSnapshot.child("type").getValue(String.class);
                 updateTips(type1);
 
-
+//                //Tarek
+//                if (!completed)
+//                {
+//                    completeBtn.setVisibility(View.VISIBLE);
+//                    completeSign.setVisibility(View.GONE);
+//                    completeText.setVisibility(View.GONE);
+//                    tip.setVisibility(View.GONE);
+//                    nextChallenge.setVisibility(View.GONE);
+//                    instructContent.setVisibility(View.VISIBLE);
+//                    cName.setVisibility(View.VISIBLE);
+//
+//                }
             }
 
             @Override
@@ -618,7 +636,7 @@ public class ChallengeFragment extends Fragment {
                                 Object avg = dataSnapshot.child("avgDailyPerCapita").getValue();
                                 Object type = dataSnapshot.child("type").getValue();
                                 Object unit = dataSnapshot.child("unit").getValue();
-                                tip.setText("Average generation/consumption per capital of "+type+ " in Australia is "+String.valueOf(avg)+" "+unit);
+                                tip.setText("The average generation/consumption per capita of "+type+ " in Australia is "+String.valueOf(avg)+" "+unit);
 
 
                             }
@@ -789,6 +807,7 @@ public class ChallengeFragment extends Fragment {
                                 else {
 
                                     fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isCompleted").setValue("false");
+                                    completed = false; //Tarek
                                     fdb.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
                                     Calendar sCalendar = Calendar.getInstance();
                                     String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week

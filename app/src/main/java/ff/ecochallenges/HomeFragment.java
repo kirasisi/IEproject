@@ -64,47 +64,57 @@ public class HomeFragment extends Fragment {
                 Log.i("INFO","User not yet setted");
             }
 
-//            mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-//
-//            mDatabase.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail())
-//                    .addListenerForSingleValueEvent(new ValueEventListener() {
-//
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-//                            Date DATE = new Date();
-//                            if(dataSnapshot.exists()){
-//
-//                                Log.i("TAG","already exist");
-//
-//                            } else {
-//                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-//                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-//                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("points").setValue(point);
-//                                Calendar sCalendar = Calendar.getInstance();
-//                                String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
-//                                int date = sCalendar.get(Calendar.DATE);
-//                                if (day.equals("Saturday")||day.equals("Sunday")){
-//                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue("1");
-//                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("0");
-//                                }
-//                                else{
-//                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("1");
-//                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue("0");
-//                                }
-//                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isCompleted").setValue("false");
-//                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
-//                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("challengeFinished").setValue("0");
-//
-//
-//                            }
-//
-//                        }
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError databaseError) {
-//                        }
-//                    });
+            mDatabase.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                            Date DATE = new Date();
+                            if(dataSnapshot.exists()){
+
+                                Log.i("TAG","already exist");
+//                                Object challenge = dataSnapshot.child("challengeFinished").getValue();
+//                                Object nuts = dataSnapshot.child("points").getValue();
+//                                challengeCount.setText("You have done "+challenge.toString()+" challenge so far!");
+//                                nutsPoint.setText(nuts.toString());
+
+                            } else {
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("points").setValue(point);
+                                Calendar sCalendar = Calendar.getInstance();
+                                String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
+                                int date = sCalendar.get(Calendar.DATE);
+                                if (day.equals("Saturday")||day.equals("Sunday")){
+                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue("1");
+                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("0");
+                                }
+                                else{
+                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("1");
+                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue("0");
+                                }
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isCompleted").setValue("false");
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("challengeFinished").setValue("0");
+
+                                challengeCount.setText("You have done 0 challenges so far!");
+                                nutsPoint.setText("0");
+                            }
+
+
+
+
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
 
             try{
                 mDatabase.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail()).addChildEventListener(new ChildEventListener() {

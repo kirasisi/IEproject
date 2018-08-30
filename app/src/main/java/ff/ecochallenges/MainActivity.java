@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView mStatusTextView;
     private FirebaseAuth mAuth;
     private DatabaseReference db;
-    private DatabaseReference mDatabase;
     private int point=0;
 
 
@@ -147,64 +146,19 @@ public class MainActivity extends AppCompatActivity {
         signIn();
 
 
-        String uName = "";
-
-        if (account!=null){
-            uName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-
-            mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-
-            mDatabase.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail())
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                            Date DATE = new Date();
-                            if(dataSnapshot.exists()){
-
-                                Log.i("TAG","already exist");
-
-                            } else {
-                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("points").setValue(point);
-                                Calendar sCalendar = Calendar.getInstance();
-                                String day = sCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());//get the day of week
-                                int date = sCalendar.get(Calendar.DATE);
-                                if (day.equals("Saturday")||day.equals("Sunday")){
-                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue("1");
-                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("0");
-                                }
-                                else{
-                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("1");
-                                    mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekendChallenge").setValue("0");
-                                }
-                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isCompleted").setValue("false");
-                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastLoginDate").setValue(formatter.format(DATE));
-                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("challengeFinished").setValue("0");
 
 
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    });}
-
-        newFragment = new HomeFragment();
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
-
-        fragmentManager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
-
-        //newFragment = new HomeFragment();
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        newFragment = new HomeFragment();
+//        FragmentManager manager = getSupportFragmentManager();
+//        manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
+//
+//        fragmentManager = getSupportFragmentManager();
+//        manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
+//
+//        //newFragment = new HomeFragment();
+//        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+//
+//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
 
@@ -273,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
                 // [END_EXCLUDE]
             }
         }
+
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -337,6 +292,17 @@ public class MainActivity extends AppCompatActivity {
                             Snackbar.make(findViewById(R.id.frame_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
 
                         }
+                        newFragment = new HomeFragment();
+                        FragmentManager manager = getSupportFragmentManager();
+                        manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
+
+                        fragmentManager = getSupportFragmentManager();
+                        manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
+
+                        //newFragment = new HomeFragment();
+                        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
+                        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
                     }
                 });
