@@ -418,12 +418,13 @@ public class ChallengeFragment extends Fragment {
 
                             updateChallengeUI();
                             setStamp(current+1);
-//                            completeBtn.setVisibility(View.VISIBLE);
-//                            completeText.setVisibility(View.GONE);
-//                            nextChallenge.setVisibility(View.GONE);
-//                            tip.setVisibility(View.GONE);
-//                            instructContent.setVisibility(View.VISIBLE);
-//                            cName.setVisibility(View.VISIBLE);
+                            completeBtn.setVisibility(View.VISIBLE);
+                            completeText.setVisibility(View.GONE);
+                            nextChallenge.setVisibility(View.GONE);
+                            tip.setVisibility(View.GONE);
+                            instructContent.setVisibility(View.VISIBLE);
+                            cName.setVisibility(View.VISIBLE);
+                            completeSign.setVisibility(View.GONE);
 
                         }
                         else{
@@ -431,12 +432,13 @@ public class ChallengeFragment extends Fragment {
 
                             updateChallengeUI();
                             setStamp(1);
-//                            completeBtn.setVisibility(View.VISIBLE);
-//                            completeText.setVisibility(View.GONE);
-//                            nextChallenge.setVisibility(View.GONE);
-//                            tip.setVisibility(View.GONE);
-//                            instructContent.setVisibility(View.VISIBLE);
-//                            cName.setVisibility(View.VISIBLE);
+                            completeBtn.setVisibility(View.VISIBLE);
+                            completeText.setVisibility(View.GONE);
+                            nextChallenge.setVisibility(View.GONE);
+                            tip.setVisibility(View.GONE);
+                            instructContent.setVisibility(View.VISIBLE);
+                            cName.setVisibility(View.VISIBLE);
+                            completeSign.setVisibility(View.GONE);
 
                         }
                     }
@@ -467,12 +469,13 @@ public class ChallengeFragment extends Fragment {
 
                             updateChallengeUI();
                             setStamp(current+1);
-//                            completeBtn.setVisibility(View.VISIBLE);
-//                            completeText.setVisibility(View.GONE);
-//                            nextChallenge.setVisibility(View.GONE);
-//                            tip.setVisibility(View.GONE);
-//                            instructContent.setVisibility(View.VISIBLE);
-//                            cName.setVisibility(View.VISIBLE);
+                            completeBtn.setVisibility(View.VISIBLE);
+                            completeText.setVisibility(View.GONE);
+                            nextChallenge.setVisibility(View.GONE);
+                            tip.setVisibility(View.GONE);
+                            instructContent.setVisibility(View.VISIBLE);
+                            cName.setVisibility(View.VISIBLE);
+                            completeSign.setVisibility(View.GONE);
                             //mDatabase2.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue(String.valueOf(current+1));
 
                         }
@@ -481,12 +484,13 @@ public class ChallengeFragment extends Fragment {
 
                             updateChallengeUI();
                             setStamp(1);
-//                            completeBtn.setVisibility(View.VISIBLE);
-//                            completeText.setVisibility(View.GONE);
-//                            nextChallenge.setVisibility(View.GONE);
-//                            tip.setVisibility(View.GONE);
-//                            instructContent.setVisibility(View.VISIBLE);
-//                            cName.setVisibility(View.VISIBLE);
+                            completeBtn.setVisibility(View.VISIBLE);
+                            completeText.setVisibility(View.GONE);
+                            nextChallenge.setVisibility(View.GONE);
+                            tip.setVisibility(View.GONE);
+                            instructContent.setVisibility(View.VISIBLE);
+                            cName.setVisibility(View.VISIBLE);
+                            completeSign.setVisibility(View.GONE);
                             //mDatabase2.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("currentWeekdayChallenge").setValue("1");
                         }
 
