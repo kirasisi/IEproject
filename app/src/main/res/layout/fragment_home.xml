@@ -8,73 +8,76 @@
     android:id="@+id/homefragment">
 
     <ImageView
-        android:id="@+id/homeBG"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/homebg" />
+        android:id="@+id/mainLogo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/applogo2"/>
 
     <TextView
         android:id="@+id/challengeCount"
-        android:layout_width="339dp"
-        android:layout_height="70dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/LastNumber"
-        android:layout_marginStart="-30dp"
-        android:layout_marginTop="160dp"
-        android:fontFamily="@font/roboto_slab"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/pointYouHave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="42dp"
-        android:layout_marginTop="23dp"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/nutInHome"
-        android:layout_width="40dp"
-        android:layout_height="43dp"
-
-        android:layout_alignBottom="@+id/pointYouHave"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="91dp"
-        android:src="@drawable/acorn_296591_640" />
-
-    <TextView
-        android:id="@+id/uID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/welcome"
-        android:layout_toEndOf="@+id/welcome"
+        android:layout_marginTop="200dp"
+        android:layout_centerHorizontal="true"
         android:fontFamily="@font/roboto_slab"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textAlignment="center"/>
 
-    <TextView
-        android:id="@+id/welcome"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="67dp"
-        android:fontFamily="@font/roboto_slab"
-        android:text="Welcome, "
-        android:textColor="@color/fui_bgGoogle"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="140dp">
+
+        <ImageView
+            android:id="@+id/nutInHome"
+            android:layout_width="33dp"
+            android:layout_height="30dp"
+
+            android:src="@drawable/acorn_296591_640" />
+        <TextView
+            android:id="@+id/pointYouHave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp">
+
+        <TextView
+            android:id="@+id/uID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/welcome"
+            android:layout_toEndOf="@+id/welcome"
+            android:fontFamily="@font/roboto_slab"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:fontFamily="@font/roboto_slab"
+            android:text="Welcome, "
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/thisMonthAnime"

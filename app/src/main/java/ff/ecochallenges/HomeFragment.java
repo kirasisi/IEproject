@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment {
         if (account!=null){
             uName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
             try{
-                uid.setText(uName);
+                uid.setText(uName.split(" ")[0]);
             }catch (Exception e){
                 Log.i("INFO","User not yet setted");
             }
@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
                             Object challenge = dataSnapshot.child("challengeFinished").getValue();
                             Object nuts = dataSnapshot.child("points").getValue();
                             try{
-                                challengeCount.setText("You have done "+challenge.toString()+" challenge so far!");
+                                challengeCount.setText("You have done "+challenge.toString()+" challenge(s) so far!");
                                 nutsPoint.setText(nuts.toString());
 
                             }

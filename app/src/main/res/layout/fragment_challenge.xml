@@ -8,16 +8,6 @@
     android:id="@+id/challengefragment">
 
 
-
-    <ImageView
-        android:id="@+id/challengeBG"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/homebg" />
-
     <ImageView
         android:id="@+id/challengePic"
         android:layout_width="397dp"
@@ -41,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="74dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/roboto_slab"
         android:gravity="center_vertical"
         android:text="Today's Challenge"
@@ -49,26 +39,31 @@
         android:textSize="36sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/points"
+    <RelativeLayout
+        android:id="@+id/worthNuts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="208dp"
-        android:fontFamily="@font/roboto_slab"
-        android:gravity="center_vertical"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_below="@id/cName"
+        android:paddingTop="10dp">
+        <TextView
+            android:id="@+id/points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:fontFamily="@font/roboto_slab"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/nut"
-        android:layout_width="36dp"
-        android:layout_height="39dp"
-        android:layout_marginLeft="120dp"
-        android:layout_alignTop="@+id/points"
-        android:src="@drawable/acorn_296591_640" />
+        <ImageView
+            android:id="@+id/nut"
+            android:layout_width="36dp"
+            android:layout_height="39dp"
+            android:layout_alignTop="@+id/points"
+            android:src="@drawable/acorn_296591_640" />
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/insContent"
@@ -81,7 +76,7 @@
         android:gravity="center_vertical"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="28sp" />
+        android:textSize="22sp" />
 
     <Button
         android:id="@+id/c_complete"
@@ -105,7 +100,7 @@
         android:id="@+id/completeIcon"
         android:layout_width="56dp"
         android:layout_height="58dp"
-        android:layout_below="@+id/TodaysChallenge"
+        android:layout_below="@+id/worthNuts"
         android:layout_centerHorizontal="true"
         android:src="@drawable/checkmark" />
 
@@ -137,7 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="154dp"
+        android:layout_marginTop="110dp"
         android:fontFamily="@font/roboto_slab"
         android:gravity="center_vertical"
         android:textAlignment="center"
@@ -149,8 +144,10 @@
         android:id="@+id/tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:fontFamily="@font/abeezee"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/completeText"
+        android:paddingTop="20dp"
+        android:fontFamily="@font/roboto_slab"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="24sp"

@@ -135,7 +135,7 @@ public class ChallengeFragment extends Fragment {
                 Bundle b = new Bundle();
                 tip.setVisibility(View.VISIBLE);
                 instructContent.setVisibility(View.GONE);
-                cName.setVisibility(View.GONE);
+                //cName.setVisibility(View.GONE);
                 //updateCompeletion();
                 updatePoint();
 
@@ -317,7 +317,7 @@ public class ChallengeFragment extends Fragment {
                             completeSign.setVisibility(View.VISIBLE);
                             tip.setVisibility(View.VISIBLE);
                             instructContent.setVisibility(View.GONE);
-                            cName.setVisibility(View.GONE);
+                            //cName.setVisibility(View.GONE);
                             setStamp(Integer.parseInt(stamp.toString())+1);
 
                             Log.i("STAMP",String.valueOf(getStamp()));
@@ -380,7 +380,7 @@ public class ChallengeFragment extends Fragment {
 
                     String name = dataSnapshot.child("cName").getValue(String.class);
 
-                    nextChallenge.setText("Next Challenge: "+name);
+                    nextChallenge.setText("Tomorrow's challenge: "+name);
                     //nextChallenge.setVisibility(View.VISIBLE);
 
                 }
@@ -582,6 +582,7 @@ public class ChallengeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 urlImage = dataSnapshot.child("cPic").getValue(String.class);
+                cPic.setAlpha(0.5f);
                 Glide.with(getActivity().getApplicationContext())
                         .load(urlImage)
                         .into(cPic);
