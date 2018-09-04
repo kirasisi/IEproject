@@ -2,6 +2,7 @@ package ff.ecochallenges;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,14 +23,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
+
 public class HomeFragment extends Fragment {
     private TextView uid;
     private DatabaseReference mDatabase;
+    private DatabaseReference counterData;
     private int point = 0;
     private TextView challengeCount;
     private TextView nutsPoint;
+    private TextView currentMonthTotal;
     private SharedPreferences myPreferences;
     private String userUID = null;
+    private Handler repeatUpdateHandler = new Handler();
+    private int currentWasteTotal;
+    private int currentWasteIncrement;
+    private String counterSearchKey;
 
 
     public static HomeFragment newInstance() {
@@ -52,6 +62,7 @@ public class HomeFragment extends Fragment {
         uid = (TextView) vHome.findViewById(R.id.uID);
         challengeCount = (TextView) vHome.findViewById(R.id.challengeCount);
         nutsPoint = (TextView) vHome.findViewById(R.id.pointYouHave);
+        currentMonthTotal = vHome.findViewById(R.id.currentMonthTotal);
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -129,11 +140,50 @@ public class HomeFragment extends Fragment {
             Log.i("Notice", "New user");
         }
 
+        //Begin setting up counter
+
+        counterData = FirebaseDatabase.getInstance().getReference().child("WasteTotalsHistory");
+        Calendar counterCal = Calendar.getInstance();
+        int currentMonth = counterCal.get(MONTH); // zero-based
+        int currentYear = counterCal.get(YEAR);
+        if (currentMonth == 0)
+            counterSearchKey = "12-"+(currentYear-1);
+        else
+            counterSearchKey = currentMonth+"-"+currentYear;
+        //Check previous month's total
+        counterData.orderByKey().equalTo(counterSearchKey)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        int lastTotal = dataSnapshot.child(counterSearchKey).child("total").getValue(Integer.class);
+                        //FIX THIS currentWasteIncrement = ((lastTotal/30)/86400000)*50;
+                        currentWasteIncrement = 1;
+                    }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+        currentWasteTotal = 0;
+        currentMonthTotal.setText(currentWasteTotal+" tonnes");
+        repeatUpdateHandler.post( new RptUpdater() );
+
         return vHome;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+    }
+
+    class RptUpdater implements Runnable {
+        public void run() {
+            currentWasteTotal += currentWasteIncrement;
+            currentMonthTotal.setText(currentWasteTotal+" tonnes");
+            repeatUpdateHandler.postDelayed( new RptUpdater(), 50 );
+        }
     }
 }

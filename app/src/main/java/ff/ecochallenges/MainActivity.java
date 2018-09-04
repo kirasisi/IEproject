@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference db;
     private SharedPreferences myPreferences;
+
 
 
     Fragment newFragment = null;
@@ -70,12 +72,12 @@ public class MainActivity extends AppCompatActivity {
         try {
             getSignIn();
         } catch (Exception e) {
-            Context context = getApplicationContext();
-            CharSequence text = "Please Sign in with Google";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+//            Context context = getApplicationContext();
+//            CharSequence text = "Please Sign in with Google";
+//            int duration = Toast.LENGTH_SHORT;
+//
+//            Toast toast = Toast.makeText(context, text, duration);
+//            toast.show();
         }
     }
 
@@ -158,3 +160,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+
+
