@@ -18,14 +18,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
 public class HomeFragment extends Fragment {
@@ -145,10 +142,7 @@ public class HomeFragment extends Fragment {
         }
 
         //Begin setting up counter
-
         counterData = FirebaseDatabase.getInstance().getReference().child("ODWasteCounterTotals");
-        //Calendar currentCal = Calendar.getInstance();
-        //Calendar yearStart = Calendar.getInstance();
         yearStart.set(currentCal.get(YEAR),0,1,0,0,0);
         counterSearchKey = currentCal.get(YEAR);
         //Check predicted total
@@ -186,9 +180,6 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-        //long test = (currentCal.getTimeInMillis() - yearStart.getTimeInMillis());
-
-
         return vHome;
     }
 
