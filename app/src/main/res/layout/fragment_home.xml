@@ -107,6 +107,14 @@
         android:layout_marginEnd="49dp"
         android:textSize="18sp" />
 
+    <TextView
+        android:id="@+id/currentMonthTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="122dp"
+        android:textSize="30sp"/>
 
 
 </RelativeLayout>
