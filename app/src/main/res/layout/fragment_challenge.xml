@@ -58,8 +58,8 @@
 
         <ImageView
             android:id="@+id/nut"
-            android:layout_width="36dp"
-            android:layout_height="39dp"
+            android:layout_width="28dp"
+            android:layout_height="26dp"
             android:layout_alignTop="@+id/points"
             android:src="@drawable/acorn_296591_640" />
     </RelativeLayout>
@@ -102,7 +102,7 @@
         android:layout_height="58dp"
         android:layout_below="@+id/worthNuts"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/checkmark" />
+        android:src="@drawable/if_check_1055094" />
 
     <TextView
         android:id="@+id/completeText"
@@ -151,6 +151,28 @@
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/toOpenPopUp"
+        android:layout_width="56dp"
+        android:layout_height="63dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="161dp"
+        android:layout_marginEnd="140dp"
+        android:src="@drawable/data" />
+
+    <TextView
+        android:id="@+id/forPopUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="173dp"
+        android:layout_toStartOf="@+id/toOpenPopUp"
+        android:fontFamily="@font/roboto_slab"
+        android:text="Find out more >"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
 </RelativeLayout>

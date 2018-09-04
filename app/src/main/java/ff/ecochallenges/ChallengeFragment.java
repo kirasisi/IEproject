@@ -1,6 +1,7 @@
 package ff.ecochallenges;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -8,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,7 @@ public class ChallengeFragment extends Fragment {
     boolean completed = false;
     private TextView tip;
     private String userUID = null;
+    private ImageView openPop;
 
 
     public static ChallengeFragment newInstance() {
@@ -85,9 +88,21 @@ public class ChallengeFragment extends Fragment {
         nextChallenge.setVisibility(View.GONE);
         tip = vChallenge.findViewById(R.id.tips);
         tip.setVisibility(View.GONE);
+        openPop = (ImageView) vChallenge.findViewById(R.id.toOpenPopUp);
+
 
         getSignIn();
         checkCompletion();
+
+        openPop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(),popChart.class);
+                startActivity(intent);
+
+            }
+        });
 
         completeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
