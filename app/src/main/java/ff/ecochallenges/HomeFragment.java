@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,9 +39,11 @@ public class HomeFragment extends Fragment {
     private SharedPreferences myPreferences;
     private String userUID = null;
     private Handler repeatUpdateHandler = new Handler();
-    private int currentWasteTotal;
-    private int currentWasteIncrement;
-    private String counterSearchKey;
+    private double currentWasteTotal;
+    private double currentWasteIncrement;
+    private int counterSearchKey;
+    Calendar currentCal = Calendar.getInstance();
+    Calendar yearStart = Calendar.getInstance();
 
 
     public static HomeFragment newInstance() {
@@ -142,34 +146,48 @@ public class HomeFragment extends Fragment {
 
         //Begin setting up counter
 
-        counterData = FirebaseDatabase.getInstance().getReference().child("WasteTotalsHistory");
-        Calendar counterCal = Calendar.getInstance();
-        int currentMonth = counterCal.get(MONTH); // zero-based
-        int currentYear = counterCal.get(YEAR);
-        if (currentMonth == 0)
-            counterSearchKey = "12-"+(currentYear-1);
-        else
-            counterSearchKey = currentMonth+"-"+currentYear;
-        //Check previous month's total
-        counterData.orderByKey().equalTo(counterSearchKey)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        counterData = FirebaseDatabase.getInstance().getReference().child("ODWasteCounterTotals");
+        //Calendar currentCal = Calendar.getInstance();
+        //Calendar yearStart = Calendar.getInstance();
+        yearStart.set(currentCal.get(YEAR),0,1,0,0,0);
+        counterSearchKey = currentCal.get(YEAR);
+        //Check predicted total
+        counterData.orderByChild("year").equalTo(counterSearchKey)
+                .addChildEventListener(new ChildEventListener() {
+
 
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        int lastTotal = dataSnapshot.child(counterSearchKey).child("total").getValue(Integer.class);
-                        //FIX THIS currentWasteIncrement = ((lastTotal/30)/86400000)*50;
-                        currentWasteIncrement = 1;
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        double predictedTotal = dataSnapshot.child("totalGenerated").getValue(Double.class);
+                        currentWasteIncrement = (((predictedTotal/365)/86400000)*50);
+                        currentWasteTotal = ((currentCal.getTimeInMillis() - yearStart.getTimeInMillis())/50*currentWasteIncrement);
+                        DecimalFormat df = new DecimalFormat("#.##");
+                        currentMonthTotal.setText(df.format(currentWasteTotal)+" tonnes");
+                        repeatUpdateHandler.post( new RptUpdater() );
                     }
 
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });
-        currentWasteTotal = 0;
-        currentMonthTotal.setText(currentWasteTotal+" tonnes");
-        repeatUpdateHandler.post( new RptUpdater() );
+        //long test = (currentCal.getTimeInMillis() - yearStart.getTimeInMillis());
+
 
         return vHome;
     }
@@ -182,7 +200,8 @@ public class HomeFragment extends Fragment {
     class RptUpdater implements Runnable {
         public void run() {
             currentWasteTotal += currentWasteIncrement;
-            currentMonthTotal.setText(currentWasteTotal+" tonnes");
+            DecimalFormat df = new DecimalFormat("#.##");
+            currentMonthTotal.setText(df.format(currentWasteTotal)+" tonnes");
             repeatUpdateHandler.postDelayed( new RptUpdater(), 50 );
         }
     }
