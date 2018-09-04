@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -38,6 +39,7 @@ public class popChart extends Activity {
         setContentView(R.layout.activity_pop_chart);
         closeBtn = (ImageView)findViewById(R.id.closeIcon);
         final Spinner yearSelect = (Spinner)findViewById(R.id.selectYear);
+        piechart = findViewById(R.id.pieC);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.yearOfChart,android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSelect.setAdapter(adapter);
@@ -117,13 +119,13 @@ public class popChart extends Activity {
     public void setPie(double glassTotal,double metalTotal,double organicToal,double paperTotal,double plasticTotal, double rubberTotal, double textTotal){
         piechart.setHoleColor(Color.WHITE);
         ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry((float)glassTotal,"Glass"));
         entries.add(new PieEntry((float)metalTotal,"Metal"));
+        entries.add(new PieEntry((float)glassTotal,"Glass"));
         entries.add(new PieEntry((float)organicToal,"Organic"));
         entries.add(new PieEntry((float)paperTotal,"Paper"));
         entries.add(new PieEntry((float)plasticTotal,"Plastic"));
-        entries.add(new PieEntry((float)rubberTotal,"Rubber"));
-        entries.add(new PieEntry((float)textTotal,"Textile"));
+
+
         PieDataSet dataSet = new PieDataSet(entries,"");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setValueTextSize(20);
@@ -132,6 +134,12 @@ public class popChart extends Activity {
         piechart.getDescription().setText("Annually Generated Waste in Victoria");
         piechart.setData(pieData);
         piechart.invalidate();
+//        Legend l = piechart.getLegend();
+//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+//        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+//        l.setDrawInside(false);
+//        l.setEnabled(false);
 
     }
 }
