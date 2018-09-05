@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -32,7 +33,10 @@ public class HomeFragment extends Fragment {
     private int point = 0;
     private TextView challengeCount;
     private TextView nutsPoint;
-    private TextView currentMonthTotal;
+    private TextView currentYearTotal;
+    private TextView previousYearTotal;
+    private TextView nextYearTotal;
+    private ProgressBar homeProgressBar;
     private SharedPreferences myPreferences;
     private String userUID = null;
     private Handler repeatUpdateHandler = new Handler();
@@ -63,7 +67,10 @@ public class HomeFragment extends Fragment {
         uid = (TextView) vHome.findViewById(R.id.uID);
         challengeCount = (TextView) vHome.findViewById(R.id.challengeCount);
         nutsPoint = (TextView) vHome.findViewById(R.id.pointYouHave);
-        currentMonthTotal = vHome.findViewById(R.id.currentMonthTotal);
+        currentYearTotal = vHome.findViewById(R.id.currentYearTotal);
+        previousYearTotal = vHome.findViewById(R.id.previousYearTotal);
+        nextYearTotal = vHome.findViewById(R.id.nextYearTotal);
+        homeProgressBar = vHome.findViewById(R.id.homeProgressBar);
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -153,11 +160,79 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         double predictedTotal = dataSnapshot.child("totalGenerated").getValue(Double.class);
-                        currentWasteIncrement = (((predictedTotal/365)/86400000)*50);
-                        currentWasteTotal = ((currentCal.getTimeInMillis() - yearStart.getTimeInMillis())/50*currentWasteIncrement);
-                        DecimalFormat df = new DecimalFormat("#.##");
-                        currentMonthTotal.setText(df.format(currentWasteTotal)+" tonnes");
+                        currentWasteIncrement = (((predictedTotal/365)/86400000)*250);
+                        currentWasteTotal = (((currentCal.getTimeInMillis() - yearStart.getTimeInMillis())/250)*currentWasteIncrement);
+                        DecimalFormat df = new DecimalFormat("#");
+                        currentYearTotal.setText(df.format(currentWasteTotal)+" tonnes");
                         repeatUpdateHandler.post( new RptUpdater() );
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+        //Check previous total
+        counterData.orderByChild("year").equalTo(counterSearchKey-1)
+                .addChildEventListener(new ChildEventListener() {
+
+
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        double previousTotal = dataSnapshot.child("totalGenerated").getValue(Double.class);
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(10);
+                        previousYearTotal.setText("Last year:\n"+df.format(previousTotal)+"");
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+        //Check next year total
+        counterData.orderByChild("year").equalTo(counterSearchKey+1)
+                .addChildEventListener(new ChildEventListener() {
+
+
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        double nextTotal = dataSnapshot.child("totalGenerated").getValue(Double.class);
+                        DecimalFormat df = new DecimalFormat("#");
+                        df.setMaximumFractionDigits(10);
+                        nextYearTotal.setText("Next year:\n"+df.format(nextTotal)+"");
+                        //Finished loading page, stop load animation
+                        homeProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -191,9 +266,9 @@ public class HomeFragment extends Fragment {
     class RptUpdater implements Runnable {
         public void run() {
             currentWasteTotal += currentWasteIncrement;
-            DecimalFormat df = new DecimalFormat("#.##");
-            currentMonthTotal.setText(df.format(currentWasteTotal)+" tonnes");
-            repeatUpdateHandler.postDelayed( new RptUpdater(), 50 );
+            DecimalFormat df = new DecimalFormat("#");
+            currentYearTotal.setText(df.format(currentWasteTotal)+" tonnes");
+            repeatUpdateHandler.postDelayed( new RptUpdater(), 250 );
         }
     }
 }
