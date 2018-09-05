@@ -113,9 +113,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="110dp"
+        android:layout_marginBottom="100dp"
         android:textSize="30sp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        android:textAlignment="center"/>
     <TextView
         android:id="@+id/previousYearTotal"
         android:layout_width="wrap_content"
@@ -123,7 +124,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="25dp"
         android:layout_marginBottom="250dp"
-        android:textSize="14sp"/>
+        android:textSize="14sp"
+        android:textAlignment="center"/>
     <TextView
         android:id="@+id/nextYearTotal"
         android:layout_width="wrap_content"
@@ -132,7 +134,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="250dp"
-        android:textSize="14sp"/>
+        android:textSize="14sp"
+        android:textAlignment="center"/>
 
     <ProgressBar
         android:id="@+id/homeProgressBar"

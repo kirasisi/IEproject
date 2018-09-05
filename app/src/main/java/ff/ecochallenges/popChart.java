@@ -131,7 +131,7 @@ public class popChart extends Activity {
         dataSet.setValueTextSize(20);
         dataSet.setValueTextColor(Color.WHITE);
         PieData pieData = new PieData(dataSet);
-        piechart.getDescription().setText("Annually Generated Waste in Victoria");
+        piechart.getDescription().setText("Annually Generated Waste in tonnes, Victoria");
         piechart.setData(pieData);
         piechart.invalidate();
 //        Legend l = piechart.getLegend();

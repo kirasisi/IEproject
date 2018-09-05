@@ -163,7 +163,7 @@ public class HomeFragment extends Fragment {
                         currentWasteIncrement = (((predictedTotal/365)/86400000)*250);
                         currentWasteTotal = (((currentCal.getTimeInMillis() - yearStart.getTimeInMillis())/250)*currentWasteIncrement);
                         DecimalFormat df = new DecimalFormat("#");
-                        currentYearTotal.setText(df.format(currentWasteTotal)+" tonnes");
+                        currentYearTotal.setText(df.format(currentWasteTotal)+"\ntonnes");
                         repeatUpdateHandler.post( new RptUpdater() );
                     }
 
@@ -267,7 +267,7 @@ public class HomeFragment extends Fragment {
         public void run() {
             currentWasteTotal += currentWasteIncrement;
             DecimalFormat df = new DecimalFormat("#");
-            currentYearTotal.setText(df.format(currentWasteTotal)+" tonnes");
+            currentYearTotal.setText(df.format(currentWasteTotal)+"\ntonnes");
             repeatUpdateHandler.postDelayed( new RptUpdater(), 250 );
         }
     }

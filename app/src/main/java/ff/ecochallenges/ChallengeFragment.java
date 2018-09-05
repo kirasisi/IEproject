@@ -504,7 +504,7 @@ public class ChallengeFragment extends Fragment {
                             Object avg = dataSnapshot.child("avgDailyPerCapita").getValue();
                             Object type = dataSnapshot.child("type").getValue();
                             Object unit = dataSnapshot.child("unit").getValue();
-                            tip.setText("The average generation/consumption per capita of " + type + " in Australia is " + String.valueOf(avg) + " " + unit);
+                            tip.setText("The daily average generation per capita of " + type + " waste in Australia is " + String.valueOf(avg) + " " + unit);
                         } else {
                             tip.setText("tip");
                         }
