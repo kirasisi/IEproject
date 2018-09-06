@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.john.waveview.WaveView;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,7 +44,10 @@ public class HomeFragment extends Fragment {
     private Handler repeatUpdateHandler = new Handler();
     private double currentWasteTotal;
     private double currentWasteIncrement;
+    private double predictedTotal;
     private int counterSearchKey;
+    private WaveView wasteAnimation;
+
     Calendar currentCal = Calendar.getInstance();
     Calendar yearStart = Calendar.getInstance();
 
@@ -71,6 +76,7 @@ public class HomeFragment extends Fragment {
         previousYearTotal = vHome.findViewById(R.id.previousYearTotal);
         nextYearTotal = vHome.findViewById(R.id.nextYearTotal);
         homeProgressBar = vHome.findViewById(R.id.homeProgressBar);
+        wasteAnimation = vHome.findViewById(R.id.waveProgress);
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -159,11 +165,12 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        double predictedTotal = dataSnapshot.child("totalGenerated").getValue(Double.class);
+                        predictedTotal = dataSnapshot.child("totalGenerated").getValue(Double.class);
                         currentWasteIncrement = (((predictedTotal/365)/86400000)*250);
                         currentWasteTotal = (((currentCal.getTimeInMillis() - yearStart.getTimeInMillis())/250)*currentWasteIncrement);
-                        DecimalFormat df = new DecimalFormat("#");
+                        DecimalFormat df = new DecimalFormat("#,###");
                         currentYearTotal.setText(df.format(currentWasteTotal)+"\ntonnes");
+                        wasteAnimation.setProgress((int) (Math.round((currentWasteTotal/predictedTotal)*100)));
                         repeatUpdateHandler.post( new RptUpdater() );
                     }
 
@@ -195,7 +202,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         double previousTotal = dataSnapshot.child("totalGenerated").getValue(Double.class);
-                        DecimalFormat df = new DecimalFormat("#");
+                        DecimalFormat df = new DecimalFormat("#,###");
                         df.setMaximumFractionDigits(10);
                         previousYearTotal.setText("Last year:\n"+df.format(previousTotal)+"");
                     }
@@ -228,7 +235,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         double nextTotal = dataSnapshot.child("totalGenerated").getValue(Double.class);
-                        DecimalFormat df = new DecimalFormat("#");
+                        DecimalFormat df = new DecimalFormat("#,###");
                         df.setMaximumFractionDigits(10);
                         nextYearTotal.setText("Next year:\n"+df.format(nextTotal)+"");
                         //Finished loading page, stop load animation
@@ -266,8 +273,9 @@ public class HomeFragment extends Fragment {
     class RptUpdater implements Runnable {
         public void run() {
             currentWasteTotal += currentWasteIncrement;
-            DecimalFormat df = new DecimalFormat("#");
+            DecimalFormat df = new DecimalFormat("#,###");
             currentYearTotal.setText(df.format(currentWasteTotal)+"\ntonnes");
+            wasteAnimation.setProgress((int) (Math.round((currentWasteTotal/predictedTotal)*100)));
             repeatUpdateHandler.postDelayed( new RptUpdater(), 250 );
         }
     }

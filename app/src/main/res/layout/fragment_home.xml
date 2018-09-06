@@ -7,6 +7,20 @@
     tools:context=".HomeFragment"
     android:id="@+id/homefragment">
 
+
+    <com.john.waveview.WaveView
+        android:id="@+id/waveProgress"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        app:above_wave_color="#000000"
+        app:blow_wave_color="#000000"
+        app:progress="0"
+        app:wave_height="large"
+        app:wave_hz="fast"
+        app:wave_length="little" />
+
     <ImageView
         android:id="@+id/mainLogo"
         android:layout_width="60dp"
@@ -79,14 +93,6 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/thisMonthAnime"
-        android:layout_width="174dp"
-        android:layout_height="160dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="211dp"
-        android:src="@android:color/transparent" />
 
     <TextView
         android:id="@+id/LastNumber"
@@ -96,7 +102,8 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="135dp"
         android:layout_marginStart="70dp"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textColor="@android:color/black"/>
 
     <TextView
         android:id="@+id/nextNumber"
@@ -105,7 +112,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/LastNumber"
         android:layout_marginEnd="49dp"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textColor="@android:color/black"/>
 
     <TextView
         android:id="@+id/currentYearTotal"
@@ -114,7 +122,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="100dp"
-        android:textSize="30sp"
+        android:textSize="40sp"
         android:textColor="@android:color/black"
         android:textAlignment="center"/>
     <TextView
@@ -125,7 +133,8 @@
         android:layout_marginLeft="25dp"
         android:layout_marginBottom="250dp"
         android:textSize="14sp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textColor="@android:color/black"/>
     <TextView
         android:id="@+id/nextYearTotal"
         android:layout_width="wrap_content"
@@ -135,7 +144,8 @@
         android:layout_marginRight="25dp"
         android:layout_marginBottom="250dp"
         android:textSize="14sp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textColor="@android:color/black"/>
 
     <ProgressBar
         android:id="@+id/homeProgressBar"
