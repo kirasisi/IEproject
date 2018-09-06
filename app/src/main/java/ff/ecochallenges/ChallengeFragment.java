@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.ChildEventListener;
@@ -48,6 +49,7 @@ public class ChallengeFragment extends Fragment {
     private DatabaseReference todaysChallenge;
     private DatabaseReference nextDayChallenge;
     private TextView nextChallenge;
+    private RelativeLayout worthNuts;
     private int t;
     private int date = 0;
     private boolean check = false;
@@ -89,6 +91,7 @@ public class ChallengeFragment extends Fragment {
         tip = vChallenge.findViewById(R.id.tips);
         tip.setVisibility(View.GONE);
         openPop = (ImageView) vChallenge.findViewById(R.id.toOpenPopUp);
+        worthNuts = vChallenge.findViewById(R.id.worthNuts);
 
 
         getSignIn();
@@ -109,6 +112,7 @@ public class ChallengeFragment extends Fragment {
             public void onClick(View v) {
                 saveChallengeResult();
                 completeBtn.setVisibility(getView().GONE);
+                worthNuts.setVisibility(View.GONE);
                 completeText.setText("Well Done!");
                 updateCompeletion();
                 displayNextChallenge();
@@ -255,6 +259,7 @@ public class ChallengeFragment extends Fragment {
                         Log.i("COMPLETE", isCompleted.toString());
                         if (isCompleted.equals("true")) {
                             completeBtn.setVisibility(View.GONE);
+                            worthNuts.setVisibility(View.GONE);
                             completeText.setVisibility(View.VISIBLE);
                             completeText.setText("Well Done!");
                             completeSign.setVisibility(View.VISIBLE);
@@ -336,6 +341,7 @@ public class ChallengeFragment extends Fragment {
                             updateChallengeUI();
                             setStamp(current + 1);
                             completeBtn.setVisibility(View.VISIBLE);
+                            worthNuts.setVisibility(View.VISIBLE);
                             completeText.setVisibility(View.GONE);
                             nextChallenge.setVisibility(View.GONE);
                             tip.setVisibility(View.GONE);
@@ -349,6 +355,7 @@ public class ChallengeFragment extends Fragment {
                             updateChallengeUI();
                             setStamp(1);
                             completeBtn.setVisibility(View.VISIBLE);
+                            worthNuts.setVisibility(View.VISIBLE);
                             completeText.setVisibility(View.GONE);
                             nextChallenge.setVisibility(View.GONE);
                             tip.setVisibility(View.GONE);

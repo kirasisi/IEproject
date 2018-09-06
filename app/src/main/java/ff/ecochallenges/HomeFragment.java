@@ -38,6 +38,7 @@ public class HomeFragment extends Fragment {
     private TextView currentYearTotal;
     private TextView previousYearTotal;
     private TextView nextYearTotal;
+    private TextView counterLabel;
     private ProgressBar homeProgressBar;
     private SharedPreferences myPreferences;
     private String userUID = null;
@@ -77,6 +78,7 @@ public class HomeFragment extends Fragment {
         nextYearTotal = vHome.findViewById(R.id.nextYearTotal);
         homeProgressBar = vHome.findViewById(R.id.homeProgressBar);
         wasteAnimation = vHome.findViewById(R.id.waveProgress);
+        counterLabel = vHome.findViewById(R.id.counterLabel);
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -169,7 +171,7 @@ public class HomeFragment extends Fragment {
                         currentWasteIncrement = (((predictedTotal/365)/86400000)*250);
                         currentWasteTotal = (((currentCal.getTimeInMillis() - yearStart.getTimeInMillis())/250)*currentWasteIncrement);
                         DecimalFormat df = new DecimalFormat("#,###");
-                        currentYearTotal.setText(df.format(currentWasteTotal)+"\ntonnes");
+                        currentYearTotal.setText(df.format(currentWasteTotal)+"");
                         wasteAnimation.setProgress((int) (Math.round((currentWasteTotal/predictedTotal)*100)));
                         repeatUpdateHandler.post( new RptUpdater() );
                     }
@@ -238,6 +240,7 @@ public class HomeFragment extends Fragment {
                         DecimalFormat df = new DecimalFormat("#,###");
                         df.setMaximumFractionDigits(10);
                         nextYearTotal.setText("Next year:\n"+df.format(nextTotal)+"");
+                        counterLabel.setVisibility(View.VISIBLE);
                         //Finished loading page, stop load animation
                         homeProgressBar.setVisibility(View.GONE);
                     }
@@ -274,7 +277,7 @@ public class HomeFragment extends Fragment {
         public void run() {
             currentWasteTotal += currentWasteIncrement;
             DecimalFormat df = new DecimalFormat("#,###");
-            currentYearTotal.setText(df.format(currentWasteTotal)+"\ntonnes");
+            currentYearTotal.setText(df.format(currentWasteTotal)+"");
             wasteAnimation.setProgress((int) (Math.round((currentWasteTotal/predictedTotal)*100)));
             repeatUpdateHandler.postDelayed( new RptUpdater(), 250 );
         }
