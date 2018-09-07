@@ -57,6 +57,7 @@ public class ChallengeFragment extends Fragment {
     private TextView tip;
     private String userUID = null;
     private ImageView openPop;
+    private String tp;
 
 
     public static ChallengeFragment newInstance() {
@@ -102,6 +103,7 @@ public class ChallengeFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(),popChart.class);
+                intent.putExtra("type",tp);
                 startActivity(intent);
 
             }
@@ -462,6 +464,10 @@ public class ChallengeFragment extends Fragment {
     }
 
 
+    public void setType(String t){
+        tp = t;
+    }
+
     public void updateChallengeUI() {
         todaysChallenge.addValueEventListener(new ValueEventListener() {
             public String TAG;
@@ -482,6 +488,9 @@ public class ChallengeFragment extends Fragment {
                 point.setText(String.valueOf(points));
                 String type1 = dataSnapshot.child("type").getValue(String.class);
                 updateTips(type1);
+                setType(type1);
+
+
             }
 
             @Override

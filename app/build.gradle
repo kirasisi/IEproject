@@ -43,8 +43,8 @@ dependencies {
     implementation 'com.inthecheesefactory.thecheeselibrary:stated-fragment-support-v4:0.9.1'
     implementation 'com.google.android.gms:play-services-auth:16.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    implementation 'com.github.varunest:sparkbutton:1.0.5'
     // Required for local unit tests (JUnit 4 framework)
-
 
     // Required for instrumented tests
     androidTestImplementation 'com.android.support:support-annotations:24.0.0'

@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
                     challengef();
 
                     return true;
+                case R.id.navigation_explore:
+                    exploref();
+                    return true;
                 case R.id.navigation_garden:
 
                     return true;
@@ -79,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
 //            Toast toast = Toast.makeText(context, text, duration);
 //            toast.show();
         }
+    }
+
+    public void exploref(){
+        newFragment = new ExploreFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
     }
 
     @Override

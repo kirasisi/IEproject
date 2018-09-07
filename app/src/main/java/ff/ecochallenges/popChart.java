@@ -79,7 +79,23 @@ public class popChart extends Activity {
                           Double plastic = dataSnapshot.child("Plastic").child("totalGenerated").getValue(Double.class);
                           Double rubber = dataSnapshot.child("Rubber").child("totalGenerated").getValue(Double.class);
                           Double textile = dataSnapshot.child("Textile").child("totalGenerated").getValue(Double.class);
-                          setPie(glass,metal,organic,paper,plastic,rubber,textile);
+                          String type = getIntent().getStringExtra("type");
+                          int index = 0;
+                        switch (type) {
+                            case "Metal" : index =0;
+                                break;
+                            case  "Glass" : index = 1;
+                                break;
+                            case  "Organic": index = 2;
+                                break;
+                            case "Rubber": index = 3;
+                                break;
+                            case "Paper": index =4;
+                                break;
+                            case "Plastic":index=5;
+                                break;
+                        }
+                          setPie(glass,metal,organic,paper,plastic,rubber,textile,index);
                     }
 
                     @Override
@@ -116,14 +132,17 @@ public class popChart extends Activity {
 
     }
 
-    public void setPie(double glassTotal,double metalTotal,double organicToal,double paperTotal,double plasticTotal, double rubberTotal, double textTotal){
+    public void setPie(double glassTotal,double metalTotal,double organicToal,double paperTotal,double plasticTotal, double rubberTotal, double textTotal, int type){
         piechart.setHoleColor(Color.WHITE);
         ArrayList<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry((float)metalTotal,"Metal"));
         entries.add(new PieEntry((float)glassTotal,"Glass"));
         entries.add(new PieEntry((float)organicToal,"Organic"));
+        entries.add(new PieEntry((float)rubberTotal,"Rubber"));
         entries.add(new PieEntry((float)paperTotal,"Paper"));
         entries.add(new PieEntry((float)plasticTotal,"Plastic"));
+        int index = 0;
+
 
 
         PieDataSet dataSet = new PieDataSet(entries,"");
@@ -134,6 +153,14 @@ public class popChart extends Activity {
         piechart.getDescription().setText("Annually Generated Waste in tonnes, Victoria");
         piechart.setData(pieData);
         piechart.invalidate();
+        piechart.highlightValue(type, 0, false);
+        dataSet.setColors(new int[]{Color.parseColor("#c61939"),
+                Color.parseColor("#af4623"),
+                Color.parseColor("#6a753b"),
+                Color.parseColor("#FFF2ED53"),
+                Color.parseColor("#3c6bb7"),
+                Color.parseColor("#a83ca2"),
+        });
 //        Legend l = piechart.getLegend();
 //        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
 //        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
