@@ -8,19 +8,19 @@
     android:id="@+id/homefragment">
 
 
-    <com.john.waveview.WaveView
+    <ff.ecochallenges.WaveView
         android:id="@+id/waveProgress"
         android:layout_width="match_parent"
         android:layout_height="360dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
         app:above_wave_color="@android:color/holo_green_light"
-        app:blow_wave_color="@android:color/holo_green_light"
+        app:blow_wave_color="@android:color/black"
         app:progress="0"
         app:wave_height="large"
         app:wave_hz="fast"
         app:wave_length="middle" >
-    </com.john.waveview.WaveView>
+    </ff.ecochallenges.WaveView>
 
     <ImageView
         android:id="@+id/mainLogo"
