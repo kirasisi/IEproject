@@ -7,19 +7,22 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -31,26 +34,33 @@ import java.util.ArrayList;
 
 public class popChart extends Activity {
     private ImageView closeBtn;
-    PieChart piechart;
+    LineChart lineChart;
     DatabaseReference db;
+    ArrayList<String> yearList;
+    ArrayList<Entry> totalList;
+    ArrayList<Entry> perCapList;
+    CheckBox cb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_chart);
         closeBtn = (ImageView)findViewById(R.id.closeIcon);
-        final Spinner yearSelect = (Spinner)findViewById(R.id.selectYear);
-        piechart = findViewById(R.id.pieC);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.yearOfChart,android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        yearSelect.setAdapter(adapter);
+        //final Spinner yearSelect = (Spinner)findViewById(R.id.selectYear);
+        lineChart = findViewById(R.id.lineC);
+        yearList = new ArrayList<>();
+        totalList = new ArrayList<>();
+        perCapList = new ArrayList<>();
+        cb = findViewById(R.id.checkBox);
+
+
 
         DisplayMetrics dsm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dsm);
         int width = dsm.widthPixels;
         int height = dsm.heightPixels;
 
-        //getWindow().setLayout((int) (width*0.9),(int)(height*0.9));
-        getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        getWindow().setLayout((int) (width*0.9),(int)(height*0.6));
+        //getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
         WindowManager.LayoutParams parmas = getWindow().getAttributes();
         parmas.gravity = Gravity.CENTER;
@@ -64,38 +74,117 @@ public class popChart extends Activity {
                 popChart.this.finish();
             }
         });
-        yearSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final String type = getIntent().getStringExtra("type");
+        getData(type);
+
+
+
+        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                  String year = yearSelect.getSelectedItem().toString();
-                  db = FirebaseDatabase.getInstance().getReference().child("ODTotalAnnualWaste");
-                db.orderByKey().equalTo(year).addChildEventListener(new ChildEventListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(cb.isChecked()){
+                    perCapList.clear();
+                    getPerCap(type);
+
+                }
+                else{
+                    totalList.clear();
+                    getData(type);
+
+                }
+            }
+
+        });
+
+
+
+
+
+
+    }
+
+
+    public void getPerCap(final String type){
+        db = FirebaseDatabase.getInstance().getReference().child("ODTotalAnnualWaste");
+
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                int i = 0;
+
+                yearList.add(dataSnapshot.getKey().toString());
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                    if(snapshot.getKey().toString().equals(type)){
+                        Float total = snapshot.child("generatedPerCapitaKg").getValue(Float.class);
+                        perCapList.add(new Entry(Float.parseFloat(dataSnapshot.getKey().toString()), total));
+                        Log.i("data1",total.toString());
+
+                    }
+
+
+
+                }
+                Log.i("data2",perCapList.toString());
+                setLine2(type);
+
+
+
+
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+    public void getData(final String type){
+
+        db = FirebaseDatabase.getInstance().getReference().child("ODTotalAnnualWaste");
+
+                db.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                          Double glass = dataSnapshot.child("Glass").child("totalGenerated").getValue(Double.class);
-                          Double metal = dataSnapshot.child("Metal").child("totalGenerated").getValue(Double.class);
-                          Double organic = dataSnapshot.child("Organic").child("totalGenerated").getValue(Double.class);
-                          Double paper = dataSnapshot.child("Paper").child("totalGenerated").getValue(Double.class);
-                          Double plastic = dataSnapshot.child("Plastic").child("totalGenerated").getValue(Double.class);
-                          Double rubber = dataSnapshot.child("Rubber").child("totalGenerated").getValue(Double.class);
-                          Double textile = dataSnapshot.child("Textile").child("totalGenerated").getValue(Double.class);
-                          String type = getIntent().getStringExtra("type");
-                          int index = 0;
-                        switch (type) {
-                            case "Metal" : index =0;
-                                break;
-                            case  "Glass" : index = 1;
-                                break;
-                            case  "Organic": index = 2;
-                                break;
-                            case "Rubber": index = 3;
-                                break;
-                            case "Paper": index =4;
-                                break;
-                            case "Plastic":index=5;
-                                break;
-                        }
-                          setPie(glass,metal,organic,paper,plastic,rubber,textile,index);
+                        int i = 0;
+
+                        yearList.add(dataSnapshot.getKey().toString());
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                            if(snapshot.getKey().toString().equals(type)){
+                                Float total = snapshot.child("totalGenerated").getValue(Float.class);
+                                totalList.add(new Entry(Float.parseFloat(dataSnapshot.getKey().toString()), total));
+                                Log.i("data1",total.toString());
+
+                            }
+
+
+
+                            }
+                        Log.i("data2",totalList.toString());
+                        setLine(type);
+
+
                     }
 
                     @Override
@@ -119,54 +208,65 @@ public class popChart extends Activity {
                     }
                 });
 
+}
 
-            }
+    public void setLine(String type){
+        LineDataSet set1;
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+        // create a dataset and give it a type
 
-            }
-        });
+        set1 = new LineDataSet(totalList, "Total "+type+" waste per year in VIC");
+       // set1.setFillAlpha(110);
 
+        set1.setColor(Color.BLUE);
+        set1.setCircleColor(Color.RED);
+        set1.setLineWidth(2f);
+        set1.setCircleRadius(3f);
+        set1.setDrawCircleHole(false);
+        set1.setValueTextSize(9f);
+        set1.setDrawFilled(false);
 
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+        dataSets.add(set1);
+
+        LineData data = new LineData(dataSets);
+        lineChart.setData(data);
+        XAxis xAxisFromChart = lineChart.getXAxis();
+        xAxisFromChart.setDrawAxisLine(true);
+
+        xAxisFromChart.setGranularity(1f);
+        xAxisFromChart.setPosition(XAxis.XAxisPosition.BOTTOM);
+        lineChart.invalidate();
 
     }
 
-    public void setPie(double glassTotal,double metalTotal,double organicToal,double paperTotal,double plasticTotal, double rubberTotal, double textTotal, int type){
-        piechart.setHoleColor(Color.WHITE);
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry((float)metalTotal,"Metal"));
-        entries.add(new PieEntry((float)glassTotal,"Glass"));
-        entries.add(new PieEntry((float)organicToal,"Organic"));
-        entries.add(new PieEntry((float)rubberTotal,"Rubber"));
-        entries.add(new PieEntry((float)paperTotal,"Paper"));
-        entries.add(new PieEntry((float)plasticTotal,"Plastic"));
-        int index = 0;
+    public void setLine2(String type){
+        LineDataSet set2;
 
+        // create a dataset and give it a type
 
+        set2 = new LineDataSet(perCapList, "Total "+type+" waste per year per capita in VIC");
+        // set1.setFillAlpha(110);
 
-        PieDataSet dataSet = new PieDataSet(entries,"");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        dataSet.setValueTextSize(20);
-        dataSet.setValueTextColor(Color.WHITE);
-        PieData pieData = new PieData(dataSet);
-        piechart.getDescription().setText("Annually Generated Waste in tonnes, Victoria");
-        piechart.setData(pieData);
-        piechart.invalidate();
-        piechart.highlightValue(type, 0, false);
-        dataSet.setColors(new int[]{Color.parseColor("#c61939"),
-                Color.parseColor("#af4623"),
-                Color.parseColor("#6a753b"),
-                Color.parseColor("#FFF2ED53"),
-                Color.parseColor("#3c6bb7"),
-                Color.parseColor("#a83ca2"),
-        });
-//        Legend l = piechart.getLegend();
-//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-//        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-//        l.setDrawInside(false);
-//        l.setEnabled(false);
+        set2.setColor(Color.BLUE);
+        set2.setCircleColor(Color.RED);
+        set2.setLineWidth(2f);
+        set2.setCircleRadius(3f);
+        set2.setDrawCircleHole(false);
+        set2.setValueTextSize(9f);
+        set2.setDrawFilled(false);
+
+        ArrayList<ILineDataSet> dataSets2 = new ArrayList<ILineDataSet>();
+        dataSets2.add(set2);
+
+        LineData data = new LineData(dataSets2);
+        lineChart.setData(data);
+        XAxis xAxisFromChart = lineChart.getXAxis();
+        xAxisFromChart.setDrawAxisLine(true);
+
+        xAxisFromChart.setGranularity(1f);
+        xAxisFromChart.setPosition(XAxis.XAxisPosition.BOTTOM);
+        lineChart.invalidate();
 
     }
 }
