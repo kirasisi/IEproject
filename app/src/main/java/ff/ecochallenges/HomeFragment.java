@@ -26,6 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
 public class HomeFragment extends Fragment {
@@ -35,9 +37,9 @@ public class HomeFragment extends Fragment {
     private int point = 0;
     private TextView challengeCount;
     private TextView nutsPoint;
-    private TextView currentYearTotal;
-    private TextView previousYearTotal;
-    private TextView nextYearTotal;
+    private TextView currentMonthTotal;
+    private TextView previousMonthTotal;
+    private TextView nextMonthTotal;
     private TextView counterLabel;
     private ProgressBar homeProgressBar;
     private SharedPreferences myPreferences;
@@ -46,11 +48,11 @@ public class HomeFragment extends Fragment {
     private double currentWasteTotal;
     private double currentWasteIncrement;
     private double predictedTotal;
-    private int counterSearchKey;
+    private String counterSearchKey;
     private WaveView wasteAnimation;
 
     Calendar currentCal = Calendar.getInstance();
-    Calendar yearStart = Calendar.getInstance();
+    Calendar monthStart = Calendar.getInstance();
 
 
     public static HomeFragment newInstance() {
@@ -73,9 +75,9 @@ public class HomeFragment extends Fragment {
         uid = (TextView) vHome.findViewById(R.id.uID);
         challengeCount = (TextView) vHome.findViewById(R.id.challengeCount);
         nutsPoint = (TextView) vHome.findViewById(R.id.pointYouHave);
-        currentYearTotal = vHome.findViewById(R.id.currentYearTotal);
-        previousYearTotal = vHome.findViewById(R.id.previousYearTotal);
-        nextYearTotal = vHome.findViewById(R.id.nextYearTotal);
+        currentMonthTotal = vHome.findViewById(R.id.currentMonthTotal);
+        previousMonthTotal = vHome.findViewById(R.id.previousMonthTotal);
+        nextMonthTotal = vHome.findViewById(R.id.nextMonthTotal);
         homeProgressBar = vHome.findViewById(R.id.homeProgressBar);
         wasteAnimation = vHome.findViewById(R.id.waveProgress);
         counterLabel = vHome.findViewById(R.id.counterLabel);
@@ -158,20 +160,20 @@ public class HomeFragment extends Fragment {
 
         //Begin setting up counter
         counterData = FirebaseDatabase.getInstance().getReference().child("ODWasteCounterTotals");
-        yearStart.set(currentCal.get(YEAR),0,1,0,0,0);
-        counterSearchKey = currentCal.get(YEAR);
+        monthStart.set(currentCal.get(YEAR),currentCal.get(MONTH),1,0,0,0);
+        counterSearchKey = currentCal.get(YEAR)+"-"+(currentCal.get(MONTH)+1);
         //Check predicted total
-        counterData.orderByChild("year").equalTo(counterSearchKey)
+        counterData.orderByKey().equalTo(counterSearchKey)
                 .addChildEventListener(new ChildEventListener() {
 
 
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        predictedTotal = dataSnapshot.child("totalGenerated").getValue(Double.class);
-                        currentWasteIncrement = (((predictedTotal/365)/86400000)*250);
-                        currentWasteTotal = (((currentCal.getTimeInMillis() - yearStart.getTimeInMillis())/250)*currentWasteIncrement);
+                        predictedTotal = dataSnapshot.child("Total").getValue(Double.class);
+                        currentWasteIncrement = (((predictedTotal/30)/86400000)*250);
+                        currentWasteTotal = (((currentCal.getTimeInMillis() - monthStart.getTimeInMillis())/250)*currentWasteIncrement);
                         DecimalFormat df = new DecimalFormat("#,###");
-                        currentYearTotal.setText(df.format(currentWasteTotal)+"");
+                        currentMonthTotal.setText(df.format(currentWasteTotal)+"");
                         wasteAnimation.setProgress((int) (Math.round((currentWasteTotal/predictedTotal)*100)));
                         repeatUpdateHandler.post( new RptUpdater() );
                     }
@@ -197,16 +199,21 @@ public class HomeFragment extends Fragment {
                     }
                 });
         //Check previous total
-        counterData.orderByChild("year").equalTo(counterSearchKey-1)
+        String previousCounterSearchKey;
+        if (currentCal.get(MONTH) == 0)
+            previousCounterSearchKey = (currentCal.get(YEAR)-1)+"-12";
+        else
+            previousCounterSearchKey = currentCal.get(YEAR)+"-"+(currentCal.get(MONTH));
+        counterData.orderByKey().equalTo(previousCounterSearchKey)
                 .addChildEventListener(new ChildEventListener() {
 
 
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        double previousTotal = dataSnapshot.child("totalGenerated").getValue(Double.class);
+                        double previousTotal = dataSnapshot.child("Total").getValue(Double.class);
                         DecimalFormat df = new DecimalFormat("#,###");
                         df.setMaximumFractionDigits(10);
-                        previousYearTotal.setText("Last year:\n"+df.format(previousTotal)+"");
+                        previousMonthTotal.setText("Last month:\n"+df.format(previousTotal)+"");
                     }
 
                     @Override
@@ -230,19 +237,25 @@ public class HomeFragment extends Fragment {
                     }
                 });
         //Check next year total
-        counterData.orderByChild("year").equalTo(counterSearchKey+1)
+        String nextCounterSearchKey;
+        if (currentCal.get(MONTH) == 11)
+            nextCounterSearchKey = (currentCal.get(YEAR)+1)+"-1";
+        else
+            nextCounterSearchKey = currentCal.get(YEAR)+"-"+(currentCal.get(MONTH)+2);
+        counterData.orderByKey().equalTo(nextCounterSearchKey)
                 .addChildEventListener(new ChildEventListener() {
 
 
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        double nextTotal = dataSnapshot.child("totalGenerated").getValue(Double.class);
+                        double nextTotal = dataSnapshot.child("Total").getValue(Double.class);
                         DecimalFormat df = new DecimalFormat("#,###");
                         df.setMaximumFractionDigits(10);
-                        nextYearTotal.setText("Next year:\n"+df.format(nextTotal)+"");
+                        nextMonthTotal.setText("Next month:\n"+df.format(nextTotal)+"");
                         counterLabel.setVisibility(View.VISIBLE);
                         //Finished loading page, stop load animation
                         homeProgressBar.setVisibility(View.GONE);
+                        wasteAnimation.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -277,7 +290,7 @@ public class HomeFragment extends Fragment {
         public void run() {
             currentWasteTotal += currentWasteIncrement;
             DecimalFormat df = new DecimalFormat("#,###");
-            currentYearTotal.setText(df.format(currentWasteTotal)+"");
+            currentMonthTotal.setText(df.format(currentWasteTotal)+"");
             wasteAnimation.setProgress((int) (Math.round((currentWasteTotal/predictedTotal)*100)));
             repeatUpdateHandler.postDelayed( new RptUpdater(), 250 );
         }

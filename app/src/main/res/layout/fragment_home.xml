@@ -11,7 +11,7 @@
     <ff.ecochallenges.WaveView
         android:id="@+id/waveProgress"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
+        android:layout_height="580dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
         app:above_wave_color="@android:color/holo_green_light"
@@ -19,7 +19,8 @@
         app:progress="0"
         app:wave_height="large"
         app:wave_hz="fast"
-        app:wave_length="middle" >
+        app:wave_length="middle"
+        android:visibility="invisible">
     </ff.ecochallenges.WaveView>
 
     <ImageView
@@ -96,58 +97,48 @@
 
 
     <TextView
-        android:id="@+id/LastNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="135dp"
-        android:layout_marginStart="70dp"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"/>
-
-    <TextView
         android:id="@+id/counterLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Waste generated this year (tonnes):"
-        android:layout_above="@+id/currentYearTotal"
+        android:text="Waste generated this month in Victoria (tonnes):"
+        android:layout_above="@+id/currentMonthTotal"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
         android:fontFamily="@font/roboto_slab"
         android:textColor="@android:color/black"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textAlignment="center"
         android:visibility="invisible"/>
 
     <TextView
-        android:id="@+id/currentYearTotal"
+        android:id="@+id/currentMonthTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="175dp"
-        android:textSize="46sp"
+        android:layout_marginBottom="220dp"
+        android:textSize="50sp"
         android:textColor="@android:color/black"
         android:textAlignment="center"/>
     <TextView
-        android:id="@+id/previousYearTotal"
+        android:id="@+id/previousMonthTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="25dp"
-        android:layout_marginBottom="275dp"
+        android:layout_marginBottom="180dp"
         android:textSize="14sp"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textStyle="bold"/>
     <TextView
-        android:id="@+id/nextYearTotal"
+        android:id="@+id/nextMonthTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="25dp"
-        android:layout_marginBottom="275dp"
+        android:layout_marginBottom="180dp"
         android:textSize="14sp"
         android:textAlignment="center"
         android:textColor="@android:color/black"
@@ -160,6 +151,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:indeterminateTint="@android:color/holo_green_light"/>
-
 
 </RelativeLayout>
