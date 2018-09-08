@@ -255,8 +255,6 @@ public class popChart extends Activity {
                 return String.format("%.0f",value);
             }
 
-            // we don't draw numbers, so no decimal digits needed
-            //@Override
             public int getDecimalDigits() {  return 0; }
         };
 
@@ -272,7 +270,7 @@ public class popChart extends Activity {
     public void setLine2(String type){
         LineDataSet set2;
 
-        // create a dataset and give it a type
+
 
         set2 = new LineDataSet(perCapList, "Total "+type+" waste per year per capita in VIC");
         // set1.setFillAlpha(110);
@@ -303,8 +301,7 @@ public class popChart extends Activity {
                 return String.format("%.0f",value);
             }
 
-            // we don't draw numbers, so no decimal digits needed
-            //@Override
+
             public int getDecimalDigits() {  return 0; }
         };
 
