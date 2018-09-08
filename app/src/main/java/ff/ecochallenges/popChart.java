@@ -17,11 +17,13 @@ import android.widget.ImageView;
 
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.ChildEventListener;
@@ -29,7 +31,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.protobuf.StringValue;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class popChart extends Activity {
@@ -40,6 +44,7 @@ public class popChart extends Activity {
     ArrayList<Entry> totalList;
     ArrayList<Entry> perCapList;
     CheckBox cb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,7 @@ public class popChart extends Activity {
         totalList = new ArrayList<>();
         perCapList = new ArrayList<>();
         cb = findViewById(R.id.checkBox);
+
 
 
 
@@ -113,12 +119,15 @@ public class popChart extends Activity {
                 int i = 0;
 
                 yearList.add(dataSnapshot.getKey().toString());
+
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
 
                     if(snapshot.getKey().toString().equals(type)){
                         Float total = snapshot.child("generatedPerCapitaKg").getValue(Float.class);
                         perCapList.add(new Entry(Float.parseFloat(dataSnapshot.getKey().toString()), total));
+
                         Log.i("data1",total.toString());
+
 
                     }
 
@@ -174,6 +183,8 @@ public class popChart extends Activity {
                             if(snapshot.getKey().toString().equals(type)){
                                 Float total = snapshot.child("totalGenerated").getValue(Float.class);
                                 totalList.add(new Entry(Float.parseFloat(dataSnapshot.getKey().toString()), total));
+
+
                                 Log.i("data1",total.toString());
 
                             }
@@ -213,7 +224,7 @@ public class popChart extends Activity {
     public void setLine(String type){
         LineDataSet set1;
 
-        // create a dataset and give it a type
+
 
         set1 = new LineDataSet(totalList, "Total "+type+" waste per year in VIC");
        // set1.setFillAlpha(110);
@@ -236,6 +247,24 @@ public class popChart extends Activity {
 
         xAxisFromChart.setGranularity(1f);
         xAxisFromChart.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        IAxisValueFormatter formatter = new IAxisValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return String.format("%.0f",value);
+            }
+
+            // we don't draw numbers, so no decimal digits needed
+            //@Override
+            public int getDecimalDigits() {  return 0; }
+        };
+
+
+        xAxisFromChart.setValueFormatter(formatter);
+        lineChart.getAxisRight().setEnabled(false);
+        lineChart.getDescription().setText("Unit: Tonnes");
+
         lineChart.invalidate();
 
     }
@@ -261,11 +290,35 @@ public class popChart extends Activity {
 
         LineData data = new LineData(dataSets2);
         lineChart.setData(data);
-        XAxis xAxisFromChart = lineChart.getXAxis();
+        final XAxis xAxisFromChart = lineChart.getXAxis();
         xAxisFromChart.setDrawAxisLine(true);
 
         xAxisFromChart.setGranularity(1f);
         xAxisFromChart.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        IAxisValueFormatter formatter = new IAxisValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return String.format("%.0f",value);
+            }
+
+            // we don't draw numbers, so no decimal digits needed
+            //@Override
+            public int getDecimalDigits() {  return 0; }
+        };
+
+
+
+
+        xAxisFromChart.setValueFormatter(formatter);
+
+        lineChart.getAxisRight().setEnabled(false);
+        lineChart.getDescription().setText("Unit: Kilograms");
+
+
+
+
         lineChart.invalidate();
 
     }
