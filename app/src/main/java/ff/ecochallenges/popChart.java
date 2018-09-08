@@ -81,7 +81,16 @@ public class popChart extends Activity {
             }
         });
         final String type = getIntent().getStringExtra("type");
-        getData(type);
+        boolean isChecked = getIntent().getBooleanExtra("isChecked",true);
+        if(isChecked==true){
+            cb.setVisibility(View.GONE);
+            perCapList.clear();
+            getPerCap(type);
+        }else {
+            cb.setVisibility(View.GONE);
+            getData(type);
+        }
+
 
 
 

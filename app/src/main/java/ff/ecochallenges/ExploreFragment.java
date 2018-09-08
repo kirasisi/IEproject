@@ -1,12 +1,14 @@
 package ff.ecochallenges;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,9 +24,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -110,6 +115,29 @@ public class ExploreFragment extends Fragment {
 
 
                 }
+            }
+        });
+
+
+        piechart.setOnChartValueSelectedListener( new OnChartValueSelectedListener() {
+
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                PieEntry pe = (PieEntry) e;
+                String type = pe.getLabel();
+                Intent intent = new Intent(getActivity(),popChart.class);
+                boolean isChecked = false;
+                if(cb.isChecked()){
+                    isChecked = true;
+                }
+                intent.putExtra("isChecked",isChecked);
+                intent.putExtra("type",type);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onNothingSelected() {
+
             }
         });
 
