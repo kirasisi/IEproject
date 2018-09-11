@@ -2,19 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="400dp"
+    android:layout_height="480dp"
     tools:context=".popChart"
     android:background="@android:color/holo_green_light"
     >
 
-    <ImageView
-        android:id="@+id/closeIcon"
-        android:layout_width="54dp"
-        android:layout_height="26dp"
-        android:layout_above="@+id/lineC"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/close" />
+
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -27,18 +21,26 @@
         android:buttonTint="@color/colorPrimary"
         android:checked="false"
         android:fontFamily="@font/roboto_slab"
-        android:text="Per Caplita"
+        android:text="Per Capita"
         android:textSize="18sp" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineC"
-        android:layout_width="349dp"
-        android:layout_height="356dp"
+        android:layout_width="300dp"
+        android:layout_height="340dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="65dp"
         android:background="@android:color/white"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp" />
+
+    <ImageView
+        android:id="@+id/closeIcon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_above="@+id/lineC"
+        android:layout_alignEnd="@+id/lineC"
+        android:src="@drawable/close" />
 
 </RelativeLayout>

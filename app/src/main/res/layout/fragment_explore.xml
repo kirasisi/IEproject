@@ -14,7 +14,7 @@
         android:layout_alignTop="@+id/yearText"
         android:layout_marginEnd="64dp"
         android:buttonTint="@color/colorPrimary"
-        android:text="per capita" />
+        android:text="Per Capita" />
 
     <TextView
         android:id="@+id/titleForTotalChart"
@@ -26,7 +26,8 @@
         android:fontFamily="@font/roboto_slab"
         android:text="Annually Generated Total Waste (Tonnes), Victoria"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textAlignment="center"/>
 
     <Spinner
         android:id="@+id/selectYear"

@@ -281,7 +281,7 @@ public class ExploreFragment extends Fragment {
         dataSet.setValueTextSize(20);
         dataSet.setValueTextColor(Color.WHITE);
         PieData pieData = new PieData(dataSet);
-        piechart.getDescription().setText("Annually Generated Waste in tonnes, Victoria");
+        piechart.getDescription().setText("Source: Sustainability Victoria");
         piechart.setData(pieData);
         piechart.invalidate();
         //piechart.highlightValue(type, 0, false);
