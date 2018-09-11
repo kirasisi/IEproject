@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -45,6 +46,7 @@ public class popChart extends Activity {
     ArrayList<Entry> perCapList;
     CheckBox cb;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,7 @@ public class popChart extends Activity {
         totalList = new ArrayList<>();
         perCapList = new ArrayList<>();
         cb = findViewById(R.id.checkBox);
+
 
 
 
@@ -78,16 +81,17 @@ public class popChart extends Activity {
             @Override
             public void onClick(View v) {
                 popChart.this.finish();
+
             }
         });
         final String type = getIntent().getStringExtra("type");
         boolean isChecked = getIntent().getBooleanExtra("isChecked",true);
         if(isChecked==true){
-            cb.setVisibility(View.GONE);
+           cb.setVisibility(View.GONE);
             perCapList.clear();
             getPerCap(type);
         }else {
-            cb.setVisibility(View.GONE);
+           cb.setVisibility(View.GONE);
             getData(type);
         }
 
@@ -256,6 +260,7 @@ public class popChart extends Activity {
 
         xAxisFromChart.setGranularity(1f);
         xAxisFromChart.setPosition(XAxis.XAxisPosition.BOTTOM);
+
 
         IAxisValueFormatter formatter = new IAxisValueFormatter() {
 

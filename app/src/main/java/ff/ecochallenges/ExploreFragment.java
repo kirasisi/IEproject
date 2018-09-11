@@ -79,18 +79,18 @@ public class ExploreFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(cb.isChecked()){
-                    yearSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                             @Override
-                                                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    //yearSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                             //@Override
+                                                             //public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                                                  year = yearSelect.getSelectedItem().toString();
 
-                                                             }
+                                                             //}
 
-                                                             @Override
-                                                             public void onNothingSelected(AdapterView<?> parent) {
+                                                            // @Override
+                                                             //public void onNothingSelected(AdapterView<?> parent) {
 
-                                                             }
-                                                         });
+                                                            // }
+                                                        // });
                     title.setText("Annually Generated Waste Per Capita (KG), Victoria");
 
                     getPerCap(year);
@@ -98,18 +98,18 @@ public class ExploreFragment extends Fragment {
 
                 }
                 else{
-                    yearSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    //yearSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                        @Override
+//                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             year = yearSelect.getSelectedItem().toString();
 
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-                    });
+//                        }
+//
+//                        @Override
+//                        public void onNothingSelected(AdapterView<?> parent) {
+//
+//                        }
+//                    });
                     title.setText("Annually Generated Total Waste (Tonnes), Victoria");
                     getData(year);
 

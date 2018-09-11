@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".popChart">
+    tools:context=".popChart"
+    android:background="@android:color/holo_green_light"
+    >
 
     <ImageView
         android:id="@+id/closeIcon"
-        android:layout_width="99dp"
+        android:layout_width="54dp"
         android:layout_height="26dp"
+        android:layout_above="@+id/lineC"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="21dp"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/if_close_delete_remove_icon_392517" />
+        android:src="@drawable/close" />
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -23,8 +23,7 @@
         android:layout_height="wrap_content"
 
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="59dp"
+        android:layout_alignTop="@+id/closeIcon"
         android:buttonTint="@color/colorPrimary"
         android:checked="false"
         android:fontFamily="@font/roboto_slab"
@@ -34,11 +33,11 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineC"
         android:layout_width="349dp"
-        android:layout_height="462dp"
-        android:layout_marginTop="97dp"
+        android:layout_height="356dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/white"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp" />
 

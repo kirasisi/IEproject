@@ -58,6 +58,7 @@ public class ChallengeFragment extends Fragment {
     private String userUID = null;
     private ImageView openPop;
     private String tp;
+    private RelativeLayout cf;
 
 
     public static ChallengeFragment newInstance() {
@@ -93,6 +94,11 @@ public class ChallengeFragment extends Fragment {
         tip.setVisibility(View.GONE);
         openPop = (ImageView) vChallenge.findViewById(R.id.toOpenPopUp);
         worthNuts = vChallenge.findViewById(R.id.worthNuts);
+        cf = vChallenge.findViewById(R.id.challengefragment);
+
+
+
+
 
 
         getSignIn();
@@ -105,6 +111,7 @@ public class ChallengeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(),popChart.class);
                 intent.putExtra("type",tp);
                 startActivity(intent);
+                //cf.setAlpha(0.3f);
 
             }
         });
