@@ -2,45 +2,48 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="400dp"
-    android:layout_height="480dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".popChart"
     android:background="@android:color/holo_green_light"
     >
-
-
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        style="@style/Widget.AppCompat.CompoundButton.CheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/closeIcon"
-        android:buttonTint="@color/colorPrimary"
-        android:checked="false"
-        android:fontFamily="@font/roboto_slab"
-        android:text="Per Capita"
-        android:textSize="18sp" />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineC"
-        android:layout_width="300dp"
-        android:layout_height="340dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="65dp"
-        android:background="@android:color/white"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
 
     <ImageView
         android:id="@+id/closeIcon"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_above="@+id/lineC"
-        android:layout_alignEnd="@+id/lineC"
+        android:layout_alignParentEnd="true"
         android:src="@drawable/close" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="30dp">
+        <CheckBox
+            android:id="@+id/checkBox"
+            style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentStart="true"
+            android:buttonTint="@color/colorPrimary"
+            android:checked="false"
+            android:fontFamily="@font/roboto_slab"
+            android:text="Per Capita"
+            android:textSize="18sp" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineC"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:background="@android:color/white"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp" />
+    </RelativeLayout>
+
 
 </RelativeLayout>
