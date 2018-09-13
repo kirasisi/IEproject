@@ -75,12 +75,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             getSignIn();
         } catch (Exception e) {
-//            Context context = getApplicationContext();
-//            CharSequence text = "Please Sign in with Google";
-//            int duration = Toast.LENGTH_SHORT;
-//
-//            Toast toast = Toast.makeText(context, text, duration);
-//            toast.show();
         }
     }
 

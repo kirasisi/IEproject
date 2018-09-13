@@ -96,11 +96,6 @@ public class ChallengeFragment extends Fragment {
         worthNuts = vChallenge.findViewById(R.id.worthNuts);
         cf = vChallenge.findViewById(R.id.challengefragment);
 
-
-
-
-
-
         getSignIn();
         checkCompletion();
 
@@ -111,8 +106,6 @@ public class ChallengeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(),popChart.class);
                 intent.putExtra("type",tp);
                 startActivity(intent);
-                //cf.setAlpha(0.3f);
-
             }
         });
 
@@ -496,8 +489,6 @@ public class ChallengeFragment extends Fragment {
                 String type1 = dataSnapshot.child("type").getValue(String.class);
                 updateTips(type1);
                 setType(type1);
-
-
             }
 
             @Override

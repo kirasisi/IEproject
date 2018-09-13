@@ -166,7 +166,6 @@ public class HomeFragment extends Fragment {
         counterData.orderByKey().equalTo(counterSearchKey)
                 .addChildEventListener(new ChildEventListener() {
 
-
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         predictedTotal = dataSnapshot.child("Total").getValue(Double.class);
@@ -198,7 +197,7 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-        //Check previous total
+        //Check previous month's total
         String previousCounterSearchKey;
         if (currentCal.get(MONTH) == 0)
             previousCounterSearchKey = (currentCal.get(YEAR)-1)+"-12";
@@ -236,7 +235,7 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-        //Check next year total
+        //Check next month's total
         String nextCounterSearchKey;
         if (currentCal.get(MONTH) == 11)
             nextCounterSearchKey = (currentCal.get(YEAR)+1)+"-1";
@@ -244,7 +243,6 @@ public class HomeFragment extends Fragment {
             nextCounterSearchKey = currentCal.get(YEAR)+"-"+(currentCal.get(MONTH)+2);
         counterData.orderByKey().equalTo(nextCounterSearchKey)
                 .addChildEventListener(new ChildEventListener() {
-
 
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

@@ -52,19 +52,16 @@ public class popChart extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_chart);
         closeBtn = (ImageView)findViewById(R.id.closeIcon);
-        //final Spinner yearSelect = (Spinner)findViewById(R.id.selectYear);
         lineChart = findViewById(R.id.lineC);
         yearList = new ArrayList<>();
         totalList = new ArrayList<>();
         perCapList = new ArrayList<>();
         cb = findViewById(R.id.checkBox);
-
         DisplayMetrics dsm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dsm);
         int width = dsm.widthPixels;
         int height = dsm.heightPixels;
         getWindow().setLayout((int) (width*0.9),(int)(height*0.7));
-
         WindowManager.LayoutParams parmas = getWindow().getAttributes();
         parmas.gravity = Gravity.CENTER;
         parmas.x = 0;
@@ -94,12 +91,10 @@ public class popChart extends Activity {
                 if(cb.isChecked()){
                     perCapList.clear();
                     getPerCap(type);
-
                 }
                 else{
                     totalList.clear();
                     getData(type);
-
                 }
             }
 
@@ -109,14 +104,10 @@ public class popChart extends Activity {
 
     public void getPerCap(final String type){
         db = FirebaseDatabase.getInstance().getReference().child("ODTotalAnnualWaste");
-
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                int i = 0;
-
                 yearList.add(dataSnapshot.getKey().toString());
-
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
 
                     if(snapshot.getKey().toString().equals(type)){
@@ -161,7 +152,6 @@ public class popChart extends Activity {
                 db.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        int i = 0;
 
                         yearList.add(dataSnapshot.getKey().toString());
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
@@ -169,7 +159,6 @@ public class popChart extends Activity {
                             if(snapshot.getKey().toString().equals(type)){
                                 Float total = snapshot.child("totalGenerated").getValue(Float.class);
                                 totalList.add(new Entry(Float.parseFloat(dataSnapshot.getKey().toString()), total));
-
 
                                 Log.i("data1",total.toString());
 
@@ -206,9 +195,6 @@ public class popChart extends Activity {
 
     public void setLine(String type){
         LineDataSet set1;
-
-
-
         set1 = new LineDataSet(totalList, "Total "+type+" waste per year in VIC");
         set1.setColor(Color.BLUE);
         set1.setCircleColor(Color.RED);
@@ -217,19 +203,14 @@ public class popChart extends Activity {
         set1.setDrawCircleHole(false);
         set1.setValueTextSize(9f);
         set1.setDrawFilled(false);
-
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set1);
-
         LineData data = new LineData(dataSets);
         lineChart.setData(data);
         XAxis xAxisFromChart = lineChart.getXAxis();
         xAxisFromChart.setDrawAxisLine(true);
-
         xAxisFromChart.setGranularity(1f);
         xAxisFromChart.setPosition(XAxis.XAxisPosition.BOTTOM);
-
-
         IAxisValueFormatter formatter = new IAxisValueFormatter() {
 
             @Override
@@ -244,7 +225,6 @@ public class popChart extends Activity {
         xAxisFromChart.setValueFormatter(formatter);
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getDescription().setText("Unit: Tonnes");
-
         lineChart.invalidate();
 
     }
@@ -259,20 +239,15 @@ public class popChart extends Activity {
         set2.setDrawCircleHole(false);
         set2.setValueTextSize(9f);
         set2.setDrawFilled(false);
-
         ArrayList<ILineDataSet> dataSets2 = new ArrayList<ILineDataSet>();
         dataSets2.add(set2);
-
         LineData data = new LineData(dataSets2);
         lineChart.setData(data);
         final XAxis xAxisFromChart = lineChart.getXAxis();
         xAxisFromChart.setDrawAxisLine(true);
-
         xAxisFromChart.setGranularity(1f);
         xAxisFromChart.setPosition(XAxis.XAxisPosition.BOTTOM);
-
         IAxisValueFormatter formatter = new IAxisValueFormatter() {
-
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 return String.format("%.0f",value);
@@ -282,14 +257,9 @@ public class popChart extends Activity {
             public int getDecimalDigits() {  return 0; }
         };
 
-
-
-
         xAxisFromChart.setValueFormatter(formatter);
-
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getDescription().setText("Unit: Kilograms");
-
         lineChart.invalidate();
 
     }

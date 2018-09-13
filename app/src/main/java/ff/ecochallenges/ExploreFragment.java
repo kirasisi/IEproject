@@ -1,20 +1,15 @@
 package ff.ecochallenges;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -42,7 +37,6 @@ import java.util.ArrayList;
 
 
 public class ExploreFragment extends Fragment {
-    private ImageView closeBtn;
     PieChart piechart;
     DatabaseReference db;
     CheckBox cb;
@@ -70,50 +64,18 @@ public class ExploreFragment extends Fragment {
         year = yearSelect.getSelectedItem().toString();
         getData(year);
 
-
-
-
-
-
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(cb.isChecked()){
-                    //yearSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                             //@Override
-                                                             //public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                                                 year = yearSelect.getSelectedItem().toString();
-
-                                                             //}
-
-                                                            // @Override
-                                                             //public void onNothingSelected(AdapterView<?> parent) {
-
-                                                            // }
-                                                        // });
+                    year = yearSelect.getSelectedItem().toString();
                     title.setText("Annually Generated Waste Per Capita (KG), Victoria");
-
                     getPerCap(year);
-
-
                 }
                 else{
-                    //yearSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                        @Override
-//                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            year = yearSelect.getSelectedItem().toString();
-
-//                        }
-//
-//                        @Override
-//                        public void onNothingSelected(AdapterView<?> parent) {
-//
-//                        }
-//                    });
+                    year = yearSelect.getSelectedItem().toString();
                     title.setText("Annually Generated Total Waste (Tonnes), Victoria");
                     getData(year);
-
-
                 }
             }
         });
@@ -173,8 +135,6 @@ public class ExploreFragment extends Fragment {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String year = yearSelect.getSelectedItem().toString();
                     setData(year);
-
-
                 }
 
                 @Override
@@ -196,8 +156,6 @@ public class ExploreFragment extends Fragment {
                 Double paper = dataSnapshot.child("Paper").child("generatedPerCapitaKg").getValue(Double.class);
                 Double plastic = dataSnapshot.child("Plastic").child("generatedPerCapitaKg").getValue(Double.class);
                 Double rubber = dataSnapshot.child("Rubber").child("generatedPerCapitaKg").getValue(Double.class);
-
-
 
                 setPie(glass,metal,organic,paper,plastic,rubber);
             }
@@ -236,8 +194,6 @@ public class ExploreFragment extends Fragment {
                 Double plastic = dataSnapshot.child("Plastic").child("totalGenerated").getValue(Double.class);
                 Double rubber = dataSnapshot.child("Rubber").child("totalGenerated").getValue(Double.class);
 
-
-
                 setPie(glass,metal,organic,paper,plastic,rubber);
             }
 
@@ -273,8 +229,6 @@ public class ExploreFragment extends Fragment {
         entries.add(new PieEntry((float) rubberTotal, "Rubber"));
         entries.add(new PieEntry((float) paperTotal, "Paper"));
         entries.add(new PieEntry((float) plasticTotal, "Plastic"));
-        int index = 0;
-
 
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -284,7 +238,6 @@ public class ExploreFragment extends Fragment {
         piechart.getDescription().setText("Source: Sustainability Victoria");
         piechart.setData(pieData);
         piechart.invalidate();
-        //piechart.highlightValue(type, 0, false);
         dataSet.setColors(new int[]{Color.parseColor("#b79a96"),
                 Color.parseColor("#73d0f4"),
                 Color.parseColor("#81db6d"),
@@ -293,9 +246,4 @@ public class ExploreFragment extends Fragment {
                 Color.parseColor("#d4a2f2"),
         });
     }
-
-
-
-
-
 }
