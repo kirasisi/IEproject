@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".popChart"
-    android:background="@android:color/holo_green_light"
+    android:background="@drawable/customborder"
     >
 
     <ImageView
@@ -19,9 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:paddingHorizontal="10dp"
-        android:paddingBottom="10dp"
         android:paddingTop="30dp">
+
         <CheckBox
             android:id="@+id/checkBox"
             style="@style/Widget.AppCompat.CompoundButton.CheckBox"
@@ -39,7 +38,6 @@
             android:id="@+id/lineC"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:background="@android:color/white"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp" />

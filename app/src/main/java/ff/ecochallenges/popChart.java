@@ -59,21 +59,14 @@ public class popChart extends Activity {
         perCapList = new ArrayList<>();
         cb = findViewById(R.id.checkBox);
 
-
-
-
-
         DisplayMetrics dsm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dsm);
         int width = dsm.widthPixels;
         int height = dsm.heightPixels;
-
-        getWindow().setLayout((int) (width*0.9),(int)(height*0.6));
-        //getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        getWindow().setLayout((int) (width*0.9),(int)(height*0.7));
 
         WindowManager.LayoutParams parmas = getWindow().getAttributes();
         parmas.gravity = Gravity.CENTER;
-
         parmas.x = 0;
         parmas.y = 0;
         getWindow().setAttributes(parmas);
@@ -95,9 +88,6 @@ public class popChart extends Activity {
             getData(type);
         }
 
-
-
-
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -114,12 +104,6 @@ public class popChart extends Activity {
             }
 
         });
-
-
-
-
-
-
     }
 
 
@@ -140,21 +124,10 @@ public class popChart extends Activity {
                         perCapList.add(new Entry(Float.parseFloat(dataSnapshot.getKey().toString()), total));
 
                         Log.i("data1",total.toString());
-
-
                     }
-
-
-
                 }
                 Log.i("data2",perCapList.toString());
                 setLine2(type);
-
-
-
-
-
-
             }
 
             @Override
@@ -202,12 +175,9 @@ public class popChart extends Activity {
 
                             }
 
-
-
                             }
                         Log.i("data2",totalList.toString());
                         setLine(type);
-
 
                     }
 
@@ -240,8 +210,6 @@ public class popChart extends Activity {
 
 
         set1 = new LineDataSet(totalList, "Total "+type+" waste per year in VIC");
-       // set1.setFillAlpha(110);
-
         set1.setColor(Color.BLUE);
         set1.setCircleColor(Color.RED);
         set1.setLineWidth(2f);
@@ -283,12 +251,7 @@ public class popChart extends Activity {
 
     public void setLine2(String type){
         LineDataSet set2;
-
-
-
         set2 = new LineDataSet(perCapList, "Total "+type+" waste per year per capita in VIC");
-        // set1.setFillAlpha(110);
-
         set2.setColor(Color.BLUE);
         set2.setCircleColor(Color.RED);
         set2.setLineWidth(2f);
@@ -326,9 +289,6 @@ public class popChart extends Activity {
 
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getDescription().setText("Unit: Kilograms");
-
-
-
 
         lineChart.invalidate();
 
