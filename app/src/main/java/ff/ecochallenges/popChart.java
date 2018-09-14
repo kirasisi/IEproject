@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -221,10 +222,13 @@ public class popChart extends Activity {
             public int getDecimalDigits() {  return 0; }
         };
 
+        YAxis yAxis = lineChart.getAxisLeft();
+        yAxis.setAxisMinimum(0f);
 
         xAxisFromChart.setValueFormatter(formatter);
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getDescription().setText("Unit: Tonnes");
+
         lineChart.invalidate();
 
     }

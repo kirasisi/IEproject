@@ -59,11 +59,12 @@ public class ExploreFragment extends Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChart,android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSelect.setAdapter(adapter);
+
         cb = vExplore.findViewById(R.id.checkBox);
         title = vExplore.findViewById(R.id.titleForTotalChart);
         year = yearSelect.getSelectedItem().toString();
         getData(year);
-
+        yearSelect.setSelection(3);
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
