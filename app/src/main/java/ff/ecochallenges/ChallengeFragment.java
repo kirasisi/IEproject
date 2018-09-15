@@ -57,6 +57,7 @@ public class ChallengeFragment extends Fragment {
     private TextView tip;
     private String userUID = null;
     private ImageView openPop;
+    private TextView forPopUp;
     private String tp;
     private RelativeLayout cf;
 
@@ -93,6 +94,7 @@ public class ChallengeFragment extends Fragment {
         tip = vChallenge.findViewById(R.id.tips);
         tip.setVisibility(View.GONE);
         openPop = (ImageView) vChallenge.findViewById(R.id.toOpenPopUp);
+        forPopUp = vChallenge.findViewById(R.id.forPopUp);
         worthNuts = vChallenge.findViewById(R.id.worthNuts);
         cf = vChallenge.findViewById(R.id.challengefragment);
 
@@ -100,6 +102,16 @@ public class ChallengeFragment extends Fragment {
         checkCompletion();
 
         openPop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(),popChart.class);
+                intent.putExtra("type",tp);
+                startActivity(intent);
+            }
+        });
+
+        forPopUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
