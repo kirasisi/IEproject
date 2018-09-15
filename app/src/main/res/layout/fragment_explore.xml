@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/titleForTotalChart"
-        android:layout_width="360dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -58,6 +58,17 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="29dp"></com.github.mikephil.charting.charts.PieChart>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Click any part for more info"
+        android:fontFamily="@font/roboto_slab"
+        android:textColor="@android:color/black"
+        android:layout_alignBottom="@id/pieC"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="215dp"
+        android:textAlignment="center"/>
 
 
 
