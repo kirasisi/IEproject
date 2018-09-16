@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/cName"
-        android:paddingTop="10dp">
+        android:layout_marginTop="10dp">
         <TextView
             android:id="@+id/points"
             android:layout_width="wrap_content"
@@ -65,14 +65,37 @@
             android:src="@drawable/acorn_296591_640" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/skipSection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/worthNuts"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true">
+        <ImageView
+            android:id="@+id/skipChallenge"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/skip"
+            android:layout_centerInParent="true"
+           />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_slab"
+            android:text="Skip challenge"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/skipChallenge"
+            android:layout_marginTop="5dp"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/insContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_above="@id/moreInfoSection"
+        android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="273dp"
         android:fontFamily="@font/roboto_slab"
         android:gravity="center_vertical"
         android:textAlignment="center"
@@ -84,23 +107,17 @@
         android:layout_width="171dp"
         android:layout_height="46dp"
         android:layout_alignParentBottom="true"
-
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="99dp"
+        android:layout_marginBottom="100dp"
         android:background="@drawable/shape"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="Complete"
-        android:textColor="#6D6166"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         />
-
-
-
-
-
 
     <ImageView
         android:id="@+id/completeIcon"
@@ -136,9 +153,9 @@
         android:id="@+id/cName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="110dp"
+        android:layout_below="@id/TodaysChallenge"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/roboto_slab"
         android:gravity="center_vertical"
         android:textAlignment="center"
@@ -162,8 +179,10 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/moreInfoSection"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="420dp">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="145dp">
         <TextView
             android:id="@+id/forPopUp"
             android:layout_width="wrap_content"
@@ -172,7 +191,8 @@
             android:text="Find out more >"
             android:layout_centerVertical="true"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
         <ImageView
             android:id="@+id/toOpenPopUp"
             android:layout_width="56dp"
