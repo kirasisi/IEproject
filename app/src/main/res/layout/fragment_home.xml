@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
     android:background="@android:color/white"
-    android:id="@+id/homefragment">
+    android:id="@+id/homefragment"
+    android:paddingTop="10dp">
 
 
     <ff.ecochallenges.WaveView
         android:id="@+id/waveProgress"
         android:layout_width="match_parent"
-        android:layout_height="580dp"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
         app:above_wave_color="@android:color/holo_green_light"
@@ -29,14 +30,15 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/applogo2"/>
 
     <TextView
         android:id="@+id/challengeCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        android:layout_below="@id/pointsSection"
+        android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/roboto_slab"
         android:textColor="@android:color/black"
@@ -47,7 +49,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="140dp">
+        android:layout_below="@id/welcomeText"
+        android:layout_marginTop="10dp"
+        android:id="@+id/pointsSection">
 
         <ImageView
             android:id="@+id/nutInHome"
@@ -67,10 +71,12 @@
 
 
     <RelativeLayout
+        android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp">
+        android:layout_below="@id/mainLogo"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/uID"
