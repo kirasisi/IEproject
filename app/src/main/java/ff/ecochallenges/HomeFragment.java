@@ -1,5 +1,6 @@
 package ff.ecochallenges;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,8 +39,8 @@ public class HomeFragment extends Fragment {
     private TextView challengeCount;
     private TextView nutsPoint;
     private TextView currentMonthTotal;
-    private TextView previousMonthTotal;
-    private TextView nextMonthTotal;
+    //private TextView previousMonthTotal;
+    //private TextView nextMonthTotal;
     private TextView counterLabel;
     private ProgressBar homeProgressBar;
     private SharedPreferences myPreferences;
@@ -76,8 +77,8 @@ public class HomeFragment extends Fragment {
         challengeCount = (TextView) vHome.findViewById(R.id.challengeCount);
         nutsPoint = (TextView) vHome.findViewById(R.id.pointYouHave);
         currentMonthTotal = vHome.findViewById(R.id.currentMonthTotal);
-        previousMonthTotal = vHome.findViewById(R.id.previousMonthTotal);
-        nextMonthTotal = vHome.findViewById(R.id.nextMonthTotal);
+        //previousMonthTotal = vHome.findViewById(R.id.previousMonthTotal);
+        //nextMonthTotal = vHome.findViewById(R.id.nextMonthTotal);
         homeProgressBar = vHome.findViewById(R.id.homeProgressBar);
         wasteAnimation = vHome.findViewById(R.id.waveProgress);
         counterLabel = vHome.findViewById(R.id.counterLabel);
@@ -174,6 +175,11 @@ public class HomeFragment extends Fragment {
                         DecimalFormat df = new DecimalFormat("#,###");
                         currentMonthTotal.setText(df.format(currentWasteTotal)+"");
                         wasteAnimation.setProgress((int) (Math.round((currentWasteTotal/predictedTotal)*100)));
+                        //Finished loading page, stop load animation
+                        homeProgressBar.setVisibility(View.GONE);
+                        counterLabel.setVisibility(View.VISIBLE);
+                        currentMonthTotal.setVisibility(View.VISIBLE);
+                        wasteAnimation.setVisibility(View.VISIBLE);
                         repeatUpdateHandler.post( new RptUpdater() );
                     }
 
@@ -198,84 +204,90 @@ public class HomeFragment extends Fragment {
                     }
                 });
         //Check previous month's total
-        String previousCounterSearchKey;
-        if (currentCal.get(MONTH) == 0)
-            previousCounterSearchKey = (currentCal.get(YEAR)-1)+"-12";
-        else
-            previousCounterSearchKey = currentCal.get(YEAR)+"-"+(currentCal.get(MONTH));
-        counterData.orderByKey().equalTo(previousCounterSearchKey)
-                .addChildEventListener(new ChildEventListener() {
-
-
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        double previousTotal = dataSnapshot.child("Total").getValue(Double.class);
-                        DecimalFormat df = new DecimalFormat("#,###");
-                        df.setMaximumFractionDigits(10);
-                        previousMonthTotal.setText("Last month:\n"+df.format(previousTotal)+"");
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+//        String previousCounterSearchKey;
+//        if (currentCal.get(MONTH) == 0)
+//            previousCounterSearchKey = (currentCal.get(YEAR)-1)+"-12";
+//        else
+//            previousCounterSearchKey = currentCal.get(YEAR)+"-"+(currentCal.get(MONTH));
+//        counterData.orderByKey().equalTo(previousCounterSearchKey)
+//                .addChildEventListener(new ChildEventListener() {
+//
+//
+//                    @Override
+//                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                        double previousTotal = dataSnapshot.child("Total").getValue(Double.class);
+//                        DecimalFormat df = new DecimalFormat("#,###");
+//                        df.setMaximumFractionDigits(10);
+//                        previousMonthTotal.setText("Last month:\n"+df.format(previousTotal)+"");
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
         //Check next month's total
-        String nextCounterSearchKey;
-        if (currentCal.get(MONTH) == 11)
-            nextCounterSearchKey = (currentCal.get(YEAR)+1)+"-1";
-        else
-            nextCounterSearchKey = currentCal.get(YEAR)+"-"+(currentCal.get(MONTH)+2);
-        counterData.orderByKey().equalTo(nextCounterSearchKey)
-                .addChildEventListener(new ChildEventListener() {
+//        String nextCounterSearchKey;
+//        if (currentCal.get(MONTH) == 11)
+//            nextCounterSearchKey = (currentCal.get(YEAR)+1)+"-1";
+//        else
+//            nextCounterSearchKey = currentCal.get(YEAR)+"-"+(currentCal.get(MONTH)+2);
+//        counterData.orderByKey().equalTo(nextCounterSearchKey)
+//                .addChildEventListener(new ChildEventListener() {
+//
+//                    @Override
+//                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                        double nextTotal = dataSnapshot.child("Total").getValue(Double.class);
+//                        DecimalFormat df = new DecimalFormat("#,###");
+//                        df.setMaximumFractionDigits(10);
+//                        nextMonthTotal.setText("Next month:\n"+df.format(nextTotal)+"");
 
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        double nextTotal = dataSnapshot.child("Total").getValue(Double.class);
-                        DecimalFormat df = new DecimalFormat("#,###");
-                        df.setMaximumFractionDigits(10);
-                        nextMonthTotal.setText("Next month:\n"+df.format(nextTotal)+"");
-                        counterLabel.setVisibility(View.VISIBLE);
-                        //Finished loading page, stop load animation
-                        homeProgressBar.setVisibility(View.GONE);
-                        wasteAnimation.setVisibility(View.VISIBLE);
-                    }
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+        currentMonthTotal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),popChart.class);
+                    intent.putExtra("ctg","maintrend");
+                    startActivity(intent);
+                }
+        });
         return vHome;
     }
 

@@ -94,6 +94,7 @@ public class ExploreFragment extends Fragment {
                     isChecked = true;
                 }
                 intent.putExtra("isChecked",isChecked);
+                intent.putExtra("ctg","hard");
                 intent.putExtra("type",type);
                 startActivity(intent);
             }

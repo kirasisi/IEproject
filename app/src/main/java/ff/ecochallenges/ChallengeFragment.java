@@ -117,6 +117,7 @@ public class ChallengeFragment extends Fragment {
                 if (!tp.equals("Energy") && !tp.equals("Water") && !tp.equals("CO2"))
                 {
                     Intent intent = new Intent(getActivity(),popChart.class);
+                    intent.putExtra("ctg","hard");
                     intent.putExtra("type",tp);
                     startActivity(intent);
                 }

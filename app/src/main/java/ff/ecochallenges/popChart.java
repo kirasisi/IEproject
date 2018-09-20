@@ -76,14 +76,15 @@ public class popChart extends Activity {
             }
         });
         final String type = getIntent().getStringExtra("type");
+        final String ctg = getIntent().getStringExtra("ctg");
         boolean isChecked = getIntent().getBooleanExtra("isChecked",true);
-        if(isChecked==true){
+        if(isChecked==true && !ctg.equals("maintrend")){
            cb.setVisibility(View.GONE);
             perCapList.clear();
-            getPerCap(type);
+            getPerCap(ctg, type);
         }else {
            cb.setVisibility(View.GONE);
-            getData(type);
+            getData(ctg, type);
         }
 
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -91,11 +92,11 @@ public class popChart extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(cb.isChecked()){
                     perCapList.clear();
-                    getPerCap(type);
+                    getPerCap(ctg, type);
                 }
                 else{
                     totalList.clear();
-                    getData(type);
+                    getData(ctg, type);
                 }
             }
 
@@ -103,7 +104,7 @@ public class popChart extends Activity {
     }
 
 
-    public void getPerCap(final String type){
+    public void getPerCap(final String ctg, final String type){
         db = FirebaseDatabase.getInstance().getReference().child("ODTotalAnnualWaste");
         db.addChildEventListener(new ChildEventListener() {
             @Override
@@ -119,7 +120,7 @@ public class popChart extends Activity {
                     }
                 }
                 Log.i("data2",perCapList.toString());
-                setLine2(type);
+                setLine2(ctg, type);
             }
 
             @Override
@@ -146,57 +147,110 @@ public class popChart extends Activity {
     }
 
 
-    public void getData(final String type){
+    public void getData(final String ctg, final String type){
 
-        db = FirebaseDatabase.getInstance().getReference().child("ODTotalAnnualWaste");
+        if (ctg.equals("hard"))
+        {
+            db = FirebaseDatabase.getInstance().getReference().child("ODTotalAnnualWaste");
 
-                db.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            db.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                        yearList.add(dataSnapshot.getKey().toString());
-                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    yearList.add(dataSnapshot.getKey().toString());
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
 
-                            if(snapshot.getKey().toString().equals(type)){
-                                Float total = snapshot.child("totalGenerated").getValue(Float.class);
-                                totalList.add(new Entry(Float.parseFloat(dataSnapshot.getKey().toString()), total));
+                        if(snapshot.getKey().toString().equals(type)){
+                            Float total = snapshot.child("totalGenerated").getValue(Float.class);
+                            totalList.add(new Entry(Float.parseFloat(dataSnapshot.getKey().toString()), total));
 
-                                Log.i("data1",total.toString());
+                            Log.i("data1",total.toString());
 
-                            }
-
-                            }
-                        Log.i("data2",totalList.toString());
-                        setLine(type);
+                        }
 
                     }
+                    Log.i("data2",totalList.toString());
+                    setLine(ctg, type);
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else if(ctg.equals("maintrend"))
+        {
+            db = FirebaseDatabase.getInstance().getReference().child("ODTotalAnnualTrend");
+
+            db.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    yearList.add(dataSnapshot.getKey().toString());
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                        //if(snapshot.getKey().toString().equals(type)){
+                            Float total = snapshot.getValue(Float.class);
+                            totalList.add(new Entry(Float.parseFloat(dataSnapshot.getKey().toString()), total));
+
+                            Log.i("data1",total.toString());
+
+                        //}
 
                     }
+                    Log.i("data2",totalList.toString());
+                    setLine(ctg, type);
 
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                }
 
-                    }
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
 
-                    }
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
 
-                    }
-                });
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
 
 }
 
-    public void setLine(String type){
-        LineDataSet set1;
-        set1 = new LineDataSet(totalList, "Total "+type+" waste per year in VIC");
+    public void setLine(String ctg, String type){
+        LineDataSet set1 = null;
+        if (ctg.equals("hard"))
+            set1 = new LineDataSet(totalList, "Total "+type+" waste per year in VIC");
+        else if (ctg.equals("maintrend"))
+            set1 = new LineDataSet(totalList, "Waste generated yearly trend in VIC");
         set1.setColor(Color.BLUE);
         set1.setCircleColor(Color.RED);
         set1.setLineWidth(2f);
@@ -233,7 +287,7 @@ public class popChart extends Activity {
 
     }
 
-    public void setLine2(String type){
+    public void setLine2(String ctg, String type){
         LineDataSet set2;
         set2 = new LineDataSet(perCapList, "Total "+type+" waste per year per capita in VIC");
         set2.setColor(Color.BLUE);
