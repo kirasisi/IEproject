@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
@@ -38,7 +39,7 @@ public class HomeFragment extends Fragment {
     private int point = 0;
     private TextView challengeCount;
     private TextView nutsPoint;
-    private TextView currentMonthTotal;
+    private Button currentMonthTotal;
     //private TextView previousMonthTotal;
     //private TextView nextMonthTotal;
     private TextView counterLabel;

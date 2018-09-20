@@ -248,15 +248,22 @@ public class popChart extends Activity {
     public void setLine(String ctg, String type){
         LineDataSet set1 = null;
         if (ctg.equals("hard"))
+        {
             set1 = new LineDataSet(totalList, "Total "+type+" waste per year in VIC");
+            set1.setValueTextSize(9f);
+        }
+
         else if (ctg.equals("maintrend"))
+        {
             set1 = new LineDataSet(totalList, "Waste generated yearly trend in VIC");
+            set1.setValueTextSize(0f);
+        }
+
         set1.setColor(Color.BLUE);
         set1.setCircleColor(Color.RED);
         set1.setLineWidth(2f);
         set1.setCircleRadius(3f);
         set1.setDrawCircleHole(false);
-        set1.setValueTextSize(9f);
         set1.setDrawFilled(false);
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(set1);

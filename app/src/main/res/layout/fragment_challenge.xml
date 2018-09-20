@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/roboto_slab"
         android:gravity="center_vertical"
         android:text="Today's Challenge"
@@ -70,8 +70,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/worthNuts"
-        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true">
+
         <ImageView
             android:id="@+id/skipChallenge"
             android:layout_width="50dp"
@@ -93,14 +93,12 @@
         android:id="@+id/insContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/moreInfoSection"
-        android:layout_marginBottom="20dp"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:fontFamily="@font/roboto_slab"
         android:gravity="center_vertical"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="22sp" />
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/c_complete"
@@ -131,8 +129,7 @@
         android:id="@+id/completeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/completeIcon"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:fontFamily="@font/alfa_slab_one"
         android:textColor="@android:color/black"
         android:textSize="30sp" />
