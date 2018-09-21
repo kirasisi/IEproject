@@ -297,18 +297,21 @@ public class popChart extends Activity {
         {
             set1 = new LineDataSet(totalList, "Total "+type+" waste per year in VIC");
             set1.setValueTextSize(9f);
+            lineChart.getDescription().setText("Unit: Tonnes");
         }
 
         else if (ctg.equals("maintrend"))
         {
             set1 = new LineDataSet(totalList, "Waste generated yearly trend in VIC");
             set1.setValueTextSize(0f);
+            lineChart.getDescription().setText("Unit: Tonnes");
         }
 
         else if (ctg.equals("water"))
         {
             set1 = new LineDataSet(totalList, "Total "+type+" water consumption in VIC");
             set1.setValueTextSize(9f);
+            lineChart.getDescription().setText("Unit: Megaliters");
         }
 
         set1.setColor(Color.BLUE);
@@ -340,7 +343,7 @@ public class popChart extends Activity {
 
         xAxisFromChart.setValueFormatter(formatter);
         lineChart.getAxisRight().setEnabled(false);
-        lineChart.getDescription().setText("Unit: Tonnes");
+
 
         lineChart.invalidate();
 

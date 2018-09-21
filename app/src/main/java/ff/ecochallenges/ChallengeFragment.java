@@ -114,11 +114,22 @@ public class ChallengeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //REMOVE THIS WHEN DATA FOR OTHER WASTE TYPES ARE READY
-                if (!tp.equals("Energy") && !tp.equals("Water") && !tp.equals("CO2"))
+                if (!tp.equals("Energy") && !tp.equals("CO2"))
                 {
                     Intent intent = new Intent(getActivity(),popChart.class);
-                    intent.putExtra("ctg","hard");
-                    intent.putExtra("type",tp);
+                    if (tp.equals("Water"))
+                    {
+                        intent.putExtra("ctg","water");
+                        intent.putExtra("type","Households");
+                        intent.putExtra("isChecked", false);
+                    }
+
+                    else
+                    {
+                        intent.putExtra("ctg","hard");
+                        intent.putExtra("type",tp);
+                    }
+
                     startActivity(intent);
                 }
             }
