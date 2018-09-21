@@ -11,7 +11,15 @@
     <string name="signed_in_err">"Error: please check logs."</string>
     <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
-    <string-array name="yearOfChart">
+    <string-array name="yearOfChartGeneral">
+        <item>2012</item>
+        <item>2013</item>
+        <item>2014</item>
+        <item>2015</item>
+    </string-array>
+    <string-array name="yearOfChartWater">
+        <item>2010</item>
+        <item>2011</item>
         <item>2012</item>
         <item>2013</item>
         <item>2014</item>

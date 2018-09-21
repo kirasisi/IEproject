@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -33,7 +34,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 public class ExploreFragment extends Fragment {
@@ -42,7 +45,11 @@ public class ExploreFragment extends Fragment {
     CheckBox cb;
     Spinner yearSelect;
     String year=null;
+    String ctg="hard"; //default
+    private RadioButton general;
+    private RadioButton water;
     TextView title;
+    private ArrayAdapter<CharSequence> adapter = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,14 +63,19 @@ public class ExploreFragment extends Fragment {
         View vExplore = inflater.inflate(R.layout.fragment_explore, container, false);
         yearSelect = (Spinner)vExplore.findViewById(R.id.selectYear);
         piechart = vExplore.findViewById(R.id.pieC);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChart,android.R.layout.simple_spinner_dropdown_item);
+        general = vExplore.findViewById(R.id.button1);
+        water = vExplore.findViewById(R.id.button2);
+
+        if (general.isChecked())
+            adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChartGeneral,android.R.layout.simple_spinner_dropdown_item);
+        else if (water.isChecked())
+            adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChartWater,android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSelect.setAdapter(adapter);
-
         cb = vExplore.findViewById(R.id.checkBox);
         title = vExplore.findViewById(R.id.titleForTotalChart);
         year = yearSelect.getSelectedItem().toString();
-        getData(year);
+        getData(ctg, year);
         yearSelect.setSelection(3);
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -76,7 +88,42 @@ public class ExploreFragment extends Fragment {
                 else{
                     year = yearSelect.getSelectedItem().toString();
                     title.setText("Annually Generated Total Waste (Tonnes), Victoria");
-                    getData(year);
+                    getData(ctg, year);
+                }
+            }
+        });
+
+        water.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(water.isChecked()){
+                    cb.setVisibility(View.GONE);
+                    ctg = "water";
+                    adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChartWater,android.R.layout.simple_spinner_dropdown_item);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    yearSelect.setAdapter(adapter);
+                    yearSelect.setSelection(5);
+                    year = yearSelect.getSelectedItem().toString();
+                    title.setText("Annual water consumption (Megaliters), Victoria");
+                    getData("water", year);
+                }
+            }
+        });
+
+        general.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(general.isChecked()){
+                    cb.setVisibility(View.VISIBLE);
+                    ctg = "hard";
+                    adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChartGeneral,android.R.layout.simple_spinner_dropdown_item);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    yearSelect.setAdapter(adapter);
+                    yearSelect.setSelection(3);
+                    year = yearSelect.getSelectedItem().toString();
+                    cb.setChecked(false);
+                    title.setText("Annually Generated Total Waste (Tonnes), Victoria");
+                    getData("hard", year);
                 }
             }
         });
@@ -94,7 +141,7 @@ public class ExploreFragment extends Fragment {
                     isChecked = true;
                 }
                 intent.putExtra("isChecked",isChecked);
-                intent.putExtra("ctg","hard");
+                intent.putExtra("ctg",ctg);
                 intent.putExtra("type",type);
                 startActivity(intent);
             }
@@ -129,14 +176,14 @@ public class ExploreFragment extends Fragment {
         });}
 
 
-    public void getData(String year){
-           setData(year);
+    public void getData(final String ctg, String year){
+           setData(ctg, year);
 
             yearSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String year = yearSelect.getSelectedItem().toString();
-                    setData(year);
+                    setData(ctg, year);
                 }
 
                 @Override
@@ -159,7 +206,15 @@ public class ExploreFragment extends Fragment {
                 Double plastic = dataSnapshot.child("Plastic").child("generatedPerCapitaKg").getValue(Double.class);
                 Double rubber = dataSnapshot.child("Rubber").child("generatedPerCapitaKg").getValue(Double.class);
 
-                setPie(glass,metal,organic,paper,plastic,rubber);
+                Map pairVals = new HashMap();
+                pairVals.put("Glass",glass);
+                pairVals.put("Metal", metal);
+                pairVals.put("Organic", organic);
+                pairVals.put("Paper", paper);
+                pairVals.put("Plastic", plastic);
+                pairVals.put("Rubber", rubber);
+
+                setPie(pairVals);
             }
 
             @Override
@@ -184,60 +239,126 @@ public class ExploreFragment extends Fragment {
         });
     }
 
-    public void setData(String year){
-        db = FirebaseDatabase.getInstance().getReference().child("ODTotalAnnualWaste");
-        db.orderByKey().equalTo(year).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Double glass = dataSnapshot.child("Glass").child("totalGenerated").getValue(Double.class);
-                Double metal = dataSnapshot.child("Metal").child("totalGenerated").getValue(Double.class);
-                Double organic = dataSnapshot.child("Organic").child("totalGenerated").getValue(Double.class);
-                Double paper = dataSnapshot.child("Paper").child("totalGenerated").getValue(Double.class);
-                Double plastic = dataSnapshot.child("Plastic").child("totalGenerated").getValue(Double.class);
-                Double rubber = dataSnapshot.child("Rubber").child("totalGenerated").getValue(Double.class);
+    public void setData(String ctg, String year){
+        if (ctg.equals("hard"))
+        {
+            db = FirebaseDatabase.getInstance().getReference().child("ODTotalAnnualWaste");
+            db.orderByKey().equalTo(year).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    Double glass = dataSnapshot.child("Glass").child("totalGenerated").getValue(Double.class);
+                    Double metal = dataSnapshot.child("Metal").child("totalGenerated").getValue(Double.class);
+                    Double organic = dataSnapshot.child("Organic").child("totalGenerated").getValue(Double.class);
+                    Double paper = dataSnapshot.child("Paper").child("totalGenerated").getValue(Double.class);
+                    Double plastic = dataSnapshot.child("Plastic").child("totalGenerated").getValue(Double.class);
+                    Double rubber = dataSnapshot.child("Rubber").child("totalGenerated").getValue(Double.class);
 
-                setPie(glass,metal,organic,paper,plastic,rubber);
-            }
+                    Map pairVals = new HashMap();
+                    pairVals.put("Glass",glass);
+                    pairVals.put("Metal", metal);
+                    pairVals.put("Organic", organic);
+                    pairVals.put("Paper", paper);
+                    pairVals.put("Plastic", plastic);
+                    pairVals.put("Rubber", rubber);
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    setPie(pairVals);
+                }
 
-            }
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                }
 
-            }
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
 
-            }
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else if (ctg.equals("water"))
+        {
+            db = FirebaseDatabase.getInstance().getReference().child("ODWaterConsumption");
+            db.orderByKey().equalTo(year).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    Double agriculture = dataSnapshot.child("Agriculture").child("total").getValue(Double.class);
+                    Double mining = dataSnapshot.child("Mining").child("total").getValue(Double.class);
+                    Double manufacturing = dataSnapshot.child("Manufacturing").child("total").getValue(Double.class);
+                    Double utility = dataSnapshot.child("Utility Services").child("total").getValue(Double.class);
+                    Double households = dataSnapshot.child("Households").child("total").getValue(Double.class);
+                    Double other = dataSnapshot.child("Other").child("total").getValue(Double.class);
+                    Map pairVals = new HashMap();
+                    //pairVals.put("Agriculture",agriculture);
+                    pairVals.put("Mining", mining);
+                    pairVals.put("Manufacturing", manufacturing);
+                    pairVals.put("Utility Services", utility);
+                    pairVals.put("Households", households);
+                    pairVals.put("Other", other);
+
+                    setPie(pairVals);
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
     }
 
 
-    public void setPie(double glassTotal,double metalTotal,double organicToal,double paperTotal,double plasticTotal, double rubberTotal) {
+    public void setPie(Map pairVals) {
         piechart.setHoleColor(Color.WHITE);
         ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry((float) metalTotal, "Metal"));
-        entries.add(new PieEntry((float) glassTotal, "Glass"));
-        entries.add(new PieEntry((float) organicToal, "Organic"));
-        entries.add(new PieEntry((float) rubberTotal, "Rubber"));
-        entries.add(new PieEntry((float) paperTotal, "Paper"));
-        entries.add(new PieEntry((float) plasticTotal, "Plastic"));
+        Iterator it = pairVals.entrySet().iterator();
+        while (it.hasNext())
+        {
+            Map.Entry pair = (Map.Entry)it.next();
+            double val = (double) pair.getValue();
+            entries.add(new PieEntry((float) val, pair.getKey().toString()));
+        }
+//        entries.add(new PieEntry((float) metalTotal, "Metal"));
+//        entries.add(new PieEntry((float) glassTotal, "Glass"));
+//        entries.add(new PieEntry((float) organicToal, "Organic"));
+//        entries.add(new PieEntry((float) rubberTotal, "Rubber"));
+//        entries.add(new PieEntry((float) paperTotal, "Paper"));
+//        entries.add(new PieEntry((float) plasticTotal, "Plastic"));
 
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setValueTextSize(20);
         dataSet.setValueTextColor(Color.WHITE);
         PieData pieData = new PieData(dataSet);
-        piechart.getDescription().setText("Source: Sustainability Victoria");
+        if (ctg.equals("hard"))
+            piechart.getDescription().setText("Source: Sustainability Victoria");
+        else if (ctg.equals("water"))
+            piechart.getDescription().setText("Source: Australian Bureau of Statistics");
         piechart.setData(pieData);
         piechart.invalidate();
         dataSet.setColors(new int[]{Color.parseColor("#b79a96"),
