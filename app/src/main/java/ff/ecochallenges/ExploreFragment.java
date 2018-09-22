@@ -112,6 +112,7 @@ public class ExploreFragment extends Fragment {
                     yearSelect.setAdapter(adapter);
                     yearSelect.setSelection(5);
                     year = yearSelect.getSelectedItem().toString();
+                    cb.setChecked(false);
                     title.setText("Annual water consumption (Megaliters), Victoria");
                     getData("water", year);
                 }
@@ -129,6 +130,7 @@ public class ExploreFragment extends Fragment {
                     yearSelect.setAdapter(adapter);
                     yearSelect.setSelection(5);
                     year = yearSelect.getSelectedItem().toString();
+                    cb.setChecked(false);
                     title.setText("Annual energy consumption (Petajoules), Victoria");
                     getData("energy", year);
                 }
@@ -146,6 +148,7 @@ public class ExploreFragment extends Fragment {
                     yearSelect.setAdapter(adapter);
                     yearSelect.setSelection(7);
                     year = yearSelect.getSelectedItem().toString();
+                    cb.setChecked(false);
                     title.setText("Annual CO2 emission (Megatonnes), Victoria");
                     getData("co2", year);
                 }
