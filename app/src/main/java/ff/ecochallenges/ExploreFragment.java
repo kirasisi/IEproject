@@ -48,6 +48,8 @@ public class ExploreFragment extends Fragment {
     String ctg="hard"; //default
     private RadioButton general;
     private RadioButton water;
+    private RadioButton energy;
+    private RadioButton co2;
     TextView title;
     private ArrayAdapter<CharSequence> adapter = null;
 
@@ -65,11 +67,17 @@ public class ExploreFragment extends Fragment {
         piechart = vExplore.findViewById(R.id.pieC);
         general = vExplore.findViewById(R.id.button1);
         water = vExplore.findViewById(R.id.button2);
+        energy = vExplore.findViewById(R.id.button3);
+        co2 = vExplore.findViewById(R.id.button4);
 
         if (general.isChecked())
             adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChartGeneral,android.R.layout.simple_spinner_dropdown_item);
         else if (water.isChecked())
             adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChartWater,android.R.layout.simple_spinner_dropdown_item);
+        else if (energy.isChecked())
+            adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChartEnergy,android.R.layout.simple_spinner_dropdown_item);
+        else if (co2.isChecked())
+            adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChartCO2,android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSelect.setAdapter(adapter);
         cb = vExplore.findViewById(R.id.checkBox);
@@ -106,6 +114,40 @@ public class ExploreFragment extends Fragment {
                     year = yearSelect.getSelectedItem().toString();
                     title.setText("Annual water consumption (Megaliters), Victoria");
                     getData("water", year);
+                }
+            }
+        });
+
+        energy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(energy.isChecked()){
+                    cb.setVisibility(View.GONE);
+                    ctg = "energy";
+                    adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChartEnergy,android.R.layout.simple_spinner_dropdown_item);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    yearSelect.setAdapter(adapter);
+                    yearSelect.setSelection(5);
+                    year = yearSelect.getSelectedItem().toString();
+                    title.setText("Annual energy consumption (Petajoules), Victoria");
+                    getData("energy", year);
+                }
+            }
+        });
+
+        co2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(co2.isChecked()){
+                    cb.setVisibility(View.GONE);
+                    ctg = "co2";
+                    adapter = ArrayAdapter.createFromResource(getActivity(),R.array.yearOfChartCO2,android.R.layout.simple_spinner_dropdown_item);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    yearSelect.setAdapter(adapter);
+                    yearSelect.setSelection(7);
+                    year = yearSelect.getSelectedItem().toString();
+                    title.setText("Annual CO2 emission (Megatonnes), Victoria");
+                    getData("co2", year);
                 }
             }
         });
@@ -329,6 +371,98 @@ public class ExploreFragment extends Fragment {
                 }
             });
         }
+        else if (ctg.equals("energy"))
+        {
+            db = FirebaseDatabase.getInstance().getReference().child("ODEnergyConsumption");
+            db.orderByKey().equalTo(year).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    Double commercial = dataSnapshot.child("Commercial").child("total").getValue(Double.class);
+                    Double electricity = dataSnapshot.child("Electricity").child("total").getValue(Double.class);
+                    Double manufacturing = dataSnapshot.child("Manufacturing").child("total").getValue(Double.class);
+                    Double mining = dataSnapshot.child("Mining").child("total").getValue(Double.class);
+                    Double residential = dataSnapshot.child("Residential").child("total").getValue(Double.class);
+                    Double other = dataSnapshot.child("Other").child("total").getValue(Double.class);
+                    Double transport = dataSnapshot.child("Transport").child("total").getValue(Double.class);
+                    Map pairVals = new HashMap();
+                    pairVals.put("Mining", mining);
+                    pairVals.put("Commercial", commercial);
+                    pairVals.put("Electricity", electricity);
+                    pairVals.put("Manufacturing", manufacturing);
+                    pairVals.put("Other", other);
+                    pairVals.put("Residential", residential);
+                    pairVals.put("Transport", transport);
+
+                    setPie(pairVals);
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else if (ctg.equals("co2"))
+        {
+            db = FirebaseDatabase.getInstance().getReference().child("ODCO2Emission");
+            db.orderByKey().equalTo(year).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    Double agriculture = dataSnapshot.child("Agriculture").child("total").getValue(Double.class);
+                    Double electricity = dataSnapshot.child("Electricity").child("total").getValue(Double.class);
+                    Double fugitive = dataSnapshot.child("Fugitive").child("total").getValue(Double.class);
+                    Double industrial = dataSnapshot.child("Industrial").child("total").getValue(Double.class);
+                    Double stationary = dataSnapshot.child("Stationary Energy").child("total").getValue(Double.class);
+                    Double waste = dataSnapshot.child("Waste").child("total").getValue(Double.class);
+                    Double transport = dataSnapshot.child("Transport").child("total").getValue(Double.class);
+                    Map pairVals = new HashMap();
+                    pairVals.put("Agriculture", agriculture);
+                    pairVals.put("Fugitive", fugitive);
+                    pairVals.put("Electricity", electricity);
+                    pairVals.put("Industrial", industrial);
+                    pairVals.put("Stationary Energy", stationary);
+                    pairVals.put("Waste", waste);
+                    pairVals.put("Transport", transport);
+
+                    setPie(pairVals);
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
     }
 
@@ -343,12 +477,6 @@ public class ExploreFragment extends Fragment {
             double val = (double) pair.getValue();
             entries.add(new PieEntry((float) val, pair.getKey().toString()));
         }
-//        entries.add(new PieEntry((float) metalTotal, "Metal"));
-//        entries.add(new PieEntry((float) glassTotal, "Glass"));
-//        entries.add(new PieEntry((float) organicToal, "Organic"));
-//        entries.add(new PieEntry((float) rubberTotal, "Rubber"));
-//        entries.add(new PieEntry((float) paperTotal, "Paper"));
-//        entries.add(new PieEntry((float) plasticTotal, "Plastic"));
 
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -359,6 +487,10 @@ public class ExploreFragment extends Fragment {
             piechart.getDescription().setText("Source: Sustainability Victoria");
         else if (ctg.equals("water"))
             piechart.getDescription().setText("Source: Australian Bureau of Statistics");
+        else if (ctg.equals("energy"))
+            piechart.getDescription().setText("Source: Department of the Environment and Energy");
+        else if (ctg.equals("co2"))
+            piechart.getDescription().setText("Source: Department of the Environment and Energy");
         piechart.setData(pieData);
         piechart.invalidate();
         dataSet.setColors(new int[]{Color.parseColor("#b79a96"),
@@ -367,6 +499,7 @@ public class ExploreFragment extends Fragment {
                 Color.parseColor("#ed8a12"),
                 Color.parseColor("#ffc1c3"),
                 Color.parseColor("#d4a2f2"),
+                Color.parseColor("#ff5050"),
         });
     }
 }

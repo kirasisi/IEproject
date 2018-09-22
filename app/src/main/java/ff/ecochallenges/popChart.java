@@ -241,6 +241,98 @@ public class popChart extends Activity {
                 }
             });
         }
+        else if (ctg.equals("energy"))
+        {
+            db = FirebaseDatabase.getInstance().getReference().child("ODEnergyConsumption");
+
+            db.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    yearList.add(dataSnapshot.getKey().toString());
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                        if(snapshot.getKey().toString().equals(type)){
+                            Float total = snapshot.child("total").getValue(Float.class);
+                            totalList.add(new Entry(Float.parseFloat(dataSnapshot.getKey().toString()), total));
+
+                            Log.i("data1",total.toString());
+
+                        }
+
+                    }
+                    Log.i("data2",totalList.toString());
+                    setLine(ctg, type);
+
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else if (ctg.equals("co2"))
+        {
+            db = FirebaseDatabase.getInstance().getReference().child("ODCO2Emission");
+
+            db.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    yearList.add(dataSnapshot.getKey().toString());
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                        if(snapshot.getKey().toString().equals(type)){
+                            Float total = snapshot.child("total").getValue(Float.class);
+                            totalList.add(new Entry(Float.parseFloat(dataSnapshot.getKey().toString()), total));
+
+                            Log.i("data1",total.toString());
+
+                        }
+
+                    }
+                    Log.i("data2",totalList.toString());
+                    setLine(ctg, type);
+
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
         else if(ctg.equals("maintrend"))
         {
             db = FirebaseDatabase.getInstance().getReference().child("ODTotalAnnualTrend");
@@ -312,6 +404,20 @@ public class popChart extends Activity {
             set1 = new LineDataSet(totalList, "Total "+type+" water consumption in VIC");
             set1.setValueTextSize(9f);
             lineChart.getDescription().setText("Unit: Megaliters");
+        }
+
+        else if (ctg.equals("energy"))
+        {
+            set1 = new LineDataSet(totalList, "Total "+type+" energy consumption in VIC");
+            set1.setValueTextSize(9f);
+            lineChart.getDescription().setText("Unit: Petajoules");
+        }
+
+        else if (ctg.equals("co2"))
+        {
+            set1 = new LineDataSet(totalList, "Total "+type+" CO2 emissions in VIC");
+            set1.setValueTextSize(9f);
+            lineChart.getDescription().setText("Unit: Megatonnes");
         }
 
         set1.setColor(Color.BLUE);

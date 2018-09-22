@@ -25,6 +25,24 @@
         <item>2014</item>
         <item>2015</item>
     </string-array>
+    <string-array name="yearOfChartEnergy">
+        <item>2010</item>
+        <item>2011</item>
+        <item>2012</item>
+        <item>2013</item>
+        <item>2014</item>
+        <item>2015</item>
+    </string-array>
+    <string-array name="yearOfChartCO2">
+        <item>2010</item>
+        <item>2011</item>
+        <item>2012</item>
+        <item>2013</item>
+        <item>2014</item>
+        <item>2015</item>
+        <item>2016</item>
+        <item>2017</item>
+    </string-array>
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
