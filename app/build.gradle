@@ -44,7 +44,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:16.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.github.varunest:sparkbutton:1.0.5'
-    compile 'info.hoang8f:android-segmented:1.0.6'
+    implementation 'info.hoang8f:android-segmented:1.0.6'
+    implementation project(":garden-release")
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     // Required for local unit tests (JUnit 4 framework)
 
     // Required for instrumented tests
