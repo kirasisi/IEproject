@@ -26,6 +26,13 @@
     </ff.ecochallenges.WaveView>
 
     <ImageView
+        android:id="@+id/info"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/info"/>
+
+    <ImageView
         android:id="@+id/mainLogo"
         android:layout_width="60dp"
         android:layout_height="60dp"

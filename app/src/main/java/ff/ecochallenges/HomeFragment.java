@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
@@ -52,6 +53,7 @@ public class HomeFragment extends Fragment {
     private double predictedTotal;
     private String counterSearchKey;
     private WaveView wasteAnimation;
+    private ImageView info;
 
     Calendar currentCal = Calendar.getInstance();
     Calendar monthStart = Calendar.getInstance();
@@ -82,6 +84,7 @@ public class HomeFragment extends Fragment {
         //nextMonthTotal = vHome.findViewById(R.id.nextMonthTotal);
         homeProgressBar = vHome.findViewById(R.id.homeProgressBar);
         wasteAnimation = vHome.findViewById(R.id.waveProgress);
+        info = vHome.findViewById(R.id.info);
         counterLabel = vHome.findViewById(R.id.counterLabel);
 
 
@@ -288,6 +291,15 @@ public class HomeFragment extends Fragment {
                     intent.putExtra("ctg","maintrend");
                     startActivity(intent);
                 }
+        });
+
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),popChart.class);
+                intent.putExtra("origin","home");
+                startActivity(intent);
+            }
         });
         return vHome;
     }

@@ -51,56 +51,84 @@ public class popChart extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pop_chart);
-        closeBtn = (ImageView)findViewById(R.id.closeIcon);
-        lineChart = findViewById(R.id.lineC);
-        yearList = new ArrayList<>();
-        totalList = new ArrayList<>();
-        perCapList = new ArrayList<>();
-        cb = findViewById(R.id.checkBox);
-        DisplayMetrics dsm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dsm);
-        int width = dsm.widthPixels;
-        int height = dsm.heightPixels;
-        getWindow().setLayout((int) (width*0.9),(int)(height*0.7));
-        WindowManager.LayoutParams parmas = getWindow().getAttributes();
-        parmas.gravity = Gravity.CENTER;
-        parmas.x = 0;
-        parmas.y = 0;
-        getWindow().setAttributes(parmas);
-        closeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popChart.this.finish();
+        //Check if this popup is for app info or for line charts
+        String origin = getIntent().getStringExtra("origin");
+        if (origin != null && origin.equals("home"))
+        {
+            setContentView(R.layout.activity_pop_chart_info);
+            closeBtn = (ImageView)findViewById(R.id.closeIcon);
+            DisplayMetrics dsm = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(dsm);
+            int width = dsm.widthPixels;
+            int height = dsm.heightPixels;
+            getWindow().setLayout((int) (width*0.9),(int)(height*0.8));
+            WindowManager.LayoutParams parmas = getWindow().getAttributes();
+            parmas.gravity = Gravity.CENTER;
+            parmas.x = 0;
+            parmas.y = 0;
+            getWindow().setAttributes(parmas);
+            closeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popChart.this.finish();
 
+                }
+            });
+        }
+        else
+        {
+            setContentView(R.layout.activity_pop_chart);
+            closeBtn = (ImageView)findViewById(R.id.closeIcon);
+            lineChart = findViewById(R.id.lineC);
+            yearList = new ArrayList<>();
+            totalList = new ArrayList<>();
+            perCapList = new ArrayList<>();
+            cb = findViewById(R.id.checkBox);
+            DisplayMetrics dsm = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(dsm);
+            int width = dsm.widthPixels;
+            int height = dsm.heightPixels;
+            getWindow().setLayout((int) (width*0.9),(int)(height*0.7));
+            WindowManager.LayoutParams parmas = getWindow().getAttributes();
+            parmas.gravity = Gravity.CENTER;
+            parmas.x = 0;
+            parmas.y = 0;
+            getWindow().setAttributes(parmas);
+            closeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popChart.this.finish();
+
+                }
+            });
+            final String type = getIntent().getStringExtra("type");
+            final String ctg = getIntent().getStringExtra("ctg");
+            boolean isChecked = getIntent().getBooleanExtra("isChecked",true);
+            if(isChecked==true && !ctg.equals("maintrend")){
+                cb.setVisibility(View.GONE);
+                perCapList.clear();
+                getPerCap(ctg, type);
+            }else {
+                cb.setVisibility(View.GONE);
+                getData(ctg, type);
             }
-        });
-        final String type = getIntent().getStringExtra("type");
-        final String ctg = getIntent().getStringExtra("ctg");
-        boolean isChecked = getIntent().getBooleanExtra("isChecked",true);
-        if(isChecked==true && !ctg.equals("maintrend")){
-           cb.setVisibility(View.GONE);
-            perCapList.clear();
-            getPerCap(ctg, type);
-        }else {
-           cb.setVisibility(View.GONE);
-            getData(ctg, type);
+
+            cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(cb.isChecked()){
+                        perCapList.clear();
+                        getPerCap(ctg, type);
+                    }
+                    else{
+                        totalList.clear();
+                        getData(ctg, type);
+                    }
+                }
+
+            });
         }
 
-        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(cb.isChecked()){
-                    perCapList.clear();
-                    getPerCap(ctg, type);
-                }
-                else{
-                    totalList.clear();
-                    getData(ctg, type);
-                }
-            }
-
-        });
     }
 
 
