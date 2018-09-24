@@ -1,8 +1,13 @@
 package ff.ecochallenges;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -10,6 +15,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,6 +35,7 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String CHANNEL_ID = "test123";
     private FragmentManager fragmentManager;
     private Fragment challengeFragment;
     private static final int RC_SIGN_IN = 0;
@@ -118,6 +126,33 @@ public class MainActivity extends AppCompatActivity {
 
     public void onStart() {
         super.onStart();
+        createNotificationChannel();
+        //sendNotification();
+
+    }
+
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "test";
+            String description = "test";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
+    public void onStop()
+    {
+        super.onStop();
+        startService(new Intent(this, NotificationService.class));
     }
 
 
