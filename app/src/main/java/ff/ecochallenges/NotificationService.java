@@ -221,7 +221,7 @@ public class NotificationService extends Service {
                 //use a handler to run a toast that shows the current timestamp
                 handler.post(new Runnable() {
                     public void run() {
-                        
+
                         sendNotification();
 
                     }
