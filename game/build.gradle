@@ -1,0 +1,62 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+
+
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    //[DO NOT REMOVE THE COMMENTED CODE BELOW!]
+//////////////////////////////////////////////////////
+    afterEvaluate {
+        assembleDebug.finalizedBy(exportJar)
+    }
+/////////////////////////////////////////////////////
+//[DO NOT REMOVE THE COMMENTED CODE ABOVE!]
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+
+
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+//[DO NOT REMOVE THE COMMENTED CODE BELOW!]
+///////////////////////////////////////////////////////////////////////////////////////////////////
+task exportJar(type: Copy) {
+    from('build/intermediates/packaged-classes/debug/classes.jar')
+    include('classes.jar')
+    into('../garden/Assets/Plugins/Android')
+    rename('classes.jar', 'ecochallenges.jar')
+}
+task deleteOldJar(type: Delete) {
+    delete '../garden/Assets/Plugins/Android/ecochallenges.jar'
+}
+exportJar.dependsOn(deleteOldJar)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//[DO NOT REMOVE THE COMMENTED CODE ABOVE!]
+

@@ -16,13 +16,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-//import com.john.waveview.WaveView;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -30,8 +30,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import ff.ecochallenges.game.Global;
+
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
+//import com.john.waveview.WaveView;
 
 public class HomeFragment extends Fragment {
     private TextView uid;
@@ -54,7 +57,7 @@ public class HomeFragment extends Fragment {
     private String counterSearchKey;
     private WaveView wasteAnimation;
     private ImageView info;
-
+    private ff.ecochallenges.game.pointTransfer pointTF;
     Calendar currentCal = Calendar.getInstance();
     Calendar monthStart = Calendar.getInstance();
 
@@ -69,6 +72,8 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         myPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         userUID = myPreferences.getString("uid", null);
+        pointTF = new ff.ecochallenges.game.pointTransfer();
+
     }
 
     @Override
@@ -117,6 +122,12 @@ public class HomeFragment extends Fragment {
                             mDatabase.child(userUID).child("challengeFinished").setValue("0");
                             challengeCount.setText("You have done 0 challenges so far!");
                             nutsPoint.setText("0");
+                            Global g = Global.getInstance();
+                            g.setData(0);
+
+
+
+
                         }
                     }
 
@@ -134,6 +145,9 @@ public class HomeFragment extends Fragment {
                     try {
                         challengeCount.setText("You have done " + challenge.toString() + " challenge(s) so far!");
                         nutsPoint.setText(nuts.toString());
+                        Global g = Global.getInstance();
+                        g.setData(Integer.parseInt(nuts.toString()));
+
                     } catch (Exception e) {
                         Log.i("Exception", "Null");
                     }
