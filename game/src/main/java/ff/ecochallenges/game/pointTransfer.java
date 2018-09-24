@@ -26,6 +26,9 @@ public class pointTransfer {
     }
     public void receivePoint(int point){
         Log.d("Unity",String.valueOf(point));
+        Global g = Global.getInstance();
+        g.setData(point);
+        g.setpoint(point);
 
     }
 

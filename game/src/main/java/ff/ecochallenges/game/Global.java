@@ -5,15 +5,24 @@ public class Global {
 
     // Global variable
     private int data;
+    private int point;
 
     // Restrict the constructor from being instantiated
     private Global(){}
 
     public void setData(int d){
         this.data=d;
+
+    }
+    public void setpoint(int p){
+        this.point=p;
+
     }
     public int getData(){
         return this.data;
+    }
+    public int getPoint(){
+        return this.point;
     }
 
     public static synchronized Global getInstance(){
