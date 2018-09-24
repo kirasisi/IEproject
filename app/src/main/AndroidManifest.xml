@@ -51,6 +51,15 @@
             android:name=".popChart"
             android:theme="@style/AppTheme.pop" />
         <activity android:name=".garden"></activity>
+
+        <service
+            android:name=".NotificationService">
+        <intent-filter>
+            <action android:name="ff.ecochallenges.NotificationService" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+        </service>
     </application>
 
 </manifest>
