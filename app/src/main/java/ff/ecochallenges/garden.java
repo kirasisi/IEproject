@@ -39,12 +39,9 @@ public class garden extends AppCompatActivity {
         mDatabase.orderByKey().equalTo(userUID).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Object points = null;
-                Object challengeNum = null;
-                points = dataSnapshot.child("points").getValue();
                 Global g = Global.getInstance();
                 int point = g.getData();
-                if(Integer.parseInt(String.valueOf(points))!=point){
+
                     try {
                         mDatabase.child(userUID).child("points")
                                 .setValue(point);
@@ -52,7 +49,7 @@ public class garden extends AppCompatActivity {
                     } catch (Exception e) {
 
                     }
-                }
+
 
             }
 
