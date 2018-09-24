@@ -48,7 +48,7 @@ dependencies {
     implementation "com.android.support:support-compat:27.1.1"
     implementation project(":garden-release")
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(":game")
+    //implementation project(":game")
     // Required for local unit tests (JUnit 4 framework)
 
     // Required for instrumented tests
