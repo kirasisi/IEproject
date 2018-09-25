@@ -57,7 +57,6 @@ public class HomeFragment extends Fragment {
     private String counterSearchKey;
     private WaveView wasteAnimation;
     private ImageView info;
-    private ff.ecochallenges.game.pointTransfer pointTF;
     Calendar currentCal = Calendar.getInstance();
     Calendar monthStart = Calendar.getInstance();
 
@@ -82,7 +81,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View vHome = inflater.inflate(R.layout.fragment_home, container, false);
-        uploadPoint();
         uid = (TextView) vHome.findViewById(R.id.uID);
         challengeCount = (TextView) vHome.findViewById(R.id.challengeCount);
         nutsPoint = (TextView) vHome.findViewById(R.id.pointYouHave);

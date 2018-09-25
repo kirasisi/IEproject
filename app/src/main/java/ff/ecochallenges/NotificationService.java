@@ -81,14 +81,15 @@ public class NotificationService extends Service {
 //        timer.schedule(timerTask, tomorrowtest.getTime(), 1000*60*60*24);
 
         //schedule the timer
+        Calendar today = Calendar.getInstance();
         Calendar tomorrow = Calendar.getInstance();
-        tomorrow.add(DATE, 1);
-        tomorrow.set(Calendar.HOUR_OF_DAY, 9);
-        tomorrow.set(Calendar.MINUTE, 0);
+        tomorrow.set(Calendar.HOUR_OF_DAY, 17);
+        tomorrow.set(Calendar.MINUTE, 2);
         tomorrow.set(Calendar.SECOND, 0);
-        if(tomorrow.getTime().compareTo(new Date()) < 0)
-            tomorrow.add(Calendar.DAY_OF_MONTH, 1);
-        timer.schedule(timerTask, tomorrow.getTime(), 1000*60*60*24);
+        if(today.compareTo(tomorrow) > 0)
+            tomorrow.add(DATE, 1);
+        long initialDelay = tomorrow.getTimeInMillis() - today.getTimeInMillis();
+        timer.scheduleAtFixedRate(timerTask, initialDelay, 1000*60*60*24);
     }
 
     public void stoptimertask() {
