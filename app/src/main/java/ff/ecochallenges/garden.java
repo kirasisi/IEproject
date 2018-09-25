@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.ff.garden.UnityPlayerActivity;
 import com.google.firebase.database.ChildEventListener;
@@ -33,6 +34,7 @@ public class garden extends AppCompatActivity {
         intent.putExtra("Unity","intent test");
         startActivity(intent);
     }
+
     public void uploadPoint(){
        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
@@ -41,7 +43,6 @@ public class garden extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Global g = Global.getInstance();
                 int point = g.getData();
-
                     try {
                         mDatabase.child(userUID).child("points")
                                 .setValue(point);

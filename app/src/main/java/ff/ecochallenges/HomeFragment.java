@@ -74,6 +74,7 @@ public class HomeFragment extends Fragment {
         userUID = myPreferences.getString("uid", null);
         pointTF = new ff.ecochallenges.game.pointTransfer();
 
+
     }
 
     @Override
@@ -124,6 +125,7 @@ public class HomeFragment extends Fragment {
                             nutsPoint.setText("0");
                             Global g = Global.getInstance();
                             g.setData(0);
+
 
 
 
@@ -332,4 +334,6 @@ public class HomeFragment extends Fragment {
             repeatUpdateHandler.postDelayed( new RptUpdater(), 250 );
         }
     }
+
+
 }
