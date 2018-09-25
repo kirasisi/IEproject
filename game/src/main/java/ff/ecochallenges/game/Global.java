@@ -5,7 +5,7 @@ public class Global {
 
     // Global variable
     private int data;
-    private int point;
+    private String id;
 
     // Restrict the constructor from being instantiated
     private Global(){}
@@ -14,15 +14,15 @@ public class Global {
         this.data=d;
 
     }
-    public void setpoint(int p){
-        this.point=p;
+    public void setId(String d){
+        this.id=d;
 
     }
     public int getData(){
         return this.data;
     }
-    public int getPoint(){
-        return this.point;
+    public String getId(){
+        return this.id;
     }
 
     public static synchronized Global getInstance(){

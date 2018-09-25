@@ -1,1 +1,1 @@
-include ':app', ':garden-release'
+include ':app', ':garden-release',':game'

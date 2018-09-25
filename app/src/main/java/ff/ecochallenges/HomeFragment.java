@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         myPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         userUID = myPreferences.getString("uid", null);
-        pointTF = new ff.ecochallenges.game.pointTransfer();
+
 
 
     }
@@ -82,6 +82,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View vHome = inflater.inflate(R.layout.fragment_home, container, false);
+        uploadPoint();
         uid = (TextView) vHome.findViewById(R.id.uID);
         challengeCount = (TextView) vHome.findViewById(R.id.challengeCount);
         nutsPoint = (TextView) vHome.findViewById(R.id.pointYouHave);
@@ -92,7 +93,8 @@ public class HomeFragment extends Fragment {
         wasteAnimation = vHome.findViewById(R.id.waveProgress);
         info = vHome.findViewById(R.id.info);
         counterLabel = vHome.findViewById(R.id.counterLabel);
-
+        Global g = Global.getInstance();
+        g.setId(userUID);
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
@@ -125,6 +127,10 @@ public class HomeFragment extends Fragment {
                             nutsPoint.setText("0");
                             Global g = Global.getInstance();
                             g.setData(0);
+
+
+
+
 
 
 
@@ -333,6 +339,47 @@ public class HomeFragment extends Fragment {
             wasteAnimation.setProgress((int) (Math.round((currentWasteTotal/predictedTotal)*100)));
             repeatUpdateHandler.postDelayed( new RptUpdater(), 250 );
         }
+    }
+
+    public void uploadPoint(){
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        mDatabase.orderByKey().equalTo(userUID).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Global g = Global.getInstance();
+                int point = g.getData();
+                try {
+                    mDatabase.child(userUID).child("points")
+                            .setValue(point);
+
+                } catch (Exception e) {
+
+                }
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
