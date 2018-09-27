@@ -29,12 +29,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
 import ff.ecochallenges.game.Global;
 
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
-//import com.john.waveview.WaveView;
 
 public class HomeFragment extends Fragment {
     private TextView uid;

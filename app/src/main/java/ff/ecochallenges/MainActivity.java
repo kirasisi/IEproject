@@ -1,11 +1,14 @@
 package ff.ecochallenges;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -112,6 +116,12 @@ public class MainActivity extends AppCompatActivity {
         manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
         fragmentManager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
+
+        //Check if app is launched through notification
+        String action = getIntent().getAction();
+        if (action != null && action.equals("challenge"))
+            challengef();
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -127,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         createNotificationChannel();
-        //sendNotification();
 
     }
 
@@ -152,7 +161,8 @@ public class MainActivity extends AppCompatActivity {
     public void onStop()
     {
         super.onStop();
-        startService(new Intent(this, NotificationService.class));
+        //Set the timer for the notification
+        setReminder(this, AlarmReceiver.class, 8, 0);
     }
 
 
@@ -200,6 +210,35 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return false;
         }
+    }
+
+    public static void setReminder(Context context, Class<?> cls, int hour, int min)
+    {
+        Calendar calendar = Calendar.getInstance();
+        Calendar setcalendar = Calendar.getInstance();
+        setcalendar.set(Calendar.HOUR_OF_DAY, hour);
+        setcalendar.set(Calendar.MINUTE, min);
+        setcalendar.set(Calendar.SECOND, 0);
+        // cancel already scheduled reminders
+        //cancelReminder(context, cls);
+
+        if (setcalendar.before(calendar))
+            setcalendar.add(Calendar.DATE, 1);
+
+        // Enable a receiver
+        ComponentName receiver = new ComponentName(context, cls);
+        PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        Intent intent1 = new Intent(context, cls);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                54321, intent1,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, setcalendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }
 
