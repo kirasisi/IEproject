@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference db;
     private SharedPreferences myPreferences;
-
 
 
     Fragment newFragment = null;
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void exploref(){
+    public void exploref() {
         newFragment = new ExploreFragment();
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
@@ -158,8 +158,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
         //Set the timer for the notification
         setReminder(this, AlarmReceiver.class, 8, 0);
@@ -212,8 +211,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void setReminder(Context context, Class<?> cls, int hour, int min)
-    {
+    public static void setReminder(Context context, Class<?> cls, int hour, int min) {
         Calendar calendar = Calendar.getInstance();
         Calendar setcalendar = Calendar.getInstance();
         setcalendar.set(Calendar.HOUR_OF_DAY, hour);

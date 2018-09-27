@@ -77,8 +77,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                                         cName = dataSnapshot.child("cName").getValue(String.class);
                                         // Create an explicit intent for an Activity in your app
                                         Intent intent = new Intent(context, cls);
-                                        intent.putExtra("notificationLaunch", true);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        intent.setAction("challenge");
                                         PendingIntent pendingIntent = PendingIntent.getActivity(context, DAILY_REMINDER_REQUEST_CODE, intent, 0);
 
                                         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, MainActivity.CHANNEL_ID)

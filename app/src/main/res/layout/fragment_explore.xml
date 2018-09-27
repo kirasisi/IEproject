@@ -50,6 +50,15 @@
             style="@style/RadioButton" />
     </info.hoang8f.android.segmented.SegmentedGroup>
 
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieC"
+        android:layout_width="match_parent"
+        android:layout_height="437dp"
+
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="29dp"></com.github.mikephil.charting.charts.PieChart>
+
     <TextView
         android:id="@+id/titleForTotalChart"
         android:layout_width="350dp"
@@ -92,20 +101,10 @@
             android:text="Year"
             android:textSize="18sp"
             android:layout_marginTop="10dp"
+            android:textColor="@android:color/black"
             android:textStyle="bold" />
     </RelativeLayout>
 
-
-
-
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pieC"
-        android:layout_width="match_parent"
-        android:layout_height="437dp"
-
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="29dp"></com.github.mikephil.charting.charts.PieChart>
 
     <TextView
         android:layout_width="100dp"

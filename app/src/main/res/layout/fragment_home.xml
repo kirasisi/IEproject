@@ -121,7 +121,7 @@
         android:fontFamily="@font/roboto_slab"
         android:textStyle="bold"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:textAlignment="center"
         android:visibility="invisible"/>
 
@@ -141,29 +141,6 @@
         android:shadowDy="0"
         android:shadowRadius="10"
         android:visibility="invisible"/>
-    <!--<TextView-->
-        <!--android:id="@+id/previousMonthTotal"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginLeft="25dp"-->
-        <!--android:layout_marginBottom="180dp"-->
-        <!--android:textSize="14sp"-->
-        <!--android:textAlignment="center"-->
-        <!--android:textColor="@android:color/black"-->
-        <!--android:textStyle="bold"/>-->
-    <!--<TextView-->
-        <!--android:id="@+id/nextMonthTotal"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_marginRight="25dp"-->
-        <!--android:layout_marginBottom="180dp"-->
-        <!--android:textSize="14sp"-->
-        <!--android:textAlignment="center"-->
-        <!--android:textColor="@android:color/black"-->
-        <!--android:textStyle="bold"/>-->
 
     <ProgressBar
         android:id="@+id/homeProgressBar"

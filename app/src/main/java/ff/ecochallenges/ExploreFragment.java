@@ -484,7 +484,8 @@ public class ExploreFragment extends Fragment {
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setValueTextSize(20);
-        dataSet.setValueTextColor(Color.WHITE);
+        dataSet.setValueTextColor(Color.BLACK);
+        piechart.setEntryLabelColor(Color.BLACK);
         PieData pieData = new PieData(dataSet);
         if (ctg.equals("hard"))
             piechart.getDescription().setText("Source: Sustainability Victoria");
