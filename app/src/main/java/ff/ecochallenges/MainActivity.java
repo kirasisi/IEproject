@@ -40,11 +40,9 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String CHANNEL_ID = "test123";
+    public static final String CHANNEL_ID = "mainnotif";
     private FragmentManager fragmentManager;
     private Fragment challengeFragment;
-    private static final int RC_SIGN_IN = 0;
-    private FirebaseAuth mAuth;
     private DatabaseReference db;
     private SharedPreferences myPreferences;
 
@@ -110,21 +108,23 @@ public class MainActivity extends AppCompatActivity {
             myEditor.commit();
         }
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
         newFragment = new HomeFragment();
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
         fragmentManager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
 
-        //Check if app is launched through notification
-        String action = getIntent().getAction();
-        if (action != null && action.equals("challenge"))
-            challengef();
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        //Check if app is launched through notification
+        String action = getIntent().getAction();
+        if (action != null && action.equals("challenge"))
+        {
+            navigation.setSelectedItemId(R.id.navigation_challenge);
+        }
+
     }
 
     public void loadFragment(Fragment fragment) {
@@ -145,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "test";
-            String description = "test";
+            CharSequence name = "notifs";
+            String description = "Main notification channel";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         //Set the timer for the notification
-        setReminder(this, AlarmReceiver.class, 8, 0);
+        setReminder(this, AlarmReceiver.class, 11, 37);
     }
 
 
