@@ -42,8 +42,6 @@ public class HomeFragment extends Fragment {
     private TextView challengeCount;
     private TextView nutsPoint;
     private Button currentMonthTotal;
-    //private TextView previousMonthTotal;
-    //private TextView nextMonthTotal;
     private TextView counterLabel;
     private ProgressBar homeProgressBar;
     private SharedPreferences myPreferences;
@@ -69,10 +67,6 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         myPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         userUID = myPreferences.getString("uid", null);
-
-
-
-
     }
 
     @Override
@@ -124,14 +118,6 @@ public class HomeFragment extends Fragment {
                             nutsPoint.setText("0");
                             Global g = Global.getInstance();
                             g.setData(0);
-
-
-
-
-
-
-
-
 
                         }
                     }
@@ -226,82 +212,6 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-        //Check previous month's total
-//        String previousCounterSearchKey;
-//        if (currentCal.get(MONTH) == 0)
-//            previousCounterSearchKey = (currentCal.get(YEAR)-1)+"-12";
-//        else
-//            previousCounterSearchKey = currentCal.get(YEAR)+"-"+(currentCal.get(MONTH));
-//        counterData.orderByKey().equalTo(previousCounterSearchKey)
-//                .addChildEventListener(new ChildEventListener() {
-//
-//
-//                    @Override
-//                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                        double previousTotal = dataSnapshot.child("Total").getValue(Double.class);
-//                        DecimalFormat df = new DecimalFormat("#,###");
-//                        df.setMaximumFractionDigits(10);
-//                        previousMonthTotal.setText("Last month:\n"+df.format(previousTotal)+"");
-//                    }
-//
-//                    @Override
-//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
-        //Check next month's total
-//        String nextCounterSearchKey;
-//        if (currentCal.get(MONTH) == 11)
-//            nextCounterSearchKey = (currentCal.get(YEAR)+1)+"-1";
-//        else
-//            nextCounterSearchKey = currentCal.get(YEAR)+"-"+(currentCal.get(MONTH)+2);
-//        counterData.orderByKey().equalTo(nextCounterSearchKey)
-//                .addChildEventListener(new ChildEventListener() {
-//
-//                    @Override
-//                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                        double nextTotal = dataSnapshot.child("Total").getValue(Double.class);
-//                        DecimalFormat df = new DecimalFormat("#,###");
-//                        df.setMaximumFractionDigits(10);
-//                        nextMonthTotal.setText("Next month:\n"+df.format(nextTotal)+"");
-
-//                    }
-//
-//                    @Override
-//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
 
         currentMonthTotal.setOnClickListener(new View.OnClickListener() {
             @Override

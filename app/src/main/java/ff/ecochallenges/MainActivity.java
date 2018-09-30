@@ -132,11 +132,6 @@ public class MainActivity extends AppCompatActivity {
             navigation.setSelectedItemId(R.id.navigation_challenge);
         }
 
-
-
-
-
-
     }
 
 
@@ -157,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
 
         super.onResume();
+        //Check if garden mini-game is exited to select home screen from navigation menu
         if (navigation.getSelectedItemId() == R.id.navigation_garden)
         navigation.setSelectedItemId(R.id.navigation_home);
     }
