@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         //Set the timer for the notification
-        setReminder(this, AlarmReceiver.class, 11, 37);
+        setReminder(this, AlarmReceiver.class, 8, 0);
     }
 
 
