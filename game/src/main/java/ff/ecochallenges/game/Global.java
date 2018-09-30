@@ -6,6 +6,7 @@ public class Global {
     // Global variable
     private int data;
     private String id;
+    private String view="";
 
     // Restrict the constructor from being instantiated
     private Global(){}
@@ -16,7 +17,9 @@ public class Global {
     }
     public void setId(String d){
         this.id=d;
-
+    }
+    public void setView(String d){
+        this.view =d;
     }
     public int getData(){
         return this.data;
@@ -24,6 +27,7 @@ public class Global {
     public String getId(){
         return this.id;
     }
+    public String getView(){return this.view;}
 
     public static synchronized Global getInstance(){
         if(instance==null){

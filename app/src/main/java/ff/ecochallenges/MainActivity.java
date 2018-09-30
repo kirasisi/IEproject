@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -37,6 +38,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
+
+import ff.ecochallenges.game.Global;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -109,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
             myEditor.commit();
         }
         setContentView(R.layout.activity_main);
+
         newFragment = new HomeFragment();
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
@@ -128,7 +132,13 @@ public class MainActivity extends AppCompatActivity {
             navigation.setSelectedItemId(R.id.navigation_challenge);
         }
 
+
+
+
+
+
     }
+
 
     public void loadFragment(Fragment fragment) {
         fragmentManager.beginTransaction()

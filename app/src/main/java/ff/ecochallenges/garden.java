@@ -30,6 +30,8 @@ public class garden extends AppCompatActivity {
         myPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         userUID = myPreferences.getString("uid", null);
         uploadPoint();
+        Intent intent2 = new Intent(this,MainActivity.class);
+        intent2.setAction("home");
         Intent intent = new Intent(this, UnityPlayerActivity.class);
         intent.putExtra("Unity","intent test");
         startActivity(intent);
