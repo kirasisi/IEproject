@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment challengeFragment;
     private DatabaseReference db;
     private SharedPreferences myPreferences;
+    private BottomNavigationView navigation;
 
 
     Fragment newFragment = null;
@@ -114,9 +115,11 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.frame_layout, newFragment).commit();
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        navigation.setSelectedItemId(R.id.navigation_home);
 
         //Check if app is launched through notification
         String action = getIntent().getAction();
@@ -138,6 +141,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         createNotificationChannel();
 
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        navigation.setSelectedItemId(R.id.navigation_home);
     }
 
 
