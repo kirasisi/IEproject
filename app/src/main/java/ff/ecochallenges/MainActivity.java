@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
 
         super.onResume();
+        if (navigation.getSelectedItemId() == R.id.navigation_garden)
         navigation.setSelectedItemId(R.id.navigation_home);
     }
 
