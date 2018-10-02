@@ -435,10 +435,10 @@ public class ExploreFragment extends Fragment {
                     Double transport = dataSnapshot.child("Transport").child("total").getValue(Double.class);
                     Map pairVals = new HashMap();
                     pairVals.put("Agriculture", agriculture);
-                    pairVals.put("Fugitive", fugitive);
+                    pairVals.put("Leaks", fugitive);
                     pairVals.put("Electricity", electricity);
                     pairVals.put("Industrial", industrial);
-                    pairVals.put("Stationary Energy", stationary);
+                    pairVals.put("Fuel consumption", stationary);
                     pairVals.put("Waste", waste);
                     pairVals.put("Transport", transport);
 
