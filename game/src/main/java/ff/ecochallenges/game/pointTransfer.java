@@ -31,6 +31,7 @@ public class pointTransfer {
     public int pointPass(){
         Global g = Global.getInstance();
         int data=g.getData();
+       // Log.i("unity",String.valueOf(data));
         return data;
 
     }

@@ -29,6 +29,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import ff.ecochallenges.game.Global;
+
 import static java.util.Calendar.DATE;
 
 
@@ -150,6 +152,7 @@ public class ChallengeFragment extends Fragment {
                 updatePoint();
 
 
+
             }
 
         });
@@ -190,6 +193,8 @@ public class ChallengeFragment extends Fragment {
                             .setValue(Integer.parseInt(points.toString()) + Integer.parseInt(point.getText().toString()));
                     mDatabase.child(userUID).child("challengeFinished")
                             .setValue(Integer.parseInt(challengeNum.toString()) + 1);
+                    Global g = Global.getInstance();
+                    g.setData(Integer.parseInt(points.toString()) + Integer.parseInt(point.getText().toString()));
 
                 } catch (Exception e) {
 

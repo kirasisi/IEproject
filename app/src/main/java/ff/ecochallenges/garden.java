@@ -29,7 +29,6 @@ public class garden extends AppCompatActivity {
         setContentView(R.layout.activity_garden);
         myPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         userUID = myPreferences.getString("uid", null);
-        uploadPoint();
         Intent intent2 = new Intent(this,MainActivity.class);
         intent2.setAction("home");
         Intent intent = new Intent(this, UnityPlayerActivity.class);
@@ -37,46 +36,7 @@ public class garden extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void uploadPoint(){
-       mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        mDatabase.orderByKey().equalTo(userUID).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Global g = Global.getInstance();
-                int point = g.getData();
-                    try {
-                        mDatabase.child(userUID).child("points")
-                                .setValue(point);
-
-                    } catch (Exception e) {
-
-                    }
-
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
 }
