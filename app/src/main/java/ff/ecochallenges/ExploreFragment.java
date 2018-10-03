@@ -428,9 +428,9 @@ public class ExploreFragment extends Fragment {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     Double agriculture = dataSnapshot.child("Agriculture").child("total").getValue(Double.class);
                     Double electricity = dataSnapshot.child("Electricity").child("total").getValue(Double.class);
-                    Double fugitive = dataSnapshot.child("Fugitive").child("total").getValue(Double.class);
+                    Double fugitive = dataSnapshot.child("Leaks").child("total").getValue(Double.class);
                     Double industrial = dataSnapshot.child("Industrial").child("total").getValue(Double.class);
-                    Double stationary = dataSnapshot.child("Stationary Energy").child("total").getValue(Double.class);
+                    Double stationary = dataSnapshot.child("Fuel consumption").child("total").getValue(Double.class);
                     Double waste = dataSnapshot.child("Waste").child("total").getValue(Double.class);
                     Double transport = dataSnapshot.child("Transport").child("total").getValue(Double.class);
                     Map pairVals = new HashMap();
