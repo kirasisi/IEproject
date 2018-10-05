@@ -63,7 +63,9 @@ public class ChallengeFragment extends Fragment {
     private String tp;
     private RelativeLayout skipSection;
     private RelativeLayout moreInfoSection;
+    private RelativeLayout earnedPoints;
     private boolean skipCall = false;
+    private Long challengePoints;
 
 
     public static ChallengeFragment newInstance() {
@@ -100,6 +102,7 @@ public class ChallengeFragment extends Fragment {
         worthNuts = vChallenge.findViewById(R.id.worthNuts);
         skipSection = vChallenge.findViewById(R.id.skipSection);
         moreInfoSection = vChallenge.findViewById(R.id.moreInfoSection);
+        earnedPoints = vChallenge.findViewById(R.id.earnedPoints);
 
         fetchChallenge(false);
         checkCompletion();
@@ -143,7 +146,8 @@ public class ChallengeFragment extends Fragment {
                 completeBtn.setVisibility(getView().GONE);
                 skipSection.setVisibility(View.GONE);
                 worthNuts.setVisibility(View.GONE);
-                completeText.setText("Well Done!");
+                completeText.setText("You've earned "+challengePoints+" points ");
+                earnedPoints.setVisibility(View.VISIBLE);
                 updateCompeletion();
                 displayNextChallenge();
                 check = true;
@@ -303,8 +307,8 @@ public class ChallengeFragment extends Fragment {
                             completeBtn.setVisibility(View.GONE);
                             skipSection.setVisibility(View.GONE);
                             worthNuts.setVisibility(View.GONE);
-                            completeText.setVisibility(View.VISIBLE);
-                            completeText.setText("Well Done!");
+                            earnedPoints.setVisibility(View.VISIBLE);
+                            //completeText.setText("Well Done! - debug"+testvar);
                             completeSign.setVisibility(View.VISIBLE);
                             tip.setVisibility(View.VISIBLE);
                             instructContent.setVisibility(View.GONE);
@@ -361,22 +365,22 @@ public class ChallengeFragment extends Fragment {
         else
         {
             mDatabase = FirebaseDatabase.getInstance().getReference().child("WeekdayChallenges");
-                nextDayChallenge = mDatabase.child(String.valueOf(getStamp("Weekday")));
-                nextDayChallenge.addValueEventListener(new ValueEventListener() {
-                    public String TAG;
+            nextDayChallenge = mDatabase.child(String.valueOf(getStamp("Weekday")));
+            nextDayChallenge.addValueEventListener(new ValueEventListener() {
+                public String TAG;
 
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        String name = dataSnapshot.child("cName").getValue(String.class);
-                        nextChallenge.setText("Tomorrow's challenge: " + name);
-                    }
+                    String name = dataSnapshot.child("cName").getValue(String.class);
+                    nextChallenge.setText("Tomorrow's challenge: " + name);
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.w(TAG, "onCancelled", databaseError.toException());
-                    }
-                });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.w(TAG, "onCancelled", databaseError.toException());
+                }
+            });
         }
 
         nextChallenge.setVisibility(View.VISIBLE);
@@ -397,25 +401,25 @@ public class ChallengeFragment extends Fragment {
                     if (dataSnapshot.exists()) {
                         String last = dataSnapshot.child(userUID).child("currentWeekendChallenge").getValue(String.class);
                         int current = Integer.parseInt(last);
-                            todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current));
+                        todaysChallenge = FirebaseDatabase.getInstance().getReference("WeekendChallenges").child(String.valueOf(current));
 
-                            updateChallengeUI();
-                            if (current == 4)
-                                setStamp("Weekend",1);
-                            else
-                                setStamp("Weekend",current + 1);
-                            if (!completed)
-                            {
-                                completeBtn.setVisibility(View.VISIBLE);
-                                skipSection.setVisibility(View.VISIBLE);
-                                worthNuts.setVisibility(View.VISIBLE);
-                                completeText.setVisibility(View.GONE);
-                                nextChallenge.setVisibility(View.GONE);
-                                tip.setVisibility(View.GONE);
-                                instructContent.setVisibility(View.VISIBLE);
-                                cName.setVisibility(View.VISIBLE);
-                                completeSign.setVisibility(View.GONE);
-                            }
+                        updateChallengeUI();
+                        if (current == 4)
+                            setStamp("Weekend",1);
+                        else
+                            setStamp("Weekend",current + 1);
+                        if (!completed)
+                        {
+                            completeBtn.setVisibility(View.VISIBLE);
+                            skipSection.setVisibility(View.VISIBLE);
+                            worthNuts.setVisibility(View.VISIBLE);
+                            earnedPoints.setVisibility(View.GONE);
+                            nextChallenge.setVisibility(View.GONE);
+                            tip.setVisibility(View.GONE);
+                            instructContent.setVisibility(View.VISIBLE);
+                            cName.setVisibility(View.VISIBLE);
+                            completeSign.setVisibility(View.GONE);
+                        }
 
                     }
                 }
@@ -446,7 +450,7 @@ public class ChallengeFragment extends Fragment {
                         {
                             completeBtn.setVisibility(View.VISIBLE);
                             skipSection.setVisibility(View.VISIBLE);
-                            completeText.setVisibility(View.GONE);
+                            earnedPoints.setVisibility(View.GONE);
                             nextChallenge.setVisibility(View.GONE);
                             tip.setVisibility(View.GONE);
                             instructContent.setVisibility(View.VISIBLE);
@@ -530,9 +534,9 @@ public class ChallengeFragment extends Fragment {
                 String description = dataSnapshot.child("description").getValue(String.class);
                 instructContent.setText(description);
                 Long points = dataSnapshot.child("points").getValue(Long.class);
+                challengePoints = points;
+                completeText.setText("You've earned "+challengePoints+" points ");
                 point.setText(String.valueOf(points));
-
-
                 String type1 = dataSnapshot.child("type").getValue(String.class);
                 updateTips(type1);
                 setType(type1);

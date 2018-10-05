@@ -125,16 +125,44 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/if_check_1055094" />
 
-    <TextView
-        android:id="@+id/completeText"
+    <RelativeLayout
+        android:id="@+id/earnedPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/tips"
+        android:layout_marginBottom="30dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="@font/alfa_slab_one"
-        android:textColor="@android:color/black"
-        android:textSize="30sp" />
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/wellDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alfa_slab_one"
+            android:textColor="@android:color/black"
+            android:text="Well done!"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/completeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/wellDone"
+            android:fontFamily="@font/alfa_slab_one"
+            android:textColor="@android:color/black"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/earnedNuts"
+            android:layout_width="28dp"
+            android:layout_height="26dp"
+            android:layout_toRightOf="@id/completeText"
+            android:layout_alignBottom="@id/completeText"
+            android:src="@drawable/acorn_296591_640" />
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/nextChallenge"

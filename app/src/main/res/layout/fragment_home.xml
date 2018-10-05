@@ -118,7 +118,7 @@
         android:id="@+id/counterLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Waste generated this month in Victoria (tonnes):"
+        android:text="Waste generated this month in Victoria \n(tonnes):"
         android:layout_above="@+id/currentMonthTotal"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
