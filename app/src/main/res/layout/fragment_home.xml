@@ -57,23 +57,27 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/welcomeText"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="40dp"
         android:id="@+id/pointsSection">
 
-        <ImageView
-            android:id="@+id/nutInHome"
-            android:layout_width="33dp"
-            android:layout_height="30dp"
 
-            android:src="@drawable/acorn_296591_640" />
+
+
         <TextView
             android:id="@+id/pointYouHave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/nutInHome"
+            android:layout_width="33dp"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@+id/pointYouHave"
+            android:src="@drawable/acorn_296591_640" />
+
     </RelativeLayout>
 
 

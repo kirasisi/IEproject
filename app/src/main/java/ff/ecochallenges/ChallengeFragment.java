@@ -531,6 +531,8 @@ public class ChallengeFragment extends Fragment {
                 instructContent.setText(description);
                 Long points = dataSnapshot.child("points").getValue(Long.class);
                 point.setText(String.valueOf(points));
+
+
                 String type1 = dataSnapshot.child("type").getValue(String.class);
                 updateTips(type1);
                 setType(type1);

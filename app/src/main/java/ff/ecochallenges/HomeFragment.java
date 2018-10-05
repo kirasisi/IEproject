@@ -115,7 +115,7 @@ public class HomeFragment extends Fragment {
                             mDatabase.child(userUID).child("lastLoginDate").setValue(formatter.format(DATE));
                             mDatabase.child(userUID).child("challengeFinished").setValue("0");
                             challengeCount.setText("You have done 0 challenges so far!");
-                            nutsPoint.setText("0");
+                            nutsPoint.setText("Your Points: 0 ");
                             Global g = Global.getInstance();
                             g.setData(0);
 
@@ -135,7 +135,7 @@ public class HomeFragment extends Fragment {
                     Object nuts = dataSnapshot.child("points").getValue();
                     try {
                         challengeCount.setText("You have done " + challenge.toString() + " challenge(s) so far!");
-                        nutsPoint.setText(nuts.toString());
+                        nutsPoint.setText("Your Points: "+nuts.toString()+" ");
                         Global g = Global.getInstance();
                         g.setData(Integer.parseInt(nuts.toString()));
 
