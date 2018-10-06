@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:padding="10dp"
+    android:paddingTop="10dp"
+    android:paddingHorizontal="10dp"
+    android:paddingBottom="25dp"
     tools:context=".ExploreFragment">
 
     <info.hoang8f.android.segmented.SegmentedGroup
@@ -53,11 +55,9 @@
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieC"
         android:layout_width="match_parent"
-        android:layout_height="437dp"
-
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="29dp"></com.github.mikephil.charting.charts.PieChart>
+        android:layout_height="match_parent"
+        android:layout_below="@id/optionSection"
+        android:layout_centerHorizontal="true"></com.github.mikephil.charting.charts.PieChart>
 
     <TextView
         android:id="@+id/titleForTotalChart"
@@ -76,6 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:id="@+id/optionSection"
         android:layout_below="@id/titleForTotalChart">
         <CheckBox
             android:id="@+id/checkBox"

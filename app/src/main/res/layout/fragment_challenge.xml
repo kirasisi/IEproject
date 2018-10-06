@@ -98,7 +98,8 @@
         android:gravity="center_vertical"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="25sp" />
+        android:textStyle="bold"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/c_complete"
@@ -129,8 +130,8 @@
         android:id="@+id/earnedPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/tips"
-        android:layout_marginBottom="30dp"
+        android:layout_below="@id/completeIcon"
+        android:layout_marginTop="1dp"
         android:layout_centerHorizontal="true"
         android:visibility="gone">
 
@@ -198,7 +199,7 @@
         android:fontFamily="@font/roboto_slab"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <RelativeLayout
@@ -207,7 +208,7 @@
         android:id="@+id/moreInfoSection"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="145dp">
+        android:layout_marginBottom="160dp">
         <TextView
             android:id="@+id/forPopUp"
             android:layout_width="wrap_content"
